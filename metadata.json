@@ -1,0 +1,6 @@
+{
+  "name": "velop-rewards-level-up",
+  "description": "VELOOP Rewards Level-Up Dashboard and gamified engagement hub featuring XP progression, XP Catcher mini-game, and reward tiers.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

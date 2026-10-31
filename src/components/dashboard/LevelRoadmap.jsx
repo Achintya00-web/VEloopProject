@@ -22,7 +22,7 @@ export const LevelRoadmap = ({ levels, currentLevel, onLevelSelect }) => {
 
       <div className="position-relative ps-4 space-y-3">
         {/* Connecting Vertical Track Line */}
-        <div className="position-absolute start-3 top-2 bottom-4 w-0.5 bg-gradient-to-b from-[#70D68B] via-[#F4C542] to-slate-800" style={{ left: '20px' }} />
+        <div className="position-absolute inset-s-3 top-2 bottom-4 w-0.5 bg-linear-to-b from-[#70D68B] via-[#F4C542] to-slate-800" style={{ left: '20px' }} />
 
         {levels.map((tier) => {
           const isCompleted = tier.level < currentLevel;
@@ -40,7 +40,7 @@ export const LevelRoadmap = ({ levels, currentLevel, onLevelSelect }) => {
               }}
               className={`card rounded-4 p-3 d-flex flex-row align-items-center justify-content-between gap-3 cursor-pointer border ${
                 isCurrent
-                  ? 'bg-gradient-to-r from-[#1F2338] to-[#1B1E30] border-[#F4C542]/60 shadow-sm'
+                  ? 'bg-linear-to-r from-[#1F2338] to-[#1B1E30] border-[#F4C542]/60 shadow-sm'
                   : isCompleted
                   ? 'bg-[#191C2B]/80 border-[#70D68B]/30'
                   : isNext
@@ -118,7 +118,7 @@ export const LevelRoadmap = ({ levels, currentLevel, onLevelSelect }) => {
       </div>
 
       {selectedLevel && (
-        <div className="position-fixed top-0 start-0 w-100 h-100 z-50 d-flex align-items-center justify-content-center p-3 bg-black/75 backdrop-blur-sm animate-in fade-in">
+        <div className="position-fixed top-0 inset-s-0 w-100 h-100 z-50 d-flex align-items-center justify-content-center p-3 bg-black/75 backdrop-blur-sm animate-in fade-in">
           <div className="w-100 max-w-sm rounded-4 bg-[#191C2B] border border-white/10 p-4 shadow-2xl">
             <div className="d-flex justify-content-between align-items-center pb-2 border-bottom border-white/5 mb-3">
               <span className="text-xs fw-bold text-slate-400 text-uppercase">Tier Details</span>

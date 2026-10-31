@@ -8,18 +8,19 @@ export const BadgeIcon = ({
   showLevelText = true,
 }) => {
   const dimensions = {
-    sm: { w: 42, h: 48, textLevel: 8, textNum: 16 },
-    md: { w: 68, h: 76, textLevel: 10, textNum: 24 },
-    lg: { w: 96, h: 108, textLevel: 12, textNum: 34 },
-    xl: { w: 140, h: 156, textLevel: 15, textNum: 52 },
-  }[size] || { w: 68, h: 76, textLevel: 10, textNum: 24 };
+    sm: { w: 34, h: 39 },
+    md: { w: 54, h: 62 },
+    lg: { w: 76, h: 87 },
+    xl: { w: 112, h: 128 },
+  }[size] || { w: 54, h: 62 };
 
   const formattedLevel = level < 10 ? `0${level}` : `${level}`;
+  const gradientId = `level-badge-${React.useId().replace(/:/g, '')}`;
 
   return (
     <div
-      className={`relative inline-flex items-center justify-center shrink-0 ${
-        glow ? 'filter drop-shadow-[0_0_18px_rgba(244,197,66,0.55)]' : 'filter drop-shadow-[0_4px_10px_rgba(0,0,0,0.5)]'
+      className={`level-badge relative inline-flex items-center justify-center shrink-0 ${
+        glow ? 'level-badge--glow' : ''
       } ${className}`}
       style={{ width: dimensions.w, height: dimensions.h }}
     >
@@ -30,105 +31,69 @@ export const BadgeIcon = ({
         className="w-full h-full"
       >
         <defs>
-          <linearGradient id={`goldRim-${level}-${size}`} x1="0" y1="0" x2="100" y2="114" gradientUnits="userSpaceOnUse">
+          <linearGradient id={`${gradientId}-rim`} x1="4" y1="4" x2="92" y2="108" gradientUnits="userSpaceOnUse">
             <stop offset="0%" stopColor="#FFF4C2" />
-            <stop offset="25%" stopColor="#F5C744" />
-            <stop offset="50%" stopColor="#C99424" />
-            <stop offset="75%" stopColor="#FDE382" />
-            <stop offset="100%" stopColor="#8A5F12" />
+            <stop offset="32%" stopColor="#FFC044" />
+            <stop offset="68%" stopColor="#A96813" />
+            <stop offset="100%" stopColor="#FFE091" />
           </linearGradient>
 
-          <linearGradient id={`darkShield-${level}-${size}`} x1="50" y1="10" x2="50" y2="104" gradientUnits="userSpaceOnUse">
-            <stop offset="0%" stopColor="#25211B" />
-            <stop offset="35%" stopColor="#1B1D28" />
-            <stop offset="100%" stopColor="#0E1019" />
+          <linearGradient id={`${gradientId}-face`} x1="50" y1="12" x2="50" y2="100" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stopColor="#252536" />
+            <stop offset="100%" stopColor="#11131D" />
           </linearGradient>
 
-          <linearGradient id={`innerGold-${level}-${size}`} x1="20" y1="20" x2="80" y2="94" gradientUnits="userSpaceOnUse">
-            <stop offset="0%" stopColor="#FFE07A" />
-            <stop offset="50%" stopColor="#D9A52C" />
-            <stop offset="100%" stopColor="#966A16" />
-          </linearGradient>
-
-          <linearGradient id={`goldNum-${level}-${size}`} x1="50" y1="35" x2="50" y2="95" gradientUnits="userSpaceOnUse">
-            <stop offset="0%" stopColor="#FFFFFF" />
-            <stop offset="30%" stopColor="#FFF1B0" />
-            <stop offset="70%" stopColor="#F5C744" />
-            <stop offset="100%" stopColor="#C99424" />
+          <linearGradient id={`${gradientId}-number`} x1="50" y1="43" x2="50" y2="84" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stopColor="#FFF7D7" />
+            <stop offset="48%" stopColor="#FFD56E" />
+            <stop offset="100%" stopColor="#E69B24" />
           </linearGradient>
         </defs>
 
-        {/* Outer Hexagonal Shield Path */}
         <polygon
-          points="50,2 96,28 96,86 50,112 4,86 4,28"
-          fill={`url(#goldRim-${level}-${size})`}
+          points="50,2 94,26 94,78 50,112 6,78 6,26"
+          fill={`url(#${gradientId}-rim)`}
         />
-
-        {/* Outer Inset Ridge */}
         <polygon
-          points="50,5 93,29 93,84 50,108 7,84 7,29"
-          fill="#11131E"
+          points="50,7 89,28 89,75 50,105 11,75 11,28"
+          fill="#0B0D14"
         />
-
-        {/* Beveled Gold Ridge */}
         <polygon
-          points="50,8 90,31 90,82 50,105 10,82 10,31"
-          fill={`url(#goldRim-${level}-${size})`}
-        />
-
-        {/* Center Dark Surface */}
-        <polygon
-          points="50,11 87,33 87,80 50,102 13,80 13,33"
-          fill={`url(#darkShield-${level}-${size})`}
-        />
-
-        {/* Inner Fine Gold Hexagon Border */}
-        <polygon
-          points="50,17 82,36 82,77 50,96 18,77 18,36"
-          stroke={`url(#innerGold-${level}-${size})`}
+          points="50,10 85,30 85,72 50,99 15,72 15,30"
+          fill={`url(#${gradientId}-face)`}
+          stroke={`url(#${gradientId}-rim)`}
           strokeWidth="1.5"
-          fill="none"
-          opacity="0.85"
         />
-
-        {/* Top Mini Stars / Accents */}
-        <circle cx="50" cy="22" r="1.5" fill="#FFE899" />
-        <circle cx="43" cy="23.5" r="1" fill="#C99424" />
-        <circle cx="57" cy="23.5" r="1" fill="#C99424" />
-
-        {/* Badge Text: LEVEL */}
+        <polygon
+          points="50,17 78,34 78,69 50,91 22,69 22,34"
+          fill="none"
+          stroke="#D49428"
+          strokeWidth="1"
+          opacity="0.62"
+        />
+        <path d="M22 32L50 17L78 32" stroke="#FFE6A5" strokeOpacity="0.34" strokeWidth="1" />
+        <circle cx="18" cy="31" r="1.5" fill="#FFE08A" />
+        <circle cx="82" cy="31" r="1.5" fill="#FFE08A" />
         {showLevelText && (
-          <text
-            x="50"
-            y="35"
-            textAnchor="middle"
-            fill="#FFE899"
-            fontSize="8.5"
-            fontWeight="700"
-            letterSpacing="2.2"
-            fontFamily="'Outfit', 'Plus Jakarta Sans', sans-serif"
-          >
+          <text x="50" y="44" textAnchor="middle" fill="#FFD47A" fontSize="9" fontWeight="800" letterSpacing="2" fontFamily="'Outfit', sans-serif">
             LEVEL
           </text>
         )}
-
-        {/* Badge Big Level Number */}
         <text
           x="50"
-          y={showLevelText ? "76" : "66"}
+          y={showLevelText ? '78' : '70'}
           textAnchor="middle"
-          fill={`url(#goldNum-${level}-${size})`}
-          fontSize="44"
+          fill={`url(#${gradientId}-number)`}
+          fontSize={showLevelText ? '39' : '43'}
           fontWeight="800"
           fontFamily="'Outfit', sans-serif"
           style={{
-            filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.8))',
+            filter: 'drop-shadow(0 2px 3px rgba(0,0,0,0.85))',
           }}
         >
           {formattedLevel}
         </text>
-
-        <line x1="38" y1="84" x2="62" y2="84" stroke={`url(#innerGold-${level}-${size})`} strokeWidth="1.5" strokeLinecap="round" opacity="0.75" />
+        <path d="M40 89L50 95L60 89" stroke="#D79B30" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
     </div>
   );

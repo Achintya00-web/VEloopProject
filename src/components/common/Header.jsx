@@ -1,6 +1,33 @@
-import React, { useState } from 'react';
-import { Menu, Bell, Sparkles, RefreshCw, Smartphone, Monitor } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import {
+  Bell,
+  Check,
+  ChevronRight,
+  CircleHelp,
+  Coins,
+  Flame,
+  Gem,
+  Menu,
+  Monitor,
+  RefreshCw,
+  Settings2,
+  Smartphone,
+  Sparkles,
+  Trophy,
+  UserRound,
+  X,
+  Zap,
+} from 'lucide-react';
+import { SolidRewardIcon } from './SolidRewardIcon.jsx';
 import { playSound } from '../../utils/audio.js';
+
+const navigationItems = [
+  { view: 'dashboard', label: 'Dashboard', description: 'Overview & Roadmap', icon: 'home' },
+  { view: 'earn', label: 'Earn & Quests', description: 'Daily Tasks & Yield', icon: 'tasks' },
+  { view: 'game', label: 'XP Catcher Arcade', description: 'Play 20s Run', icon: 'game' },
+  { view: 'activity', label: 'Recent Activity', description: 'Event Log', icon: 'activity' },
+  { view: 'rewards', label: 'Reward Vault', description: 'Tier 05 Unlocks', icon: 'gift' },
+];
 
 export const Header = ({
   uiState,
@@ -10,154 +37,249 @@ export const Header = ({
   onResetDemo,
   isMobilePreview,
   onToggleMobilePreview,
+  currentView,
+  onNavigate,
+  currentLevel,
+  currentXP,
+  requiredXP,
+  vesBalance,
+  gemsBalance,
+  streakDays,
   unreadCount = 2,
 }) => {
-  const [showDemoMenu, setShowDemoMenu] = useState(false);
+  const [showNavigationMenu, setShowNavigationMenu] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
+  const [showDemoControls, setShowDemoControls] = useState(false);
+  const progressPercent = Math.min(100, Math.max(0, (currentXP / requiredXP) * 100));
 
-  const getGreeting = () => {
-    const hour = new Date().getHours();
-    if (hour < 12) return 'Good Morning';
-    if (hour < 18) return 'Good Afternoon';
-    return 'Good Evening';
+  useEffect(() => {
+    if (!showNavigationMenu) return undefined;
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') setShowNavigationMenu(false);
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [showNavigationMenu]);
+
+  const navigate = (view) => {
+    playSound.click();
+    onNavigate(view);
+    setShowNavigationMenu(false);
+    setShowNotifications(false);
   };
 
   return (
-    <header className="w-full border-b border-white/5 bg-[#161827]/95 backdrop-blur-md sticky top-0 z-40">
-      {/* Dev & Evaluation Prototype Control Bar */}
-      <div className="container-fluid px-3 py-1 bg-[#0e101a] border-b border-white/5 text-[11px] text-slate-400 d-flex flex-wrap justify-content-between align-items-center gap-2">
-        <div className="d-flex align-items-center gap-2">
-          <span className="fw-bold text-[#F4C542] text-uppercase">Prototype:</span>
-          <button
-            onClick={() => {
-              playSound.click();
-              onTriggerLevelUp();
-            }}
-            className="px-2 py-0.5 rounded bg-[#F4C542]/15 text-[#F4C542] hover:bg-[#F4C542]/25 font-medium transition-colors d-flex align-items-center gap-1 border-0"
-          >
-            <Sparkles className="w-3 h-3" />
-            Test Level-Up
-          </button>
-          <button
-            onClick={() => {
-              playSound.click();
-              onQuickAddXP();
-            }}
-            className="px-2 py-0.5 rounded bg-purple-500/15 text-purple-300 hover:bg-purple-500/25 font-medium transition-colors border-0"
-          >
-            +200 XP Boost
-          </button>
-        </div>
-
-        <div className="d-flex align-items-center gap-2">
-          <div className="d-flex align-items-center gap-1 bg-[#191c2b] p-0.5 rounded border border-white/5">
-            {['normal', 'loading', 'empty', 'error'].map((state) => (
-              <button
-                key={state}
-                onClick={() => {
-                  playSound.click();
-                  onSetUiState(state);
-                }}
-                className={`px-2 py-0.5 rounded text-capitalize text-[10px] font-medium transition-colors border-0 ${
-                  uiState === state ? 'bg-[#F4C542] text-dark fw-bold' : 'text-slate-400 bg-transparent'
-                }`}
-              >
-                {state}
-              </button>
-            ))}
-          </div>
-
-          <button
-            onClick={() => {
-              playSound.click();
-              onToggleMobilePreview();
-            }}
-            className="px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 transition-colors d-flex align-items-center gap-1 border-0"
-          >
-            {isMobilePreview ? <Monitor className="w-3 h-3" /> : <Smartphone className="w-3 h-3" />}
-            <span className="d-none d-sm-inline">{isMobilePreview ? 'Desktop' : 'Mobile'}</span>
-          </button>
-
-          <button
-            onClick={() => {
-              playSound.click();
-              onResetDemo();
-            }}
-            title="Reset default values"
-            className="p-1 text-slate-400 hover:text-white transition-colors bg-transparent border-0"
-          >
-            <RefreshCw className="w-3 h-3" />
-          </button>
-        </div>
-      </div>
-
-      {/* Main Top Header matching Page 33 */}
-      <div className="container-fluid max-w-7xl px-3 py-2 d-flex justify-content-between align-items-center">
-        <div className="d-flex align-items-center gap-3">
-          <button
-            onClick={() => {
-              playSound.click();
-              setShowDemoMenu(!showDemoMenu);
-            }}
-            className="w-10 h-10 rounded-xl bg-[#191C2B] border border-white/10 d-flex align-items-center justify-center text-slate-300 hover:text-white transition-all active:scale-95"
-            aria-label="Navigation Menu"
-          >
-            <Menu className="w-5 h-5" />
-          </button>
-
-          <div>
-            <h1 className="text-base sm:text-lg font-bold text-white tracking-tight d-flex align-items-center gap-1 mb-0 font-display">
-              {getGreeting()}, <span className="gold-gradient-text">VeLooper!</span>
-            </h1>
-            <p className="text-xs text-slate-400 d-none d-sm-block mb-0">
-              Level up your journey and unlock epic rewards every day.
-            </p>
-          </div>
-        </div>
-
-        <div className="d-flex align-items-center gap-2">
-          <div className="relative">
+    <>
+      <header className="app-header sticky-top">
+        <div className="app-header__inner">
+          <div className="d-flex align-items-center gap-3">
             <button
               onClick={() => {
                 playSound.click();
-                setShowNotifications(!showNotifications);
+                setShowNavigationMenu(true);
               }}
-              className="w-10 h-10 rounded-xl bg-[#191C2B] border border-white/10 d-flex align-items-center justify-center text-slate-300 hover:text-white transition-all relative active:scale-95"
-              aria-label="Notifications"
+              className="app-icon-button app-menu-button"
+              aria-label="Open navigation menu"
+              aria-expanded={showNavigationMenu}
+              aria-controls="app-navigation-drawer"
             >
-              <Bell className="w-5 h-5" />
-              {unreadCount > 0 && (
-                <span className="position-absolute top-2 end-2 w-2 h-2 rounded-circle bg-[#F4C542]" />
-              )}
+              <Menu size={19} />
             </button>
+            <button className="app-brand" onClick={() => navigate('dashboard')} aria-label="VELOOP Rewards home">
+              <span className="app-brand__mark">V</span>
+              <span className="app-brand__name">VELOOP <span>REWARDS</span></span>
+            </button>
+          </div>
 
-            {showNotifications && (
-              <div className="position-absolute end-0 mt-2 w-72 rounded-2xl bg-[#191C2B] border border-white/10 shadow-2xl p-3 z-50 animate-in fade-in">
-                <div className="d-flex justify-content-between align-items-center pb-2 border-bottom border-white/5 mb-2">
-                  <span className="text-xs fw-bold text-white text-uppercase">Notifications</span>
-                  <span className="text-[10px] text-[#F4C542]">2 New</span>
-                </div>
-                <div className="space-y-2 text-xs">
-                  <div className="p-2 rounded-xl bg-white/5 border border-white/5">
-                    <p className="fw-semibold text-slate-200 mb-0">Level 05 Perks Unlocked!</p>
-                    <p className="text-slate-400 text-[11px] mb-0">You are 80.25% through Level 05.</p>
+          <div className="app-header__actions">
+            <div className="app-header__popover-anchor app-demo-anchor">
+              <button
+                onClick={() => setShowDemoControls(!showDemoControls)}
+                className="app-icon-button app-demo-toggle"
+                aria-label="Prototype controls"
+                aria-expanded={showDemoControls}
+              >
+                <Settings2 size={16} />
+              </button>
+              {showDemoControls && (
+                <div className="app-demo-controls">
+                  <strong>Prototype controls</strong>
+                  <button onClick={onTriggerLevelUp}><Sparkles size={12} /> Test Level-Up</button>
+                  <button onClick={onQuickAddXP}><Zap size={12} /> +200 XP Boost</button>
+                  <div className="app-demo-states" aria-label="Demo UI state">
+                    {['normal', 'loading', 'empty', 'error'].map((state) => (
+                      <button
+                        key={state}
+                        onClick={() => onSetUiState(state)}
+                        className={uiState === state ? 'is-selected' : ''}
+                      >
+                        {uiState === state && <Check size={10} />}
+                        {state}
+                      </button>
+                    ))}
                   </div>
-                  <div className="p-2 rounded-xl bg-white/5 border border-white/5">
-                    <p className="fw-semibold text-slate-200 mb-0">Daily Streak Maintained 🔥</p>
-                    <p className="text-slate-400 text-[11px] mb-0">7-day active streak reached!</p>
+                  <button onClick={onToggleMobilePreview}>
+                    {isMobilePreview ? <Monitor size={12} /> : <Smartphone size={12} />}
+                    {isMobilePreview ? 'Desktop preview' : 'Mobile preview'}
+                  </button>
+                  <button onClick={onResetDemo}><RefreshCw size={12} /> Reset demo</button>
+                </div>
+              )}
+            </div>
+            <div className="app-balance-chip app-balance-chip--gold">
+              <Coins size={13} />
+              <span>{vesBalance.toLocaleString()} VEs</span>
+            </div>
+            <div className="app-balance-chip app-balance-chip--purple">
+              <Gem size={13} />
+              <span>{gemsBalance} Gems</span>
+            </div>
+            <div className="app-balance-chip app-balance-chip--muted d-none d-sm-flex">
+              <Flame size={13} />
+              <span>{streakDays} Days</span>
+            </div>
+
+            <div className="app-header__popover-anchor">
+              <button
+                onClick={() => {
+                  playSound.click();
+                  setShowNotifications(!showNotifications);
+                }}
+                className="app-icon-button app-notification-button"
+                aria-label="Notifications"
+                aria-expanded={showNotifications}
+              >
+                <Bell size={17} />
+                {unreadCount > 0 && <span className="app-notification-dot" />}
+              </button>
+              {showNotifications && (
+                <div className="app-notification-popover">
+                  <div className="d-flex justify-content-between align-items-center pb-2 mb-2 border-bottom border-white/10">
+                    <strong>Notifications</strong>
+                    <span className="app-notification-new">{unreadCount} New</span>
+                  </div>
+                  <div className="app-notification-item">
+                    <strong>Level {String(currentLevel).padStart(2, '0')} perks unlocked</strong>
+                    <span>You are {progressPercent.toFixed(1)}% through your level.</span>
+                  </div>
+                  <div className="app-notification-item">
+                    <strong>Daily streak maintained</strong>
+                    <span>Your {streakDays}-day streak is active.</span>
                   </div>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
+
+            <button
+              className="app-profile-chip"
+              aria-label={`Profile, level ${currentLevel}`}
+              onClick={() => {
+                playSound.click();
+                setShowNavigationMenu(true);
+              }}
+            >
+              <span className="app-profile-chip__avatar"><UserRound size={15} /></span>
+              <span className="app-profile-chip__level">LVL {String(currentLevel).padStart(2, '0')}</span>
+            </button>
           </div>
         </div>
-      </div>
 
-      <div className="px-3 pb-2 d-sm-none">
-        <p className="text-xs text-slate-400 mb-0">
-          Level up your journey and unlock epic rewards every day.
-        </p>
-      </div>
-    </header>
+      </header>
+
+      <div
+        className={`app-drawer-backdrop ${showNavigationMenu ? 'is-visible' : ''}`}
+        onClick={() => setShowNavigationMenu(false)}
+        aria-hidden="true"
+      />
+      <aside
+        id="app-navigation-drawer"
+        className={`app-navigation-drawer ${showNavigationMenu ? 'is-open' : ''}`}
+        role="dialog"
+        aria-modal={showNavigationMenu}
+        aria-label="VELOOP Rewards navigation"
+        aria-hidden={!showNavigationMenu}
+        inert={!showNavigationMenu}
+      >
+        <div className="app-drawer__top">
+          <div className="app-drawer__brand">
+            <span className="app-brand__mark">V</span>
+            <div>
+              <strong>VELOOP REWARDS</strong>
+              <span>PROTOCOL V4.2</span>
+            </div>
+          </div>
+          <button
+            onClick={() => setShowNavigationMenu(false)}
+            className="app-icon-button app-drawer__close"
+            aria-label="Close navigation menu"
+            tabIndex={showNavigationMenu ? 0 : -1}
+          >
+            <X size={17} />
+          </button>
+        </div>
+
+        <div className="app-season-pill">
+          <span><i /> SEASON 04 ACTIVE</span>
+          <b>14d Remaining</b>
+        </div>
+
+        <nav className="app-drawer__nav" aria-label="Main navigation">
+          {navigationItems.map((item) => {
+            const active = currentView === item.view;
+            return (
+              <button
+                key={item.view}
+                onClick={() => navigate(item.view)}
+                className={`app-drawer-link ${active ? 'is-active' : ''}`}
+                aria-current={active ? 'page' : undefined}
+                tabIndex={showNavigationMenu ? 0 : -1}
+              >
+                <span className="app-drawer-link__icon"><SolidRewardIcon name={item.icon} size={17} /></span>
+                <span className="app-drawer-link__text">
+                  <strong>{item.label}</strong>
+                  <small>{item.description}</small>
+                </span>
+                {item.view === 'dashboard' && active && <b className="app-drawer-link__status">ACTIVE</b>}
+                {item.view === 'game' && <b className="app-drawer-link__reward">+75 XP</b>}
+                {item.view === 'rewards' && <b className="app-drawer-link__reward">420 VEs</b>}
+              </button>
+            );
+          })}
+        </nav>
+
+        <div className="app-drawer__footer">
+          <div className="app-drawer__user">
+            <span className="app-drawer__avatar"><UserRound size={18} /></span>
+            <div className="app-drawer__user-details">
+              <strong>Alex Vance <b>LVL {String(currentLevel).padStart(2, '0')}</b></strong>
+              <span><i /> Platinum Vanguard</span>
+            </div>
+            <button
+              className="app-drawer__help"
+              onClick={() => {
+                setShowNavigationMenu(false);
+                onNavigate('activity');
+              }}
+              aria-label="View account activity"
+              tabIndex={showNavigationMenu ? 0 : -1}
+            >
+              <CircleHelp size={15} />
+            </button>
+          </div>
+          <div className="app-drawer__progress-heading">
+            <span>XP Progress to Lvl {String(currentLevel + 1).padStart(2, '0')}</span>
+            <strong>{currentXP.toLocaleString()} / {requiredXP.toLocaleString()}</strong>
+          </div>
+          <div className="app-drawer__progress">
+            <span style={{ width: `${progressPercent}%` }} />
+          </div>
+          <div className="app-drawer__wallet">
+            <span><Coins size={13} /> Ready Yield <b>{vesBalance.toLocaleString()} VEs</b></span>
+            <span><Gem size={13} /> Gems Vault <b>{gemsBalance} Gems</b></span>
+          </div>
+          <div className="app-drawer__fineprint"><Trophy size={11} /> Your rewards are ready to claim</div>
+        </div>
+      </aside>
+    </>
   );
 };

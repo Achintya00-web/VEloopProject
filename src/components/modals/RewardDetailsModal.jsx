@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, Lock } from 'lucide-react';
+import { X, Lock, Sparkles } from 'lucide-react';
 import { VECoin, GemIcon, TreasureChest } from '../common/GameAssets.jsx';
 import { playSound } from '../../utils/audio.js';
 
@@ -24,11 +24,12 @@ export const RewardDetailsModal = ({ isOpen, onClose, currentLevel }) => {
           <div className="mb-2">
             <TreasureChest size={64} />
           </div>
+          <span className="reward-vault__rank"><Sparkles size={10} /> RANK UNLOCKED</span>
           <h3 className="fs-5 fw-bold text-white font-display mb-0">
-            Level 05 Reward Vault
+            Level {String(currentLevel).padStart(2, '0')} Reward Vault
           </h3>
           <p className="text-xs text-slate-400 mb-0">
-            Exclusive tier perks and token balances
+            Exclusive tier perks, token grants, and tournament entry privileges.
           </p>
         </div>
 
@@ -59,13 +60,28 @@ export const RewardDetailsModal = ({ isOpen, onClose, currentLevel }) => {
             </span>
           </div>
 
+          <div className="p-2.5 rounded-3 bg-[#161827] border border-emerald-500/20 d-flex align-items-center justify-content-between">
+            <div className="d-flex align-items-center gap-2">
+              <div className="w-6 h-6 rounded-circle bg-emerald-500/15 d-flex align-items-center justify-center text-emerald-300">
+                <Sparkles className="w-3.5 h-3.5" />
+              </div>
+              <div className="text-start">
+                <span className="text-xs fw-bold text-white d-block">2× Weekend XP Multiplier</span>
+                <span className="text-[10px] text-slate-400">Saturday and Sunday quests are boosted</span>
+              </div>
+            </div>
+            <span className="badge bg-emerald-900 text-emerald-200 text-[10px] fw-bold">
+              Active
+            </span>
+          </div>
+
           <div className="p-2.5 rounded-3 bg-[#161827] border border-white/5 d-flex align-items-center justify-content-between opacity-60">
             <div className="d-flex align-items-center gap-2">
               <div className="w-6 h-6 rounded-circle bg-slate-800 d-flex align-items-center justify-center text-slate-400">
                 <Lock className="w-3 h-3" />
               </div>
               <div className="text-start">
-                <span className="text-xs fw-semibold text-slate-300 d-block">Level 06: Diamond</span>
+                <span className="text-xs fw-semibold text-slate-300 d-block">Level {String(currentLevel + 1).padStart(2, '0')}: Diamond</span>
                 <span className="text-[10px] text-slate-500">1,000 VEs + 50 Gems + 2 VIP Spins</span>
               </div>
             </div>

@@ -7,6 +7,7 @@ import React, { useState } from 'react';
 import { useLevelProgress } from './hooks/useLevelProgress.js';
 import { Header } from './components/common/Header.jsx';
 import { BottomNav } from './components/common/BottomNav.jsx';
+import { CursorAtmosphere } from './components/common/CursorAtmosphere.jsx';
 import { InfoModal } from './components/common/InfoModal.jsx';
 import { CurrentLevelCard } from './components/dashboard/CurrentLevelCard.jsx';
 import { TodaysBoost } from './components/dashboard/TodaysBoost.jsx';
@@ -22,7 +23,7 @@ import { RewardDetailsModal } from './components/modals/RewardDetailsModal.jsx';
 import { LoadingSkeleton } from './components/states/LoadingSkeleton.jsx';
 import { EmptyState } from './components/states/EmptyState.jsx';
 import { ErrorState } from './components/states/ErrorState.jsx';
-import { Gamepad2 } from 'lucide-react';
+import { Flame, Gamepad2, Sparkles, Trophy } from 'lucide-react';
 import { playSound } from './utils/audio.js';
 
 export default function App() {
@@ -73,7 +74,8 @@ export default function App() {
   };
 
   return (
-    <div className="min-vh-100 bg-[#161827] text-white d-flex flex-column font-sans selection:bg-[#F4C542]/30 selection:text-white">
+    <div className="app-shell min-vh-100 bg-[#161827] text-white d-flex flex-column font-sans selection:bg-[#F4C542]/30 selection:text-white">
+      <CursorAtmosphere />
       {/* Top Application Header */}
       <Header
         uiState={uiState}
@@ -83,6 +85,17 @@ export default function App() {
         onResetDemo={resetDemo}
         isMobilePreview={isMobilePreview}
         onToggleMobilePreview={() => setIsMobilePreview(!isMobilePreview)}
+        currentView={currentView}
+        onNavigate={(view) => {
+          if (view === 'game') setGameResult(null);
+          navigateTo(view);
+        }}
+        currentLevel={userState.currentLevel}
+        currentXP={userState.currentXP}
+        requiredXP={userState.requiredXP}
+        vesBalance={userState.vesBalance}
+        gemsBalance={userState.gemsBalance}
+        streakDays={userState.todaysBoost.streakDays}
       />
 
       {/* Main Content Area */}
@@ -107,82 +120,27 @@ export default function App() {
 
           {uiState === 'normal' && (
             <>
-              {/* Desktop Navigation Tabs */}
-              {!isMobilePreview && (
-                <div className="d-none d-md-flex justify-content-between align-items-center gap-3 mb-4 border-bottom border-white/5 pb-3">
-                  <div className="d-flex align-items-center gap-2 bg-[#191C2B] p-1 rounded-4 border border-white/10">
-                    <button
-                      onClick={() => navigateTo('dashboard')}
-                      className={`btn btn-sm rounded-3 text-xs fw-bold px-3 py-1.5 border-0 ${
-                        currentView === 'dashboard'
-                          ? 'btn-warning gold-gradient-bg text-dark'
-                          : 'text-slate-400 bg-transparent hover:text-white'
-                      }`}
-                    >
-                      Dashboard
-                    </button>
-                    <button
-                      onClick={() => navigateTo('earn')}
-                      className={`btn btn-sm rounded-3 text-xs fw-bold px-3 py-1.5 border-0 ${
-                        currentView === 'earn'
-                          ? 'btn-warning gold-gradient-bg text-dark'
-                          : 'text-slate-400 bg-transparent hover:text-white'
-                      }`}
-                    >
-                      Earn & Level Up
-                    </button>
-                    <button
-                      onClick={() => {
-                        setGameResult(null);
-                        navigateTo('game');
-                      }}
-                      className={`btn btn-sm rounded-3 text-xs fw-bold px-3 py-1.5 border-0 d-flex align-items-center gap-1.5 ${
-                        currentView === 'game'
-                          ? 'btn-warning gold-gradient-bg text-dark'
-                          : 'text-slate-400 bg-transparent hover:text-white'
-                      }`}
-                    >
-                      <Gamepad2 className="w-3.5 h-3.5" />
-                      XP Catcher Game
-                    </button>
-                    <button
-                      onClick={() => navigateTo('activity')}
-                      className={`btn btn-sm rounded-3 text-xs fw-bold px-3 py-1.5 border-0 ${
-                        currentView === 'activity'
-                          ? 'btn-warning gold-gradient-bg text-dark'
-                          : 'text-slate-400 bg-transparent hover:text-white'
-                      }`}
-                    >
-                      Recent Activity
-                    </button>
-                    <button
-                      onClick={() => setIsRewardModalOpen(true)}
-                      className="btn btn-sm rounded-3 text-xs fw-bold px-3 py-1.5 border-0 text-slate-400 bg-transparent hover:text-white"
-                    >
-                      Reward Vault
-                    </button>
-                  </div>
-
-                  <div className="d-flex align-items-center gap-3 bg-[#191C2B] px-3 py-1.5 rounded-3 border border-white/5 text-xs">
-                    <div className="d-flex align-items-center gap-1.5">
-                      <span className="text-slate-400">Balance:</span>
-                      <span className="fw-bolder text-[#F4C542] tabular-nums font-display">
-                        {userState.vesBalance} VEs
-                      </span>
-                    </div>
-                    <span className="text-slate-600">|</span>
-                    <div>
-                      <span className="fw-bolder text-purple-300 tabular-nums font-display">
-                        {userState.gemsBalance} Gems
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              )}
-
               {/* VIEW 1: Main Level Dashboard */}
               {currentView === 'dashboard' && (
                 <div className="w-100">
+                  <section className="dashboard-welcome">
+                    <div className="dashboard-welcome__copy">
+                      <div className="dashboard-welcome__eyebrow">
+                        <span><span className="status-dot" /> SEASON 04 ACTIVE</span>
+                        <span className="dashboard-welcome__boost"><Sparkles size={12} /> +200 XP Boost Active</span>
+                      </div>
+                      <h1>
+                        {new Date().getHours() < 12 ? 'Good Morning' : new Date().getHours() < 18 ? 'Good Afternoon' : 'Good Evening'},
+                        {' '}<span>VeLooper!</span>
+                      </h1>
+                      <p>Level up your journey, conquer arcade trials, and unlock high-stakes rewards on your path to the next tier.</p>
+                      <div className="dashboard-welcome__actions">
+                        <button onClick={() => navigateTo('earn')}><Flame size={14} /> Explore daily quests</button>
+                        <button onClick={() => setIsRewardModalOpen(true)}><Trophy size={14} /> View mastery rewards</button>
+                      </div>
+                    </div>
+                    <div className="dashboard-welcome__emblem"><Sparkles size={24} /></div>
+                  </section>
                   <div className="row g-4 align-items-start">
                     <div className="col-12 col-lg-7 space-y-4">
                       <CurrentLevelCard
@@ -304,7 +262,10 @@ export default function App() {
               {currentView === 'earn' && (
                 <EarnActivitiesPage
                   activities={activities}
-                  onBack={() => navigateTo('dashboard')}
+                  history={history}
+                  todayXP={userState.todaySummary.totalXPEarned}
+                  todayVEs={userState.todaySummary.totalVEsEarned}
+                  onViewActivity={() => navigateTo('activity')}
                   onCompleteActivity={completeActivity}
                   onOpenGame={() => {
                     setGameResult(null);
@@ -325,26 +286,35 @@ export default function App() {
 
               {/* VIEW 5: Rewards Vault */}
               {currentView === 'rewards' && (
-                <div className="w-100 max-w-md mx-auto py-3 space-y-4 animate-in fade-in">
+                <div className="w-100 max-w-6xl mx-auto py-3 animate-in fade-in">
                   <div className="d-flex justify-content-between align-items-center pb-2 border-bottom border-white/5">
-                    <h2 className="fs-5 fw-bold text-white font-display mb-0">Rewards Vault</h2>
+                    <div>
+                      <span className="reward-vault__rank">SEASON 04 PERKS</span>
+                      <h2 className="fs-5 fw-bold text-white font-display mb-0">Rewards Vault</h2>
+                    </div>
                     <button
                       onClick={() => navigateTo('dashboard')}
                       className="text-xs text-[#F4C542] fw-semibold bg-transparent border-0"
                     >
-                      ← Back to Home
+                      Back to Dashboard
                     </button>
                   </div>
-                  <LevelRewardChest
-                    level={userState.currentLevel}
-                    onViewRewards={() => setIsRewardModalOpen(true)}
-                    onRewardInfoClick={handleRewardInfoClick}
-                  />
-                  <LevelRoadmap
-                    levels={roadmap}
-                    currentLevel={userState.currentLevel}
-                    onLevelSelect={() => setIsRewardModalOpen(true)}
-                  />
+                  <div className="row g-4 align-items-start">
+                    <div className="col-12 col-lg-5">
+                      <LevelRewardChest
+                        level={userState.currentLevel}
+                        onViewRewards={() => setIsRewardModalOpen(true)}
+                        onRewardInfoClick={handleRewardInfoClick}
+                      />
+                    </div>
+                    <div className="col-12 col-lg-7">
+                      <LevelRoadmap
+                        levels={roadmap}
+                        currentLevel={userState.currentLevel}
+                        onLevelSelect={() => setIsRewardModalOpen(true)}
+                      />
+                    </div>
+                  </div>
                 </div>
               )}
             </>

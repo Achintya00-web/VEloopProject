@@ -1,30 +1,35 @@
 import React, { useState } from 'react';
-import { ArrowLeft, Play, CheckSquare, Users, Gamepad2, Flame, Sparkles, ChevronRight, Check } from 'lucide-react';
+import { Play, CheckSquare, Users, Gamepad2, Flame, Sparkles, ChevronRight, Check, Zap, Coins, Activity, Trophy } from 'lucide-react';
+import { SolidRewardIcon } from '../common/SolidRewardIcon.jsx';
 import { playSound } from '../../utils/audio.js';
 
 export const EarnActivitiesPage = ({
   activities,
-  onBack,
+  history,
+  todayXP,
+  todayVEs,
+  onViewActivity,
   onCompleteActivity,
   onOpenGame,
 }) => {
   const [activeModalId, setActiveModalId] = useState(null);
+  const [activeFilter, setActiveFilter] = useState('all');
 
   const getIcon = (iconName) => {
     switch (iconName) {
       case 'watch':
-        return Play;
+        return 'play';
       case 'tasks':
-        return CheckSquare;
+        return 'tasks';
       case 'refer':
-        return Users;
+        return 'users';
       case 'games':
-        return Gamepad2;
+        return 'game';
       case 'streak':
-        return Flame;
+        return 'flame';
       case 'catcher':
       default:
-        return Sparkles;
+        return 'spark';
     }
   };
 
@@ -55,101 +60,149 @@ export const EarnActivitiesPage = ({
   };
 
   const activeActivity = activities.find((a) => a.id === activeModalId);
+  const completedCount = activities.filter((activity) => activity.status === 'completed').length;
+  const filterOptions = [
+    { id: 'all', label: 'All Activities', icon: Sparkles },
+    {
+      id: 'daily',
+      label: `Daily Quests (${activities.filter((activity) => ['watch', 'tasks', 'streak'].includes(activity.iconName) && activity.status !== 'completed').length} available)`,
+      icon: CheckSquare,
+    },
+    { id: 'arcade', label: 'Arcade & Gaming', icon: Gamepad2 },
+    { id: 'social', label: 'Social & Referrals', icon: Users },
+  ];
+  const filteredActivities = activities.filter((activity) => {
+    if (activeFilter === 'all') return true;
+    if (activeFilter === 'daily') return ['watch', 'tasks', 'streak'].includes(activity.iconName);
+    if (activeFilter === 'arcade') return ['games', 'catcher'].includes(activity.iconName);
+    return activity.iconName === 'refer';
+  });
+  const recentHistory = history.slice(0, 4);
 
   return (
-    <div className="w-100 max-w-md mx-auto pb-5 user-select-none animate-in fade-in">
-      <div className="d-flex align-items-center gap-3 px-2 py-3 mb-1">
-        <button
-          onClick={() => {
-            playSound.click();
-            onBack();
-          }}
-          className="w-10 h-10 rounded-3 bg-[#191C2B] border border-white/10 d-flex align-items-center justify-center text-slate-300 hover:text-white"
-          aria-label="Back"
-        >
-          <ArrowLeft className="w-5 h-5" />
-        </button>
-
+    <div className="w-100 max-w-6xl mx-auto pb-5 user-select-none animate-in fade-in earn-page">
+      <div className="earn-page__hero">
         <div>
-          <h2 className="fs-6 fw-bold text-white tracking-wider font-display text-uppercase mb-0">
-            Earn & Level Up
-          </h2>
-          <p className="text-xs text-slate-400 mb-0">
-            Complete activities. Earn XP. Climb levels. Get rewards.
-          </p>
+          <div className="earn-page__eyebrow"><span><i /> CAMPAIGN HUB</span><b>SEASON 04 ACTIVE</b></div>
+          <h1>Earn &amp; Level Up</h1>
+          <p>Complete daily quests, mini-games, and partner activities to accelerate your level progression and unlock rewards.</p>
+          <div className="earn-page__filters">
+            {filterOptions.map((option) => {
+              const Icon = option.icon;
+              return (
+                <button
+                  key={option.id}
+                  type="button"
+                  className={activeFilter === option.id ? 'is-active' : ''}
+                  aria-pressed={activeFilter === option.id}
+                  onClick={() => {
+                    playSound.click();
+                    setActiveFilter(option.id);
+                  }}
+                >
+                  <Icon size={11} /> {option.label}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+        <div className="earn-page__vault">
+          <span><Zap size={12} /> XP Vault <b>{todayXP.toLocaleString()} XP</b></span>
+          <span><Coins size={12} /> Ready Yield <b>{todayVEs.toLocaleString()} VEs</b></span>
         </div>
       </div>
 
-      <div className="space-y-2 px-2">
-        {activities.map((act) => {
-          const Icon = getIcon(act.iconName);
-          const theme = getIconTheme(act.iconName);
-          const isDone = act.status === 'completed';
-
-          return (
-            <div
-              key={act.id}
-              onClick={() => {
-                playSound.click();
-                handleCardClick(act);
-              }}
-              className={`card rounded-4 p-3 d-flex flex-row justify-content-between align-items-center gap-3 cursor-pointer border transition-all ${
-                isDone
-                  ? 'bg-[#151724]/70 border-emerald-500/20 opacity-80'
-                  : 'bg-[#191C2B] border-white/10 hover:bg-[#1E2235]'
-              }`}
-            >
-              <div className="d-flex align-items-center gap-3 flex-1 min-w-0">
-                <div
-                  className={`w-11 h-11 rounded-3 ${theme.bg} ${theme.border} border d-flex align-items-center justify-center shrink-0`}
-                >
-                  <Icon className={`w-5 h-5 ${theme.color}`} />
-                </div>
-
-                <div className="flex-1 min-w-0">
-                  <h3 className="text-sm fw-bold text-white font-display text-truncate mb-0">
-                    {act.title}
-                  </h3>
-                  <p className="text-[11px] text-slate-400 text-truncate mb-0">
-                    {act.description}
-                  </p>
-                  <div className="mt-1 d-flex align-items-center gap-2">
-                    <span className="text-xs fw-bold text-[#F4C542] font-display tabular-nums">
-                      +{act.rewardXP} XP
-                    </span>
-                    {act.rewardVEs && (
-                      <span className="text-[11px] fw-bold text-amber-300 tabular-nums">
-                        +{act.rewardVEs} VEs
-                      </span>
-                    )}
-                    {isDone && (
-                      <span className="text-[10px] fw-bold text-[#70D68B] d-flex align-items-center gap-0.5">
-                        <Check className="w-3 h-3 stroke-[3]" /> Done
-                      </span>
-                    )}
-                  </div>
-                </div>
-              </div>
-
-              <div className="text-slate-500 shrink-0">
-                <ChevronRight className="w-5 h-5" />
-              </div>
+      <div className="row g-3">
+        <div className="col-12 col-lg-7">
+          <section className="earn-quests">
+            <div className="earn-quests__heading">
+              <div><h2><CheckSquare size={15} /> Available Quests</h2><span>{filteredActivities.length} tasks available</span></div>
+              <span className="earn-quests__season"><i /> DAILY RESET IN 14H 22M</span>
             </div>
-          );
-        })}
+            <div className="earn-quests__list">
+              {filteredActivities.map((act) => {
+                const icon = getIcon(act.iconName);
+                const theme = getIconTheme(act.iconName);
+                const isDone = act.status === 'completed';
+
+                return (
+                  <button
+                    key={act.id}
+                    onClick={() => {
+                      playSound.click();
+                      handleCardClick(act);
+                    }}
+                    className={`earn-quest ${isDone ? 'is-completed' : ''}`}
+                  >
+                    <span className={`earn-quest__icon ${theme.bg} ${theme.border} ${theme.color}`}>
+                      <SolidRewardIcon name={icon} size={19} />
+                    </span>
+                    <span className="earn-quest__content">
+                      <span className="earn-quest__type">{isDone ? 'MILESTONE REACHED' : act.iconName === 'watch' ? 'DAILY QUEST' : 'AVAILABLE QUEST'}</span>
+                      <strong>{act.title}</strong>
+                      <small>{act.description}</small>
+                      <span className="earn-quest__progress"><i style={{ width: isDone ? '100%' : '12%' }} /></span>
+                    </span>
+                    <span className="earn-quest__reward">
+                      <b>+{act.rewardXP} XP</b>
+                      {act.rewardVEs > 0 && <small>+{act.rewardVEs} VEs</small>}
+                      <span>{isDone ? <><Check size={11} /> Completed</> : <>Start Task <ChevronRight size={11} /></>}</span>
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </section>
+        </div>
+
+        <div className="col-12 col-lg-5">
+          <aside className="earn-sidebar">
+            <section className="earn-summary">
+              <div className="earn-sidebar__heading"><div><Zap size={14} /><h2>Today’s Summary</h2></div><span>ACTIVE SESSION</span></div>
+              <div className="earn-summary__content">
+                <div className="earn-summary__ring"><strong>{todayXP}</strong><small>XP EARNED</small></div>
+                <div className="earn-summary__stats">
+                  <div><i className="is-gold" /><span>XP Gathered</span><b>+{todayXP} XP</b></div>
+                  <div><i className="is-purple" /><span>Tokens Minted</span><b>+{todayVEs} VEs</b></div>
+                  <div><i className="is-green" /><span>Quests Completed</span><b>{completedCount}/{activities.length}</b></div>
+                </div>
+              </div>
+            </section>
+
+            <section className="earn-recent">
+              <div className="earn-sidebar__heading"><div><Activity size={14} /><h2>Recent Activity</h2></div><span>{history.length} EVENTS</span></div>
+              <div className="earn-recent__list">
+                {recentHistory.length === 0 ? (
+                  <p className="earn-recent__empty">Your recent rewards will appear here.</p>
+                ) : recentHistory.map((item) => (
+                  <div className="earn-recent__item" key={item.id}>
+                    <span className="earn-recent__dot"><SolidRewardIcon name="coins" size={14} /></span>
+                    <span><strong>{item.title}</strong><small>{item.timestamp}</small></span>
+                    <b className={item.rewardType === 'XP' ? 'is-purple' : 'is-gold'}>
+                      +{item.amount} {item.rewardType === 'VE' ? 'VEs' : 'XP'}
+                    </b>
+                  </div>
+                ))}
+              </div>
+              <button
+                className="earn-recent__all"
+                onClick={() => {
+                  playSound.click();
+                  onViewActivity();
+                }}
+              >
+                View all events <ChevronRight size={12} />
+              </button>
+            </section>
+          </aside>
+        </div>
       </div>
 
-      <div className="mt-4 mx-2 p-3 rounded-4 bg-[#1D2032] border border-white/10 d-flex justify-content-between align-items-center shadow-sm">
-        <div className="d-flex align-items-center gap-2">
-          <span className="fs-4">🏆</span>
-          <div>
-            <p className="text-xs fw-bold text-white mb-0">
-              Keep going! You're doing great!
-            </p>
-            <p className="text-[11px] text-slate-400 mb-0">
-              Complete missions to unlock Level 06.
-            </p>
-          </div>
+      <div className="earn-encouragement">
+        <div className="earn-encouragement__icon"><Trophy size={18} /></div>
+        <div>
+          <strong>Keep going! You’re doing great.</strong>
+          <span>Complete missions to unlock your next level rewards.</span>
         </div>
 
         <button

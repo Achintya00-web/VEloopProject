@@ -1,5 +1,6 @@
 import React from 'react';
-import { ArrowRight, Play, CheckCircle2, Users, Gamepad2, Sparkles, Flame } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
+import { SolidRewardIcon } from '../common/SolidRewardIcon.jsx';
 import { playSound } from '../../utils/audio.js';
 
 export const EarnMoreGrid = ({ onSelectActivity, onViewAllEarn }) => {
@@ -7,7 +8,7 @@ export const EarnMoreGrid = ({ onSelectActivity, onViewAllEarn }) => {
     {
       id: 'act-watch',
       title: 'Watch & Earn',
-      icon: Play,
+      icon: 'play',
       reward: '+50 XP',
       color: 'from-purple-500/20 to-purple-600/5',
       iconColor: 'text-purple-400',
@@ -16,7 +17,7 @@ export const EarnMoreGrid = ({ onSelectActivity, onViewAllEarn }) => {
     {
       id: 'act-tasks',
       title: 'Daily Tasks',
-      icon: CheckCircle2,
+      icon: 'tasks',
       reward: '+30 XP',
       color: 'from-blue-500/20 to-blue-600/5',
       iconColor: 'text-blue-400',
@@ -25,7 +26,7 @@ export const EarnMoreGrid = ({ onSelectActivity, onViewAllEarn }) => {
     {
       id: 'act-refer',
       title: 'Refer & Earn',
-      icon: Users,
+      icon: 'users',
       reward: '+100 XP',
       color: 'from-emerald-500/20 to-emerald-600/5',
       iconColor: 'text-emerald-400',
@@ -34,7 +35,7 @@ export const EarnMoreGrid = ({ onSelectActivity, onViewAllEarn }) => {
     {
       id: 'act-catcher',
       title: 'XP Catcher',
-      icon: Sparkles,
+      icon: 'spark',
       reward: '+10 XP',
       color: 'from-[#F4C542]/20 to-[#D9A52C]/5',
       iconColor: 'text-[#F4C542]',
@@ -43,7 +44,7 @@ export const EarnMoreGrid = ({ onSelectActivity, onViewAllEarn }) => {
     {
       id: 'act-games',
       title: 'Mini Games',
-      icon: Gamepad2,
+      icon: 'game',
       reward: '+75 XP',
       color: 'from-indigo-500/20 to-indigo-600/5',
       iconColor: 'text-indigo-400',
@@ -52,7 +53,7 @@ export const EarnMoreGrid = ({ onSelectActivity, onViewAllEarn }) => {
     {
       id: 'act-streak',
       title: 'Streak Bonus',
-      icon: Flame,
+      icon: 'flame',
       reward: '+25 XP',
       color: 'from-amber-500/20 to-amber-600/5',
       iconColor: 'text-amber-400',
@@ -89,7 +90,6 @@ export const EarnMoreGrid = ({ onSelectActivity, onViewAllEarn }) => {
       {/* 6 Grid Cards using Bootstrap row & col */}
       <div className="row g-2">
         {items.map((item) => {
-          const Icon = item.icon;
           return (
             <div key={item.id} className="col-4 col-sm-4 col-md-2">
               <button
@@ -97,12 +97,12 @@ export const EarnMoreGrid = ({ onSelectActivity, onViewAllEarn }) => {
                   playSound.click();
                   onSelectActivity(item.id);
                 }}
-                className="w-100 card rounded-4 bg-[#191C2B] hover:bg-[#202438] border border-white/5 p-2 d-flex flex-column align-items-center justify-content-between text-center min-h-[96px] text-decoration-none"
+                className="w-100 card earn-more-card rounded-4 bg-[#191C2B] hover:bg-[#202438] border border-white/5 p-2 d-flex flex-column align-items-center justify-content-between text-center min-h-[96px] text-decoration-none"
               >
                 <div
-                  className={`w-9 h-9 rounded-3 bg-gradient-to-br ${item.color} d-flex align-items-center justify-center mb-1`}
+                  className={`earn-more-card__icon w-9 h-9 rounded-3 bg-gradient-to-br ${item.color} d-flex align-items-center justify-center mb-1`}
                 >
-                  <Icon className={`w-4 h-4 ${item.iconColor}`} />
+                  <SolidRewardIcon name={item.icon} size={18} className={item.iconColor} />
                 </div>
 
                 <span className="text-[11px] fw-semibold text-slate-200 text-truncate w-100">

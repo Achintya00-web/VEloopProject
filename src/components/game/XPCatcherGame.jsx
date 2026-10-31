@@ -243,7 +243,7 @@ export const XPCatcherGame = ({ onBack, onFinishGame, onInfoClick }) => {
   };
 
   return (
-    <div className="w-100 max-w-md mx-auto min-h-150 d-flex flex-column justify-content-between user-select-none">
+    <div className="w-100 max-w-6xl mx-auto min-h-150 d-flex flex-column justify-content-between user-select-none game-page">
       {/* Game Top Navigation Bar matching Page 33 */}
       <div className="d-flex justify-content-between align-items-center px-2 py-3">
         <button
@@ -287,6 +287,13 @@ export const XPCatcherGame = ({ onBack, onFinishGame, onInfoClick }) => {
         <p className="text-[11px] text-slate-400 mb-0">
           Score high for better rewards!
         </p>
+      </div>
+
+      <div className="game-metrics">
+        <div><span className="game-metrics__icon"><RotateCcw size={14} /></span><span><small>TIME WINDOW</small><strong>{formatTimer(timeLeft)}</strong></span></div>
+        <div><span><small>TOTAL SCORE</small><strong>{score} <small>PTS</small></strong></span></div>
+        <div><span className="game-metrics__icon game-metrics__icon--purple"><Sparkles size={14} /></span><span><small>STREAK BUFF</small><strong>{multiplier.toFixed(1)}x Active</strong></span></div>
+        <div><span><small>ACQUIRED LOOT</small><strong className="game-metrics__loot">+{vesCollected} VEs <i>/</i> +{score} XP</strong></span></div>
       </div>
 
       <div

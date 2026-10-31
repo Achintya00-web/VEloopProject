@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { ArrowLeft, Filter, Users, CheckCircle2, Gamepad2, Sparkles, Flame, ChevronRight } from 'lucide-react';
+import { ArrowLeft, Filter, ChevronRight } from 'lucide-react';
 import { XPOrb, VECoin } from '../common/GameAssets.jsx';
+import { SolidRewardIcon } from '../common/SolidRewardIcon.jsx';
 import { playSound } from '../../utils/audio.js';
 
 export const RecentActivityPage = ({
@@ -15,16 +16,16 @@ export const RecentActivityPage = ({
   const getRecordIcon = (type) => {
     switch (type) {
       case 'referral':
-        return Users;
+        return 'users';
       case 'task':
-        return CheckCircle2;
+        return 'tasks';
       case 'game':
-        return Gamepad2;
+        return 'game';
       case 'catcher':
-        return Sparkles;
+        return 'spark';
       case 'streak':
       default:
-        return Flame;
+        return 'flame';
     }
   };
 
@@ -34,7 +35,7 @@ export const RecentActivityPage = ({
   });
 
   return (
-    <div className="w-100 max-w-md mx-auto pb-5 user-select-none animate-in fade-in">
+    <div className="w-100 max-w-4xl mx-auto pb-5 user-select-none animate-in fade-in">
       <div className="d-flex justify-content-between align-items-center px-2 py-3 mb-1">
         <div className="d-flex align-items-center gap-3">
           <button
@@ -98,7 +99,7 @@ export const RecentActivityPage = ({
           </div>
         ) : (
           filteredHistory.map((item) => {
-            const Icon = getRecordIcon(item.type);
+            const icon = getRecordIcon(item.type);
             const isXP = item.rewardType === 'XP';
 
             return (
@@ -112,7 +113,7 @@ export const RecentActivityPage = ({
                       isXP ? 'bg-purple-500/15 text-purple-400' : 'bg-[#F4C542]/15 text-[#F4C542]'
                     }`}
                   >
-                    <Icon className="w-5 h-5" />
+                    <SolidRewardIcon name={icon} size={20} />
                   </div>
 
                   <div className="min-w-0">

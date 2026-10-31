@@ -15,7 +15,7 @@ export const CurrentLevelCard = ({
   const formattedNextLevel = nextLevel < 10 ? `0${nextLevel}` : `${nextLevel}`;
 
   return (
-    <div className="card rounded-4 border border-white/10 p-4 p-sm-4 shadow-lg card-glow-gold overflow-hidden bg-gradient-to-b from-[#1C1F32] to-[#161928] text-white">
+    <div className="card current-level-card rounded-4 border border-white/10 p-4 p-sm-4 shadow-lg card-glow-gold overflow-hidden bg-gradient-to-b from-[#1C1F32] to-[#161928] text-white">
       {/* Header Level Row matching Page 33 */}
       <div className="d-flex justify-content-between align-items-center mb-4">
         <div className="d-flex align-items-center gap-3">

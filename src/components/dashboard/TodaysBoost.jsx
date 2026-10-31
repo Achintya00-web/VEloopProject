@@ -1,5 +1,6 @@
 import React from 'react';
-import { Zap, Star, CheckSquare, Flame } from 'lucide-react';
+import { Zap } from 'lucide-react';
+import { SolidRewardIcon } from '../common/SolidRewardIcon.jsx';
 import { playSound } from '../../utils/audio.js';
 
 export const TodaysBoost = ({
@@ -14,7 +15,7 @@ export const TodaysBoost = ({
       id: 'xp',
       label: 'XP Earned',
       value: `${xpEarned} XP`,
-      icon: Star,
+      icon: 'star',
       iconColor: 'text-[#F4C542]',
       bgColor: 'bg-[#F4C542]/10',
       borderColor: 'border-[#F4C542]/20',
@@ -23,7 +24,7 @@ export const TodaysBoost = ({
       id: 'tasks',
       label: 'Tasks Done',
       value: `${tasksDone} / ${totalTasks}`,
-      icon: CheckSquare,
+      icon: 'tasks',
       iconColor: 'text-[#65A9FF]',
       bgColor: 'bg-[#65A9FF]/10',
       borderColor: 'border-[#65A9FF]/20',
@@ -32,7 +33,7 @@ export const TodaysBoost = ({
       id: 'streak',
       label: 'Streak',
       value: `${streakDays} Days`,
-      icon: Flame,
+      icon: 'flame',
       iconColor: 'text-[#FF7A45]',
       bgColor: 'bg-[#FF7A45]/10',
       borderColor: 'border-[#FF7A45]/20',
@@ -50,7 +51,6 @@ export const TodaysBoost = ({
 
       <div className="row g-2">
         {cards.map((card) => {
-          const Icon = card.icon;
           return (
             <div key={card.id} className="col-4">
               <div
@@ -63,7 +63,7 @@ export const TodaysBoost = ({
                 <div
                   className={`w-9 h-9 rounded-circle ${card.bgColor} d-flex align-items-center justify-center mb-1`}
                 >
-                  <Icon className={`w-4 h-4 ${card.iconColor}`} />
+                  <SolidRewardIcon name={card.icon} size={18} className={card.iconColor} />
                 </div>
                 <span className="text-[10px] sm:text-[11px] fw-medium text-slate-400 mb-0.5">
                   {card.label}

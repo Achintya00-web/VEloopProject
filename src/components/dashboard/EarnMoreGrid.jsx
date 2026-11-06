@@ -1,6 +1,6 @@
 import React from 'react';
 import { ArrowRight } from 'lucide-react';
-import { SolidRewardIcon } from '../common/SolidRewardIcon.jsx';
+import { RewardIconTile } from '../common/RewardIconTile.jsx';
 import { playSound } from '../../utils/audio.js';
 
 export const EarnMoreGrid = ({ onSelectActivity, onViewAllEarn }) => {
@@ -10,8 +10,7 @@ export const EarnMoreGrid = ({ onSelectActivity, onViewAllEarn }) => {
       title: 'Watch & Earn',
       icon: 'play',
       reward: '+50 XP',
-      color: 'from-purple-500/20 to-purple-600/5',
-      iconColor: 'text-purple-400',
+      tone: 'purple',
       badgeColor: 'text-purple-300',
     },
     {
@@ -19,8 +18,7 @@ export const EarnMoreGrid = ({ onSelectActivity, onViewAllEarn }) => {
       title: 'Daily Tasks',
       icon: 'tasks',
       reward: '+30 XP',
-      color: 'from-blue-500/20 to-blue-600/5',
-      iconColor: 'text-blue-400',
+      tone: 'teal',
       badgeColor: 'text-blue-300',
     },
     {
@@ -28,8 +26,7 @@ export const EarnMoreGrid = ({ onSelectActivity, onViewAllEarn }) => {
       title: 'Refer & Earn',
       icon: 'users',
       reward: '+100 XP',
-      color: 'from-emerald-500/20 to-emerald-600/5',
-      iconColor: 'text-emerald-400',
+      tone: 'cyan',
       badgeColor: 'text-emerald-300',
     },
     {
@@ -37,8 +34,7 @@ export const EarnMoreGrid = ({ onSelectActivity, onViewAllEarn }) => {
       title: 'XP Catcher',
       icon: 'spark',
       reward: '+10 XP',
-      color: 'from-[#F4C542]/20 to-[#D9A52C]/5',
-      iconColor: 'text-[#F4C542]',
+      tone: 'gold',
       badgeColor: 'text-[#F4C542]',
     },
     {
@@ -46,8 +42,7 @@ export const EarnMoreGrid = ({ onSelectActivity, onViewAllEarn }) => {
       title: 'Mini Games',
       icon: 'game',
       reward: '+75 XP',
-      color: 'from-indigo-500/20 to-indigo-600/5',
-      iconColor: 'text-indigo-400',
+      tone: 'blue',
       badgeColor: 'text-indigo-300',
     },
     {
@@ -55,21 +50,20 @@ export const EarnMoreGrid = ({ onSelectActivity, onViewAllEarn }) => {
       title: 'Streak Bonus',
       icon: 'flame',
       reward: '+25 XP',
-      color: 'from-amber-500/20 to-amber-600/5',
-      iconColor: 'text-amber-400',
+      tone: 'orange',
       badgeColor: 'text-amber-300',
     },
   ];
 
   return (
-    <section className="mt-4">
+    <section className="mt-4 earn-more-section">
       {/* Section Header matching Page 33 */}
       <div className="d-flex justify-content-between align-items-center mb-2">
         <div>
-          <h2 className="text-xs fw-bolder text-white text-uppercase tracking-wider font-display mb-0">
+          <h2 className="earn-more-section__title fw-bolder text-white text-uppercase tracking-wider font-display mb-0">
             Earn More
           </h2>
-          <p className="text-[11px] text-slate-400 mb-0">
+          <p className="earn-more-section__description text-slate-400 mb-0">
             Explore fun activities and earn exciting rewards.
           </p>
         </div>
@@ -91,19 +85,15 @@ export const EarnMoreGrid = ({ onSelectActivity, onViewAllEarn }) => {
       <div className="row g-2">
         {items.map((item) => {
           return (
-            <div key={item.id} className="col-4 col-sm-4 col-md-2">
+            <div key={item.id} className="col-6 col-sm-4 col-md-2">
               <button
                 onClick={() => {
                   playSound.click();
                   onSelectActivity(item.id);
                 }}
-                className="w-100 card earn-more-card rounded-4 bg-[#191C2B] hover:bg-[#202438] border border-white/5 p-2 d-flex flex-column align-items-center justify-content-between text-center min-h-[96px] text-decoration-none"
+                className={`w-100 card earn-more-card earn-more-card--${item.tone} rounded-4 bg-[#191C2B] hover:bg-[#202438] border border-white/5 p-2 d-flex flex-column align-items-center justify-content-between text-center min-h-[96px] text-decoration-none`}
               >
-                <div
-                  className={`earn-more-card__icon w-9 h-9 rounded-3 bg-gradient-to-br ${item.color} d-flex align-items-center justify-center mb-1`}
-                >
-                  <SolidRewardIcon name={item.icon} size={18} className={item.iconColor} />
-                </div>
+                <RewardIconTile name={item.icon} tone={item.tone} />
 
                 <span className="text-[11px] fw-semibold text-slate-200 text-truncate w-100">
                   {item.title}

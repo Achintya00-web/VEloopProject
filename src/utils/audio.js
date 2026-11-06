@@ -3,9 +3,14 @@
  */
 
 let audioCtx = null;
+let soundMuted = false;
+
+export function setSoundMuted(muted) {
+  soundMuted = muted;
+}
 
 function getAudioContext() {
-  if (typeof window === 'undefined') return null;
+  if (soundMuted || typeof window === 'undefined') return null;
   if (!audioCtx) {
     const AudioContextClass = window.AudioContext || window.webkitAudioContext;
     if (AudioContextClass) {
@@ -130,6 +135,32 @@ export const playSound = {
         gain.connect(ctx.destination);
         osc.start(startTime + idx * noteDuration);
         osc.stop(startTime + idx * noteDuration + 0.25);
+      });
+    } catch {
+      // Audio autoplay policy or silent
+    }
+  },
+
+  celebration: () => {
+    try {
+      const ctx = getAudioContext();
+      if (!ctx) return;
+      const notes = [523.25, 659.25, 783.99, 1046.5];
+      const noteDuration = 0.11;
+      const startTime = ctx.currentTime;
+
+      notes.forEach((frequency, index) => {
+        const noteStart = startTime + index * noteDuration;
+        const oscillator = ctx.createOscillator();
+        const gain = ctx.createGain();
+        oscillator.type = 'triangle';
+        oscillator.frequency.setValueAtTime(frequency, noteStart);
+        gain.gain.setValueAtTime(0.12, noteStart);
+        gain.gain.exponentialRampToValueAtTime(0.001, noteStart + 0.22);
+        oscillator.connect(gain);
+        gain.connect(ctx.destination);
+        oscillator.start(noteStart);
+        oscillator.stop(noteStart + 0.23);
       });
     } catch {
       // Audio autoplay policy or silent

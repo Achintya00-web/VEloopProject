@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ArrowLeft, Filter, ChevronRight } from 'lucide-react';
 import { XPOrb, VECoin } from '../common/GameAssets.jsx';
-import { SolidRewardIcon } from '../common/SolidRewardIcon.jsx';
+import { RewardIconTile } from '../common/RewardIconTile.jsx';
 import { playSound } from '../../utils/audio.js';
 
 export const RecentActivityPage = ({
@@ -35,7 +35,7 @@ export const RecentActivityPage = ({
   });
 
   return (
-    <div className="w-100 max-w-4xl mx-auto pb-5 user-select-none animate-in fade-in">
+    <div className="w-100 max-w-4xl mx-auto pb-5 user-select-none animate-in fade-in activity-page">
       <div className="d-flex justify-content-between align-items-center px-2 py-3 mb-1">
         <div className="d-flex align-items-center gap-3">
           <button
@@ -108,13 +108,7 @@ export const RecentActivityPage = ({
                 className="card rounded-4 bg-[#191C2B] border border-white/5 p-3 d-flex flex-row justify-content-between align-items-center gap-3 shadow-sm"
               >
                 <div className="d-flex align-items-center gap-3 min-w-0">
-                  <div
-                    className={`w-10 h-10 rounded-3 d-flex align-items-center justify-center shrink-0 ${
-                      isXP ? 'bg-purple-500/15 text-purple-400' : 'bg-[#F4C542]/15 text-[#F4C542]'
-                    }`}
-                  >
-                    <SolidRewardIcon name={icon} size={20} />
-                  </div>
+                  <RewardIconTile name={icon} tone={isXP ? 'purple' : 'gold'} />
 
                   <div className="min-w-0">
                     <span

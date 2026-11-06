@@ -8,6 +8,8 @@ import {
 } from '../data/levelData.js';
 import { playSound } from '../utils/audio.js';
 
+const celebrationColors = ['#FFB52E', '#A855F7', '#50D89A', '#FFFFFF'];
+
 export function useLevelProgress() {
   const [userState, setUserState] = useState(initialLevelState);
   const [activities, setActivities] = useState(initialEarningActivities);
@@ -42,7 +44,7 @@ export function useLevelProgress() {
             particleCount: 80,
             spread: 70,
             origin: { y: 0.6 },
-            colors: ['#F4C542', '#8B5CF6', '#70D68B', '#FFFFFF'],
+            colors: celebrationColors,
           });
         }, 400);
       }
@@ -86,7 +88,14 @@ export function useLevelProgress() {
     const act = activities.find((a) => a.id === activityId);
     if (!act || act.status === 'completed') return;
 
-    playSound.coin();
+    playSound.celebration();
+    confetti({
+      particleCount: 65,
+      spread: 70,
+      startVelocity: 38,
+      origin: { y: 0.72 },
+      colors: celebrationColors,
+    });
     addXP(act.rewardXP, act.title, act.rewardVEs || 0);
 
     setActivities((prev) =>
@@ -115,6 +124,14 @@ export function useLevelProgress() {
       isNewBest,
     });
 
+    playSound.celebration();
+    confetti({
+      particleCount: 100,
+      spread: 82,
+      startVelocity: 45,
+      origin: { y: 0.62 },
+      colors: celebrationColors,
+    });
     addXP(xpReward, 'XP Catcher Game Challenge', vesReward);
   }, [addXP]);
 

@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import { CheckCircle2, Lock, MapPin, ChevronRight, Award } from 'lucide-react';
+import { CheckCircle2, Lock, MapPin, Award } from 'lucide-react';
 import { BadgeIcon } from '../common/BadgeIcon.jsx';
 import { playSound } from '../../utils/audio.js';
 
-export const LevelRoadmap = ({ levels, currentLevel, onLevelSelect }) => {
+export const LevelRoadmap = ({ levels, currentLevel }) => {
   const [selectedLevel, setSelectedLevel] = useState(null);
 
   return (
-    <section className="mt-4">
+    <section className="mt-4 level-roadmap">
       <div className="d-flex justify-content-between align-items-center mb-3">
         <div>
           <h2 className="text-xs fw-bolder text-white text-uppercase tracking-wider font-display d-flex align-items-center gap-1 mb-0">
@@ -20,99 +20,52 @@ export const LevelRoadmap = ({ levels, currentLevel, onLevelSelect }) => {
         </div>
       </div>
 
-      <div className="position-relative ps-4 space-y-3">
-        {/* Connecting Vertical Track Line */}
-        <div className="position-absolute inset-s-3 top-2 bottom-4 w-0.5 bg-linear-to-b from-[#70D68B] via-[#F4C542] to-slate-800" style={{ left: '20px' }} />
-
+      <div className="roadmap-grid">
         {levels.map((tier) => {
           const isCompleted = tier.level < currentLevel;
           const isCurrent = tier.level === currentLevel;
           const isNext = tier.level === currentLevel + 1;
           const isLocked = tier.level > currentLevel + 1;
+          const status = isCurrent ? 'current' : isCompleted ? 'completed' : isNext ? 'next' : 'locked';
+          const statusLabel = isCurrent ? 'Active tier' : isCompleted ? 'Completed' : isNext ? 'Next tier' : 'Locked';
 
           return (
-            <div
+            <button
+              type="button"
               key={tier.level}
               onClick={() => {
                 playSound.click();
                 setSelectedLevel(tier);
-                if (onLevelSelect) onLevelSelect(tier);
               }}
-              className={`card rounded-4 p-3 d-flex flex-row align-items-center justify-content-between gap-3 cursor-pointer border ${
-                isCurrent
-                  ? 'bg-linear-to-r from-[#1F2338] to-[#1B1E30] border-[#F4C542]/60 shadow-sm'
-                  : isCompleted
-                  ? 'bg-[#191C2B]/80 border-[#70D68B]/30'
-                  : isNext
-                  ? 'bg-[#191C2B]/90 border-purple-500/30'
-                  : 'bg-[#141622]/60 border-white/5 opacity-60'
-              }`}
+              className={`roadmap-card roadmap-card--${status}`}
+              aria-label={`Level ${tier.level}: ${tier.title}, ${statusLabel}`}
             >
-              <div className="d-flex align-items-center gap-3">
-                <div className="position-relative z-10 shrink-0">
-                  <BadgeIcon
-                    level={tier.level}
-                    size="sm"
-                    glow={isCurrent}
-                    showLevelText={false}
-                  />
-
-                  {isCompleted && (
-                    <div className="position-absolute -bottom-1 -right-1 w-5 h-5 rounded-circle bg-[#161827] d-flex align-items-center justify-center">
-                      <CheckCircle2 className="w-4 h-4 text-[#70D68B]" />
-                    </div>
-                  )}
-                  {isCurrent && (
-                    <div className="position-absolute -bottom-1 -right-1 w-5 h-5 rounded-circle bg-[#161827] d-flex align-items-center justify-center">
-                      <MapPin className="w-4 h-4 text-[#F4C542]" />
-                    </div>
-                  )}
-                  {isLocked && (
-                    <div className="position-absolute -bottom-1 -right-1 w-5 h-5 rounded-circle bg-[#161827] d-flex align-items-center justify-center">
-                      <Lock className="w-3.5 h-3.5 text-slate-400" />
-                    </div>
-                  )}
-                </div>
-
-                <div>
-                  <div className="d-flex align-items-center gap-2 mb-0.5">
-                    <span className="text-xs fw-bold text-slate-400">
-                      Level {tier.level < 10 ? `0${tier.level}` : tier.level}
-                    </span>
-
-                    {isCurrent && (
-                      <span className="badge bg-warning text-dark text-[10px] fw-bold">
-                        You Are Here
-                      </span>
-                    )}
-                    {isCompleted && (
-                      <span className="text-[10px] fw-bold text-[#70D68B]">
-                        ✓ Completed
-                      </span>
-                    )}
-                    {isNext && (
-                      <span className="badge bg-purple-900 text-purple-200 text-[10px] fw-bold">
-                        Next Goal
-                      </span>
-                    )}
-                  </div>
-
-                  <h4 className="text-sm fw-bold text-white font-display mb-0">
-                    {tier.title}
-                  </h4>
-                  <p className="text-[11px] text-slate-400 mb-0">
-                    Reward: <span className="text-slate-200 fw-semibold">{tier.rewardText}</span>
-                  </p>
-                </div>
-              </div>
-
-              <div className="d-flex align-items-center gap-1 shrink-0">
-                <span className="text-xs font-mono fw-semibold text-slate-400 tabular-nums">
-                  {tier.requiredXP.toLocaleString()} XP
+              <span className="roadmap-card__meta">
+                <span className="roadmap-card__state">
+                  {isCompleted ? <CheckCircle2 size={11} /> : isCurrent ? <MapPin size={11} /> : isLocked ? <Lock size={10} /> : null}
+                  {statusLabel}
                 </span>
-                <ChevronRight className="w-4 h-4 text-slate-500" />
-              </div>
-            </div>
+                <span className="roadmap-card__xp">{tier.requiredXP.toLocaleString()} XP</span>
+              </span>
+
+              <span className="roadmap-card__badge">
+                <BadgeIcon level={tier.level} size="lg" glow={isCurrent} />
+              </span>
+
+              <span className="roadmap-card__title">
+                <small>LEVEL {String(tier.level).padStart(2, '0')}</small>
+                <strong>{tier.title}</strong>
+              </span>
+
+              <span className="roadmap-card__reward">
+                Reward: <b>{tier.rewardText}</b>
+              </span>
+
+              <span className="roadmap-card__footer">
+                {isCompleted ? <CheckCircle2 size={11} /> : isCurrent ? <MapPin size={11} /> : isLocked ? <Lock size={10} /> : <Award size={11} />}
+                {statusLabel}
+              </span>
+            </button>
           );
         })}
       </div>

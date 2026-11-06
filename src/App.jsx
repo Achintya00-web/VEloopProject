@@ -24,7 +24,7 @@ import { LoadingSkeleton } from './components/states/LoadingSkeleton.jsx';
 import { EmptyState } from './components/states/EmptyState.jsx';
 import { ErrorState } from './components/states/ErrorState.jsx';
 import { Flame, Gamepad2, Sparkles, Trophy } from 'lucide-react';
-import { playSound } from './utils/audio.js';
+import { playSound, setSoundMuted } from './utils/audio.js';
 
 export default function App() {
   const {
@@ -53,6 +53,13 @@ export default function App() {
   } = useLevelProgress();
 
   const [isMobilePreview, setIsMobilePreview] = useState(false);
+  const [isSoundMuted, setIsSoundMuted] = useState(false);
+
+  const handleToggleSound = () => {
+    const nextMutedState = !isSoundMuted;
+    setIsSoundMuted(nextMutedState);
+    setSoundMuted(nextMutedState);
+  };
 
   const navigateTo = (view) => {
     setCurrentView(view);
@@ -96,6 +103,8 @@ export default function App() {
         vesBalance={userState.vesBalance}
         gemsBalance={userState.gemsBalance}
         streakDays={userState.todaysBoost.streakDays}
+        isSoundMuted={isSoundMuted}
+        onToggleSound={handleToggleSound}
       />
 
       {/* Main Content Area */}
@@ -122,7 +131,7 @@ export default function App() {
             <>
               {/* VIEW 1: Main Level Dashboard */}
               {currentView === 'dashboard' && (
-                <div className="w-100">
+                <div className="w-100 dashboard-page">
                   <section className="dashboard-welcome">
                     <div className="dashboard-welcome__copy">
                       <div className="dashboard-welcome__eyebrow">
@@ -160,24 +169,6 @@ export default function App() {
                           if (metric === 'xp') navigateTo('activity');
                         }}
                       />
-
-                      <EarnMoreGrid
-                        onSelectActivity={(id) => {
-                          if (id === 'act-catcher') {
-                            setGameResult(null);
-                            navigateTo('game');
-                          } else {
-                            navigateTo('earn');
-                          }
-                        }}
-                        onViewAllEarn={() => navigateTo('earn')}
-                      />
-
-                      <LevelRewardChest
-                        level={userState.currentLevel}
-                        onViewRewards={() => setIsRewardModalOpen(true)}
-                        onRewardInfoClick={handleRewardInfoClick}
-                      />
                     </div>
 
                     <div className="col-12 col-lg-5 space-y-4">
@@ -211,17 +202,30 @@ export default function App() {
                         </button>
                       </div>
 
-                      <LevelRoadmap
-                        levels={roadmap}
-                        currentLevel={userState.currentLevel}
-                        onLevelSelect={(tier) => {
-                          if (tier.level === userState.currentLevel) {
-                            setIsRewardModalOpen(true);
-                          }
-                        }}
+                      <LevelRewardChest
+                        level={userState.currentLevel}
+                        onViewRewards={() => setIsRewardModalOpen(true)}
+                        onRewardInfoClick={handleRewardInfoClick}
                       />
                     </div>
                   </div>
+
+                  <EarnMoreGrid
+                    onSelectActivity={(id) => {
+                      if (id === 'act-catcher') {
+                        setGameResult(null);
+                        navigateTo('game');
+                      } else {
+                        navigateTo('earn');
+                      }
+                    }}
+                    onViewAllEarn={() => navigateTo('earn')}
+                  />
+
+                  <LevelRoadmap
+                    levels={roadmap}
+                    currentLevel={userState.currentLevel}
+                  />
                 </div>
               )}
 
@@ -286,8 +290,8 @@ export default function App() {
 
               {/* VIEW 5: Rewards Vault */}
               {currentView === 'rewards' && (
-                <div className="w-100 max-w-6xl mx-auto py-3 animate-in fade-in">
-                  <div className="d-flex justify-content-between align-items-center pb-2 border-bottom border-white/5">
+                <div className="w-100 max-w-6xl mx-auto py-3 animate-in fade-in rewards-page">
+                  <div className="d-flex justify-content-between align-items-center pb-2 border-bottom border-white/5 rewards-page__header">
                     <div>
                       <span className="reward-vault__rank">SEASON 04 PERKS</span>
                       <h2 className="fs-5 fw-bold text-white font-display mb-0">Rewards Vault</h2>
@@ -311,7 +315,6 @@ export default function App() {
                       <LevelRoadmap
                         levels={roadmap}
                         currentLevel={userState.currentLevel}
-                        onLevelSelect={() => setIsRewardModalOpen(true)}
                       />
                     </div>
                   </div>

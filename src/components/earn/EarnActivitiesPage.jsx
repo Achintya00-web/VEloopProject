@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Play, CheckSquare, Users, Gamepad2, Flame, Sparkles, ChevronRight, Check, Zap, Coins, Activity, Trophy } from 'lucide-react';
-import { SolidRewardIcon } from '../common/SolidRewardIcon.jsx';
+import { Play, CheckSquare, Users, Gamepad2, Flame, Sparkles, ChevronRight, Check, Zap, Coins, Activity, Trophy, X } from 'lucide-react';
+import { RewardIconTile } from '../common/RewardIconTile.jsx';
 import { playSound } from '../../utils/audio.js';
 
 export const EarnActivitiesPage = ({
@@ -36,18 +36,18 @@ export const EarnActivitiesPage = ({
   const getIconTheme = (iconName) => {
     switch (iconName) {
       case 'watch':
-        return { bg: 'bg-purple-500/15', color: 'text-purple-400', border: 'border-purple-500/20' };
+        return { tone: 'purple' };
       case 'tasks':
-        return { bg: 'bg-emerald-500/15', color: 'text-emerald-400', border: 'border-emerald-500/20' };
+        return { tone: 'teal' };
       case 'refer':
-        return { bg: 'bg-blue-500/15', color: 'text-blue-400', border: 'border-blue-500/20' };
+        return { tone: 'cyan' };
       case 'games':
-        return { bg: 'bg-indigo-500/15', color: 'text-indigo-400', border: 'border-indigo-500/20' };
+        return { tone: 'blue' };
       case 'streak':
-        return { bg: 'bg-amber-500/15', color: 'text-amber-400', border: 'border-amber-500/20' };
+        return { tone: 'orange' };
       case 'catcher':
       default:
-        return { bg: 'bg-[#F4C542]/15', color: 'text-[#F4C542]', border: 'border-[#F4C542]/20' };
+        return { tone: 'gold' };
     }
   };
 
@@ -134,8 +134,8 @@ export const EarnActivitiesPage = ({
                     }}
                     className={`earn-quest ${isDone ? 'is-completed' : ''}`}
                   >
-                    <span className={`earn-quest__icon ${theme.bg} ${theme.border} ${theme.color}`}>
-                      <SolidRewardIcon name={icon} size={19} />
+                    <span className="earn-quest__icon">
+                      <RewardIconTile name={icon} tone={theme.tone} size="small" />
                     </span>
                     <span className="earn-quest__content">
                       <span className="earn-quest__type">{isDone ? 'MILESTONE REACHED' : act.iconName === 'watch' ? 'DAILY QUEST' : 'AVAILABLE QUEST'}</span>
@@ -176,7 +176,7 @@ export const EarnActivitiesPage = ({
                   <p className="earn-recent__empty">Your recent rewards will appear here.</p>
                 ) : recentHistory.map((item) => (
                   <div className="earn-recent__item" key={item.id}>
-                    <span className="earn-recent__dot"><SolidRewardIcon name="coins" size={14} /></span>
+                    <span className="earn-recent__dot"><RewardIconTile name="coins" tone="gold" size="tiny" /></span>
                     <span><strong>{item.title}</strong><small>{item.timestamp}</small></span>
                     <b className={item.rewardType === 'XP' ? 'is-purple' : 'is-gold'}>
                       +{item.amount} {item.rewardType === 'VE' ? 'VEs' : 'XP'}
@@ -217,36 +217,58 @@ export const EarnActivitiesPage = ({
       </div>
 
       {activeActivity && (
-        <div className="position-fixed top-0 start-0 w-100 h-100 z-50 d-flex align-items-center justify-content-center p-3 bg-black/75 backdrop-blur-sm animate-in fade-in">
-          <div className="w-100 max-w-sm rounded-4 bg-[#191C2B] border border-white/10 p-4 shadow-2xl">
-            <h3 className="fs-6 fw-bold text-white font-display mb-1">
-              {activeActivity.title}
-            </h3>
-            <p className="text-xs text-slate-300 mb-3">
-              {activeActivity.description}
-            </p>
+        <div className="position-fixed top-0 start-0 w-100 h-100 z-50 d-flex align-items-center justify-content-center p-3 bg-black/75 backdrop-blur-sm animate-in fade-in task-start-overlay">
+          <div className="task-start-card">
+            <button
+              type="button"
+              onClick={() => setActiveModalId(null)}
+              className="task-start-card__close"
+              aria-label="Close task details"
+            >
+              <X size={16} />
+            </button>
 
-            <div className="p-3 rounded-3 bg-[#161827] border border-white/5 d-flex justify-content-between align-items-center text-xs mb-3">
-              <span className="text-slate-400">Reward:</span>
-              <span className="fw-bolder text-[#F4C542] font-display">
-                +{activeActivity.rewardXP} XP {activeActivity.rewardVEs ? `& +${activeActivity.rewardVEs} VEs` : ''}
-              </span>
+            <div className="task-start-card__heading">
+              <RewardIconTile name={getIcon(activeActivity.iconName)} tone={getIconTheme(activeActivity.iconName).tone} />
+              <div>
+                <span className="task-start-card__eyebrow">Daily mission</span>
+                <h3>{activeActivity.title}</h3>
+                <p>{activeActivity.description}</p>
+              </div>
             </div>
 
-            <div className="space-y-2">
+            <div className="task-start-card__reward-heading">
+              <span>Mission rewards</span>
+              <span>INSTANT CREDIT</span>
+            </div>
+            <div className="task-start-card__rewards">
+              <div className="task-start-card__reward task-start-card__reward--xp">
+                <RewardIconTile name="spark" tone="purple" size="small" />
+                <span><small>EXPERIENCE</small><strong>+{activeActivity.rewardXP} XP</strong></span>
+              </div>
+              {activeActivity.rewardVEs > 0 && (
+                <div className="task-start-card__reward task-start-card__reward--ves">
+                  <RewardIconTile name="coins" tone="gold" size="small" />
+                  <span><small>VE TOKENS</small><strong>+{activeActivity.rewardVEs} VEs</strong></span>
+                </div>
+              )}
+            </div>
+
+            <div className="task-start-card__actions">
               <button
                 onClick={() => {
                   onCompleteActivity(activeActivity.id);
                   setActiveModalId(null);
                 }}
                 disabled={activeActivity.status === 'completed'}
-                className="btn btn-warning w-100 py-2 rounded-3 text-dark fw-bold text-xs gold-gradient-bg border-0"
+                className="task-start-card__primary"
               >
                 {activeActivity.status === 'completed' ? 'Already Claimed' : 'Complete & Earn XP'}
+                {activeActivity.status !== 'completed' && <ChevronRight size={15} />}
               </button>
               <button
                 onClick={() => setActiveModalId(null)}
-                className="btn btn-secondary w-100 py-2 rounded-3 text-slate-300 text-xs fw-semibold border-0"
+                className="task-start-card__secondary"
               >
                 Cancel
               </button>

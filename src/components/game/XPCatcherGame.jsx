@@ -22,12 +22,14 @@ export const XPCatcherGame = ({ onBack, onFinishGame, onInfoClick }) => {
   const isDragging = useRef(false);
   const basketXRef = useRef(basketX);
   const multiplierRef = useRef(multiplier);
+  const scoreRef = useRef(0);
 
   const BASKET_WIDTH_PCT = 22;
 
   const startGame = () => {
     playSound.click();
     setScore(0);
+    scoreRef.current = 0;
     setVesCollected(0);
     setTimeLeft(20);
     setMultiplier(1);
@@ -107,11 +109,12 @@ export const XPCatcherGame = ({ onBack, onFinishGame, onInfoClick }) => {
 
   useEffect(() => {
     if (gameState === 'ended') {
-      setTimeout(() => {
-        onFinishGame(score);
+      const finishTimeout = window.setTimeout(() => {
+        onFinishGame(scoreRef.current);
       }, 500);
+      return () => window.clearTimeout(finishTimeout);
     }
-  }, [gameState, onFinishGame, score]);
+  }, [gameState, onFinishGame]);
 
   useEffect(() => {
     if (gameState !== 'playing') return;
@@ -180,7 +183,11 @@ export const XPCatcherGame = ({ onBack, onFinishGame, onInfoClick }) => {
             }
 
             const earnedPoints = item.points * multiplierRef.current;
-            setScore((s) => s + earnedPoints);
+            setScore((currentScore) => {
+              const nextScore = currentScore + earnedPoints;
+              scoreRef.current = nextScore;
+              return nextScore;
+            });
             if (item.veValue > 0) {
               setVesCollected((v) => v + item.veValue);
             }

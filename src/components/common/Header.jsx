@@ -15,6 +15,8 @@ import {
   Sparkles,
   Trophy,
   UserRound,
+  Volume2,
+  VolumeX,
   X,
   Zap,
 } from 'lucide-react';
@@ -45,6 +47,8 @@ export const Header = ({
   vesBalance,
   gemsBalance,
   streakDays,
+  isSoundMuted,
+  onToggleSound,
   unreadCount = 2,
 }) => {
   const [showNavigationMenu, setShowNavigationMenu] = useState(false);
@@ -130,7 +134,7 @@ export const Header = ({
               <Coins size={13} />
               <span>{vesBalance.toLocaleString()} VEs</span>
             </div>
-            <div className="app-balance-chip app-balance-chip--purple">
+            <div className="app-balance-chip app-balance-chip--purple d-none d-md-flex">
               <Gem size={13} />
               <span>{gemsBalance} Gems</span>
             </div>
@@ -138,6 +142,16 @@ export const Header = ({
               <Flame size={13} />
               <span>{streakDays} Days</span>
             </div>
+
+            <button
+              onClick={onToggleSound}
+              className="app-icon-button app-sound-toggle"
+              aria-label={isSoundMuted ? 'Unmute sounds' : 'Mute sounds'}
+              aria-pressed={isSoundMuted}
+              title={isSoundMuted ? 'Unmute sounds' : 'Mute sounds'}
+            >
+              {isSoundMuted ? <VolumeX size={16} /> : <Volume2 size={16} />}
+            </button>
 
             <div className="app-header__popover-anchor">
               <button

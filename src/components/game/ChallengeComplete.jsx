@@ -18,8 +18,28 @@ export const ChallengeComplete = ({
   const progressPercent = Math.min(100, Math.max(0, (currentXP / requiredXP) * 100));
 
   return (
-    <div className="w-100 max-w-md mx-auto min-h-[600px] d-flex flex-column justify-content-between p-2 p-sm-3 animate-in fade-in">
-      <div className="d-flex justify-content-between align-items-center pb-2">
+    <div className="w-100 mx-auto min-h-[600px] d-flex flex-column justify-content-between p-2 p-sm-3 animate-in fade-in challenge-complete">
+      <div className="challenge-complete__backdrop" aria-hidden="true">
+        <div className="challenge-complete__orbit challenge-complete__orbit--one" />
+        <div className="challenge-complete__orbit challenge-complete__orbit--two" />
+        {Array.from({ length: 32 }, (_, index) => (
+          <span
+            key={index}
+            className={`challenge-complete__confetti challenge-complete__confetti--${index % 4}`}
+            style={{
+              left: `${(index * 37 + 8) % 100}%`,
+              top: `${(index * 53 + 4) % 100}%`,
+              '--confetti-delay': `${(index % 12) * -0.37}s`,
+              '--confetti-duration': `${4.8 + (index % 5) * 0.65}s`,
+            }}
+          />
+        ))}
+        <Sparkles className="challenge-complete__ambient-spark challenge-complete__ambient-spark--one" />
+        <Sparkles className="challenge-complete__ambient-spark challenge-complete__ambient-spark--two" />
+        <Sparkles className="challenge-complete__ambient-spark challenge-complete__ambient-spark--three" />
+      </div>
+
+      <div className="d-flex justify-content-between align-items-center pb-2 challenge-complete__topbar">
         <button
           onClick={() => {
             playSound.click();
@@ -52,23 +72,28 @@ export const ChallengeComplete = ({
         </button>
       </div>
 
-      <div className="d-flex flex-column align-items-center text-center my-auto">
-        <div className="position-relative mb-2 animate-float">
-          <LaurelTrophy size={110} />
-          <div className="position-absolute -top-2 -right-2">
-            <Sparkles className="w-5 h-5 text-[#F4C542] animate-spin" />
+      <div className="d-flex flex-column align-items-center text-center my-auto challenge-complete__main">
+        <span className="challenge-complete__eyebrow"><Sparkles size={12} /> ARCADE VICTORY · REWARDS SECURED</span>
+
+        <div className="position-relative mb-2 challenge-complete__trophy">
+          <div className="challenge-complete__trophy-halo" />
+          <div className="challenge-complete__trophy-medal">
+            <LaurelTrophy size={148} />
           </div>
+          <Sparkles className="challenge-complete__trophy-spark challenge-complete__trophy-spark--one" />
+          <Sparkles className="challenge-complete__trophy-spark challenge-complete__trophy-spark--two" />
+          <Sparkles className="challenge-complete__trophy-spark challenge-complete__trophy-spark--three" />
         </div>
 
         <h2 className="fs-4 fw-bolder text-white text-uppercase tracking-wider font-display mb-0">
           Challenge Complete!
         </h2>
-        <p className="text-sm fw-semibold text-slate-400 mt-1 mb-3">
+        <p className="text-sm fw-semibold text-slate-400 mt-1 mb-2">
           Outstanding!
         </p>
 
         {/* Final Score */}
-        <div className="my-3 d-flex flex-column align-items-center">
+        <div className="my-3 d-flex flex-column align-items-center challenge-complete__score">
           <span className="text-[10px] fw-bold text-slate-400 text-uppercase tracking-widest mb-1">
             Final Score
           </span>
@@ -85,7 +110,7 @@ export const ChallengeComplete = ({
         </div>
 
         {/* Reward Metric Cards Row using Bootstrap row & col-6 */}
-        <div className="row g-2 w-100 max-w-xs mb-4">
+        <div className="row g-2 w-100 max-w-xs mb-4 challenge-complete__rewards">
           <div className="col-6">
             <div className="card rounded-4 bg-[#191C2B] border border-purple-500/20 p-3 text-center">
               <span className="fs-5 fw-bolder text-purple-300 font-display tabular-nums d-block">

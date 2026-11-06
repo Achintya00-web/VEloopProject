@@ -7,6 +7,8 @@ import React, { useState } from 'react';
 import { useLevelProgress } from './hooks/useLevelProgress.js';
 import { Header } from './components/common/Header.jsx';
 import { BottomNav } from './components/common/BottomNav.jsx';
+import { DesktopSidebar } from './components/common/DesktopSidebar.jsx';
+import { AppFooter } from './components/common/AppFooter.jsx';
 import { CursorAtmosphere } from './components/common/CursorAtmosphere.jsx';
 import { InfoModal } from './components/common/InfoModal.jsx';
 import { CurrentLevelCard } from './components/dashboard/CurrentLevelCard.jsx';
@@ -14,6 +16,9 @@ import { TodaysBoost } from './components/dashboard/TodaysBoost.jsx';
 import { EarnMoreGrid } from './components/dashboard/EarnMoreGrid.jsx';
 import { LevelRewardChest } from './components/dashboard/LevelRewardChest.jsx';
 import { LevelRoadmap } from './components/dashboard/LevelRoadmap.jsx';
+import { DashboardHeroArtwork } from './components/dashboard/DashboardHeroArtwork.jsx';
+import { DailyRewards } from './components/dashboard/DailyRewards.jsx';
+import { DashboardShowcase } from './components/dashboard/DashboardShowcase.jsx';
 import { XPCatcherGame } from './components/game/XPCatcherGame.jsx';
 import { ChallengeComplete } from './components/game/ChallengeComplete.jsx';
 import { EarnActivitiesPage } from './components/earn/EarnActivitiesPage.jsx';
@@ -23,8 +28,8 @@ import { RewardDetailsModal } from './components/modals/RewardDetailsModal.jsx';
 import { LoadingSkeleton } from './components/states/LoadingSkeleton.jsx';
 import { EmptyState } from './components/states/EmptyState.jsx';
 import { ErrorState } from './components/states/ErrorState.jsx';
-import { Flame, Gamepad2, Sparkles, Trophy } from 'lucide-react';
-import { playSound, setSoundMuted } from './utils/audio.js';
+import { Trophy } from 'lucide-react';
+import { setSoundMuted } from './utils/audio.js';
 
 export default function App() {
   const {
@@ -80,9 +85,17 @@ export default function App() {
     });
   };
 
+  const handleOpenSettings = () => {
+    setInfoModalContent({
+      title: 'Settings',
+      body: 'Manage your sound preference with the speaker control in the top bar. Prototype controls are available from the settings icon.',
+    });
+  };
+
   return (
-    <div className="app-shell min-vh-100 bg-[#161827] text-white d-flex flex-column font-sans selection:bg-[#F4C542]/30 selection:text-white">
+    <div className={`app-shell min-vh-100 bg-[#161827] text-white d-flex flex-column font-sans selection:bg-[#F4C542]/30 selection:text-white ${isMobilePreview ? 'app-shell--mobile-preview' : ''}`}>
       <CursorAtmosphere />
+      <DesktopSidebar currentView={currentView} onNavigate={navigateTo} onOpenSettings={handleOpenSettings} />
       {/* Top Application Header */}
       <Header
         uiState={uiState}
@@ -108,7 +121,7 @@ export default function App() {
       />
 
       {/* Main Content Area */}
-      <main className="flex-1 w-100 px-3 px-sm-4 py-3 d-flex flex-column align-items-center">
+      <main className="flex-1 w-100 px-3 px-sm-4 py-3 d-flex flex-column align-items-center app-main">
         <div
           className={`w-100 transition-all duration-300 ${
             isMobilePreview
@@ -132,83 +145,53 @@ export default function App() {
               {/* VIEW 1: Main Level Dashboard */}
               {currentView === 'dashboard' && (
                 <div className="w-100 dashboard-page">
-                  <section className="dashboard-welcome">
+                  <section className="dashboard-welcome dashboard-welcome--cosmic">
                     <div className="dashboard-welcome__copy">
                       <div className="dashboard-welcome__eyebrow">
-                        <span><span className="status-dot" /> SEASON 04 ACTIVE</span>
-                        <span className="dashboard-welcome__boost"><Sparkles size={12} /> +200 XP Boost Active</span>
+                        <span className="dashboard-welcome__greeting">Welcome Back, Achintya! <span>👋</span></span>
                       </div>
                       <h1>
-                        {new Date().getHours() < 12 ? 'Good Morning' : new Date().getHours() < 18 ? 'Good Afternoon' : 'Good Evening'},
-                        {' '}<span>VeLooper!</span>
+                        Good {new Date().getHours() < 12 ? 'Morning' : new Date().getHours() < 18 ? 'Afternoon' : 'Evening'},<br />
+                        <span>VELOOPER!</span>
                       </h1>
-                      <p>Level up your journey, conquer arcade trials, and unlock high-stakes rewards on your path to the next tier.</p>
+                      <p>Keep playing, keep earning and unlock greater rewards<br className="d-none d-md-block" /> on your journey.</p>
                       <div className="dashboard-welcome__actions">
-                        <button onClick={() => navigateTo('earn')}><Flame size={14} /> Explore daily quests</button>
-                        <button onClick={() => setIsRewardModalOpen(true)}><Trophy size={14} /> View mastery rewards</button>
+                        <button onClick={() => navigateTo('earn')}>View My Progress <span>→</span></button>
+                        <button onClick={() => setIsRewardModalOpen(true)}><Trophy size={14} /> Explore Rewards</button>
                       </div>
                     </div>
-                    <div className="dashboard-welcome__emblem"><Sparkles size={24} /></div>
+                    <DashboardHeroArtwork />
                   </section>
-                  <div className="row g-4 align-items-start">
-                    <div className="col-12 col-lg-7 space-y-4">
+                  <div className="row g-3 align-items-stretch dashboard-overview">
+                    <div className="col-12 col-md-6">
                       <CurrentLevelCard
                         currentLevel={userState.currentLevel}
                         currentXP={userState.currentXP}
                         requiredXP={userState.requiredXP}
                         onInfoClick={handleLevelInfoClick}
                       />
+                    </div>
 
+                    <div className="col-12 col-md-6">
                       <TodaysBoost
-                        xpEarned={userState.todaysBoost.xpEarned}
                         tasksDone={userState.todaysBoost.tasksDone}
                         totalTasks={userState.todaysBoost.totalTasks}
                         streakDays={userState.todaysBoost.streakDays}
-                        onCardClick={(metric) => {
-                          if (metric === 'tasks') navigateTo('earn');
-                          if (metric === 'xp') navigateTo('activity');
-                        }}
-                      />
-                    </div>
-
-                    <div className="col-12 col-lg-5 space-y-4">
-                      <div className="card rounded-4 bg-gradient-to-br from-[#231A3E] via-[#1A1D2F] to-[#121420] border border-purple-500/30 p-4 shadow-lg position-relative overflow-hidden">
-                        <div className="d-flex align-items-center gap-2 mb-2">
-                          <span className="badge bg-purple-900 text-purple-200 text-[10px] fw-bold text-uppercase">
-                            Arcade Challenge
-                          </span>
-                          <span className="text-[11px] text-[#F4C542] fw-semibold">
-                            20s Fast Play
-                          </span>
-                        </div>
-
-                        <h3 className="fs-5 fw-bold text-white font-display mb-1">
-                          XP Catcher Mini-Game
-                        </h3>
-                        <p className="text-xs text-slate-300 mb-3">
-                          Collect falling purple XP orbs and VE coins in the woven gold basket to accelerate your level progression.
-                        </p>
-
-                        <button
-                          onClick={() => {
-                            playSound.click();
-                            setGameResult(null);
-                            navigateTo('game');
-                          }}
-                          className="btn btn-warning w-100 py-2.5 rounded-3 fw-bold text-xs d-flex align-items-center justify-center gap-2 gold-gradient-bg text-dark border-0 shadow-sm font-display"
-                        >
-                          <Gamepad2 className="w-4 h-4 fill-dark" />
-                          <span>Play XP Catcher Now</span>
-                        </button>
-                      </div>
-
-                      <LevelRewardChest
-                        level={userState.currentLevel}
-                        onViewRewards={() => setIsRewardModalOpen(true)}
-                        onRewardInfoClick={handleRewardInfoClick}
+                        onCardClick={(metric) => navigateTo(metric === 'game' ? 'game' : 'earn')}
                       />
                     </div>
                   </div>
+
+                  <DailyRewards
+                    streakDays={userState.todaysBoost.streakDays}
+                    onClaim={() => addXP(25, 'Daily Login Reward')}
+                  />
+
+                  <LevelRoadmap
+                    levels={roadmap}
+                    currentLevel={userState.currentLevel}
+                    compact
+                  />
 
                   <EarnMoreGrid
                     onSelectActivity={(id) => {
@@ -222,9 +205,9 @@ export default function App() {
                     onViewAllEarn={() => navigateTo('earn')}
                   />
 
-                  <LevelRoadmap
-                    levels={roadmap}
-                    currentLevel={userState.currentLevel}
+                  <DashboardShowcase
+                    onViewLeaderboard={() => navigateTo('activity')}
+                    onViewAchievements={() => navigateTo('rewards')}
                   />
                 </div>
               )}
@@ -324,6 +307,8 @@ export default function App() {
           )}
         </div>
       </main>
+
+      <AppFooter onNavigate={navigateTo} />
 
       {/* Mobile Fixed Bottom Navigation Bar matching Page 33 */}
       <BottomNav

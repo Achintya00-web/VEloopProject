@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Bell,
   Check,
@@ -10,6 +10,7 @@ import {
   Menu,
   Monitor,
   RefreshCw,
+  Search,
   Settings2,
   Smartphone,
   Sparkles,
@@ -54,6 +55,8 @@ export const Header = ({
   const [showNavigationMenu, setShowNavigationMenu] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
   const [showDemoControls, setShowDemoControls] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  const searchInputRef = useRef(null);
   const progressPercent = Math.min(100, Math.max(0, (currentXP / requiredXP) * 100));
 
   useEffect(() => {
@@ -70,6 +73,28 @@ export const Header = ({
     onNavigate(view);
     setShowNavigationMenu(false);
     setShowNotifications(false);
+  };
+
+  const handleSearchKeyDown = (event) => {
+    if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'k') {
+      event.preventDefault();
+      searchInputRef.current?.focus();
+      return;
+    }
+
+    if (event.key === 'Enter' && searchTerm.trim()) {
+      const query = searchTerm.toLowerCase();
+      const view = /reward|vault/.test(query)
+        ? 'rewards'
+        : /game|arcade|catcher/.test(query)
+          ? 'game'
+          : /activity|history/.test(query)
+            ? 'activity'
+            : 'earn';
+      navigate(view);
+      setSearchTerm('');
+      searchInputRef.current?.blur();
+    }
   };
 
   return (
@@ -94,6 +119,19 @@ export const Header = ({
               <span className="app-brand__name">VELOOP <span>REWARDS</span></span>
             </button>
           </div>
+
+          <label className="app-search">
+            <Search size={15} />
+            <input
+              ref={searchInputRef}
+              aria-label="Search rewards and quests"
+              placeholder="Search rewards, quests..."
+              value={searchTerm}
+              onChange={(event) => setSearchTerm(event.target.value)}
+              onKeyDown={handleSearchKeyDown}
+            />
+            <kbd>Ctrl K</kbd>
+          </label>
 
           <div className="app-header__actions">
             <div className="app-header__popover-anchor app-demo-anchor">

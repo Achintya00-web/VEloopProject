@@ -1,23 +1,26 @@
 import React, { useState } from 'react';
-import { CheckCircle2, Lock, MapPin, Award } from 'lucide-react';
+import { CheckCircle2, Lock, MapPin, Award, ArrowRight } from 'lucide-react';
 import { BadgeIcon } from '../common/BadgeIcon.jsx';
 import { playSound } from '../../utils/audio.js';
 
-export const LevelRoadmap = ({ levels, currentLevel }) => {
+export const LevelRoadmap = ({ levels, currentLevel, compact = false }) => {
   const [selectedLevel, setSelectedLevel] = useState(null);
 
   return (
-    <section className="mt-4 level-roadmap">
+    <section className={`mt-4 level-roadmap ${compact ? 'level-roadmap--compact' : ''}`}>
       <div className="d-flex justify-content-between align-items-center mb-3">
-        <div>
+        <div className="level-roadmap__heading">
+          <Award className="level-roadmap__heading-icon" />
+          <span>
           <h2 className="text-xs fw-bolder text-white text-uppercase tracking-wider font-display d-flex align-items-center gap-1 mb-0">
-            <Award className="w-4 h-4 text-[#F4C542]" />
-            Level Progression Roadmap
+            Your Level Journey
           </h2>
           <p className="text-xs text-slate-400 mb-0">
-            Climb higher tiers to unlock amplified earnings.
+            Climb higher tiers to unlock premium rewards.
           </p>
+          </span>
         </div>
+        <span className="level-roadmap__view-all">View Full Roadmap <ArrowRight size={12} /></span>
       </div>
 
       <div className="roadmap-grid">

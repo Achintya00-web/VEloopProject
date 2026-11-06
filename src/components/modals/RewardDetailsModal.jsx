@@ -7,7 +7,7 @@ export const RewardDetailsModal = ({ isOpen, onClose, currentLevel }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="position-fixed top-0 start-0 w-100 h-100 z-50 d-flex align-items-center justify-content-center p-3 bg-black/80 backdrop-blur-sm animate-in fade-in reward-vault-overlay">
+    <div className="position-fixed top-0 inset-s-0 w-100 h-100 z-50 d-flex align-items-center justify-content-center p-3 bg-black/80 backdrop-blur-sm animate-in fade-in reward-vault-overlay">
       <div className="reward-vault-celebration" aria-hidden="true">
         {Array.from({ length: 28 }, (_, index) => {
           const sideIndex = Math.floor(index / 2);

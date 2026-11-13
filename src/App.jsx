@@ -185,6 +185,7 @@ export default function App() {
                   <DailyRewards
                     streakDays={userState.todaysBoost.streakDays}
                     onClaim={() => addXP(25, 'Daily Login Reward')}
+                    onStreakDetails={() => navigateTo('earn')}
                   />
 
                   <LevelRoadmap
@@ -193,6 +194,7 @@ export default function App() {
                     currentXP={userState.currentXP}
                     requiredXP={userState.requiredXP}
                     compact
+                    onViewFullRoadmap={() => navigateTo('rewards')}
                   />
 
                   <EarnMoreGrid
@@ -208,6 +210,9 @@ export default function App() {
                   />
 
                   <DashboardShowcase
+                    currentLevel={userState.currentLevel}
+                    currentXP={userState.currentXP}
+                    todayXP={userState.todaysBoost.xpEarned}
                     onViewLeaderboard={() => navigateTo('activity')}
                     onViewAchievements={() => navigateTo('rewards')}
                   />
@@ -276,7 +281,7 @@ export default function App() {
               {/* VIEW 5: Rewards Vault */}
               {currentView === 'rewards' && (
                 <div className="w-100 max-w-6xl mx-auto py-3 animate-in fade-in rewards-page">
-                  <div className="d-flex justify-content-between align-items-center pb-2 border-bottom border-white/5 rewards-page__header">
+                  <div className="d-flex flex-wrap justify-content-between align-items-center gap-3 pb-2 border-bottom border-white/5 rewards-page__header">
                     <div>
                       <span className="reward-vault__rank">SEASON 04 PERKS</span>
                       <h2 className="fs-5 fw-bold text-white font-display mb-0">Rewards Vault</h2>

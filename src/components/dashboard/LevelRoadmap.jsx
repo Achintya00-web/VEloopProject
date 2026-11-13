@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Award, ArrowRight, CheckCircle2, ChevronLeft, ChevronRight, Lock, MapPin } from 'lucide-react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { Award, ArrowRight, CheckCircle2, ChevronLeft, ChevronRight, Lock, MapPin, X } from 'lucide-react';
 import { BadgeIcon } from '../common/BadgeIcon.jsx';
 import { playSound } from '../../utils/audio.js';
 
@@ -9,13 +9,25 @@ export const LevelRoadmap = ({
   currentXP = 0,
   requiredXP = 0,
   compact = false,
+  onViewFullRoadmap,
 }) => {
   const [selectedLevel, setSelectedLevel] = useState(null);
+  const [scrollBounds, setScrollBounds] = useState({ prev: false, next: true });
   const roadmapRef = useRef(null);
   const progressPercent = requiredXP > 0
     ? Math.min(100, Math.max(0, (currentXP / requiredXP) * 100))
     : 0;
   const nextTier = levels.find((tier) => tier.level === currentLevel + 1);
+
+  const updateScrollBounds = useCallback(() => {
+    const roadmap = roadmapRef.current;
+    if (!roadmap) return;
+    const maxScroll = Math.max(0, roadmap.scrollWidth - roadmap.clientWidth);
+    setScrollBounds({
+      prev: roadmap.scrollLeft > 4,
+      next: roadmap.scrollLeft < maxScroll - 4,
+    });
+  }, []);
 
   useEffect(() => {
     if (!compact || !roadmapRef.current) return;
@@ -26,25 +38,29 @@ export const LevelRoadmap = ({
 
       const firstVisibleLevel = Math.max(1, currentLevel - 3);
       const firstCard = roadmap.querySelector(`[data-level="${firstVisibleLevel}"]`);
-      if (!firstCard) return;
+      if (firstCard) {
+        const padding = Number.parseFloat(window.getComputedStyle(roadmap).paddingLeft) || 0;
+        const cardOffset = firstCard.getBoundingClientRect().left - roadmap.getBoundingClientRect().left;
+        roadmap.scrollLeft += cardOffset - padding;
+      }
 
-      const padding = Number.parseFloat(window.getComputedStyle(roadmap).paddingLeft) || 0;
-      const cardOffset = firstCard.getBoundingClientRect().left - roadmap.getBoundingClientRect().left;
-      roadmap.scrollLeft += cardOffset - padding;
+      window.requestAnimationFrame(updateScrollBounds);
     };
 
     positionCurrentJourney();
     window.addEventListener('resize', positionCurrentJourney);
     return () => window.removeEventListener('resize', positionCurrentJourney);
-  }, [compact, currentLevel, levels]);
+  }, [compact, currentLevel, levels, updateScrollBounds]);
 
   const scrollRoadmap = (direction) => {
     const roadmap = roadmapRef.current;
     if (!roadmap) return;
     const card = roadmap.querySelector('.roadmap-card');
+    if (!card) return;
     const gap = Number.parseFloat(window.getComputedStyle(roadmap).gap) || 0;
     const visibleCards = window.matchMedia('(max-width: 767.98px)').matches ? 2 : 3;
 
+    playSound.click();
     roadmap.scrollBy({
       left: (card.getBoundingClientRect().width + gap) * visibleCards * direction,
       behavior: 'smooth',
@@ -65,10 +81,27 @@ export const LevelRoadmap = ({
               <p>Climb higher tiers to unlock premium rewards.</p>
             </span>
           </div>
-          <span className="level-roadmap__view-all">View Full Roadmap <ArrowRight size={14} /></span>
+          {onViewFullRoadmap ? (
+            <button
+              type="button"
+              className="level-roadmap__view-all"
+              onClick={() => {
+                playSound.click();
+                onViewFullRoadmap();
+              }}
+            >
+              <span>View Full Roadmap</span>
+              <ArrowRight size={14} className="level-roadmap__view-all-icon" />
+            </button>
+          ) : (
+            <span className="level-roadmap__view-all">
+              <span>View Full Roadmap</span>
+              <ArrowRight size={14} className="level-roadmap__view-all-icon" />
+            </span>
+          )}
         </div>
       ) : (
-        <div className="d-flex justify-content-between align-items-center mb-3">
+        <div className="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
           <div className="level-roadmap__heading">
             <Award className="level-roadmap__heading-icon" size={24} />
             <span>
@@ -80,7 +113,7 @@ export const LevelRoadmap = ({
               </p>
             </span>
           </div>
-          <span className="level-roadmap__view-all">View Full Roadmap <ArrowRight size={15} /></span>
+          <span className="level-roadmap__active-badge">{levels.length} Tiers · Tier {String(currentLevel).padStart(2, '0')} Active</span>
         </div>
       )}
 
@@ -90,6 +123,7 @@ export const LevelRoadmap = ({
             type="button"
             className="level-roadmap__arrow level-roadmap__arrow--previous"
             onClick={() => scrollRoadmap(-1)}
+            disabled={!scrollBounds.prev}
             aria-label="Show previous levels"
           >
             <ChevronLeft size={18} />
@@ -98,6 +132,7 @@ export const LevelRoadmap = ({
         <div
           ref={compact ? roadmapRef : undefined}
           className="roadmap-grid"
+          onScroll={compact ? updateScrollBounds : undefined}
           style={compact ? {
             '--journey-line-width': `calc(${((levels.length - 1) / 3) * 100}% - ${((levels.length - 1) * 16) / 3}px)`,
             '--journey-line-width-mobile': `calc(${((levels.length - 1) / 2) * 100}% - ${(levels.length - 1) * 22}px)`,
@@ -178,6 +213,7 @@ export const LevelRoadmap = ({
             type="button"
             className="level-roadmap__arrow level-roadmap__arrow--next"
             onClick={() => scrollRoadmap(1)}
+            disabled={!scrollBounds.next}
             aria-label="Show next levels"
           >
             <ChevronRight size={18} />
@@ -214,10 +250,12 @@ export const LevelRoadmap = ({
             <div className="d-flex justify-content-between align-items-center pb-2 border-bottom border-white/5 mb-3">
               <span className="text-xs fw-bold text-slate-400 text-uppercase">Tier Details</span>
               <button
+                type="button"
                 onClick={() => setSelectedLevel(null)}
-                className="text-slate-400 hover:text-white text-xs fw-semibold bg-transparent border-0"
+                className="level-roadmap-modal__close"
+                aria-label="Close tier details"
               >
-                Close
+                <X size={15} />
               </button>
             </div>
 
@@ -239,10 +277,11 @@ export const LevelRoadmap = ({
             </div>
 
             <button
+              type="button"
               onClick={() => setSelectedLevel(null)}
-              className="btn btn-secondary w-100 py-2 rounded-3 text-xs fw-bold border-0"
+              className="level-roadmap-modal__dismiss"
             >
-              Close
+              Done
             </button>
           </div>
         </div>

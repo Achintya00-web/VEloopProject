@@ -1,6 +1,6 @@
 # VELOOP Rewards – Level-Up Dashboard & Gamified Progression Hub (Task 16)
 
-A premium, production-grade fintech rewards web application built with **React.js, Vite, TypeScript, Tailwind CSS, and Web Audio API**, designed directly from the 33-page specification and the final Page 33 reference design.
+A premium, production-grade fintech rewards web application built with **React.js, Vite, JavaScript, Tailwind CSS, and Web Audio API**, designed directly from the 33-page specification and the final Page 33 reference design.
 
 ---
 
@@ -93,39 +93,39 @@ src/
 ├── assets/                  # Visual assets & SVG definitions
 ├── components/
 │   ├── common/
-│   │   ├── BadgeIcon.tsx    # Multi-layer metallic gold hexagonal badge (Levels 1–6)
-│   │   ├── BottomNav.tsx    # Mobile fixed bottom tab navigation (Home, Earn, Game, Rewards, Activity)
-│   │   ├── GameAssets.tsx   # Vector assets: VE Coin, XP Orb, Emerald Gem, Trophy, Treasure Chest
-│   │   ├── Header.tsx       # Top bar, greeting, notifications, and evaluation prototype controls
-│   │   └── InfoModal.tsx    # Level & Reward transparent rule popovers
+│   │   ├── BadgeIcon.jsx    # Multi-layer metallic gold hexagonal badge (Levels 1–6)
+│   │   ├── BottomNav.jsx    # Mobile fixed bottom tab navigation (Home, Earn, Game, Rewards, Activity)
+│   │   ├── GameAssets.jsx   # Vector assets: VE Coin, XP Orb, Emerald Gem, Trophy, Treasure Chest
+│   │   ├── Header.jsx       # Top bar, greeting, notifications, and evaluation prototype controls
+│   │   └── InfoModal.jsx    # Level & Reward transparent rule popovers
 │   ├── dashboard/
-│   │   ├── CurrentLevelCard.tsx # Level 05 badge, XP counter, and animated progress bar
-│   │   ├── TodaysBoost.tsx      # Trio metric cards (XP, Tasks, Streak)
-│   │   ├── EarnMoreGrid.tsx     # 6 shortcut cards in responsive grid
-│   │   ├── LevelRewardChest.tsx # Treasure chest spotlight with "View Rewards" trigger
-│   │   └── LevelRoadmap.tsx     # Interactive progression timeline
+│   │   ├── CurrentLevelCard.jsx # Level 05 badge, XP counter, and animated progress bar
+│   │   ├── TodaysBoost.jsx      # Trio metric cards (XP, Tasks, Streak)
+│   │   ├── EarnMoreGrid.jsx     # 6 shortcut cards in responsive grid
+│   │   ├── LevelRewardChest.jsx # Treasure chest spotlight with "View Rewards" trigger
+│   │   └── LevelRoadmap.jsx     # Interactive progression timeline
 │   ├── game/
-│   │   ├── XPCatcherGame.tsx    # Playable 20s canvas/DOM game with physics & collision detection
-│   │   └── ChallengeComplete.tsx# Trophy, score reveal, reward summary, and level update
+│   │   ├── XPCatcherGame.jsx    # Playable 20s canvas/DOM game with physics & collision detection
+│   │   └── ChallengeComplete.jsx# Trophy, score reveal, reward summary, and level update
 │   ├── earn/
-│   │   └── EarnActivitiesPage.tsx # Vertical list of 6 earning cards with task simulations
+│   │   └── EarnActivitiesPage.jsx # Vertical list of 6 earning cards with task simulations
 │   ├── activity/
-│   │   └── RecentActivityPage.tsx # Filterable activity history & Today's Summary card
+│   │   └── RecentActivityPage.jsx # Filterable activity history & Today's Summary card
 │   ├── modals/
-│   │   ├── LevelUpModal.tsx     # Full celebration modal with confetti and claim action
-│   │   └── RewardDetailsModal.tsx # Level 05 chest breakdown & locked tier preview
+│   │   ├── LevelUpModal.jsx     # Full celebration modal with confetti and claim action
+│   │   └── RewardDetailsModal.jsx # Level 05 chest breakdown & locked tier preview
 │   └── states/
-│       ├── LoadingSkeleton.tsx  # Skeleton UI for dashboard cards
-│       ├── EmptyState.tsx       # Zero-activity empty state
-│       └── ErrorState.tsx       # Error recovery state
+│       ├── LoadingSkeleton.jsx  # Skeleton UI for dashboard cards
+│       ├── EmptyState.jsx       # Zero-activity empty state
+│       └── ErrorState.jsx       # Error recovery state
 ├── data/
-│   └── levelData.ts         # Centralized data model for user state, tiers, and quests
+│   └── levelData.js         # Centralized data model for user state, tiers, and quests
 ├── hooks/
-│   └── useLevelProgress.ts  # State management hook for XP math, game sessions, and modals
+│   └── useLevelProgress.js  # State management hook for XP math, game sessions, and modals
 ├── utils/
-│   └── audio.ts             # Web Audio API sound generator
-├── App.tsx                  # Root layout & view coordinator
-├── main.tsx                 # React entry point
+│   └── audio.js             # Web Audio API sound generator
+├── App.jsx                  # Root layout & view coordinator
+├── main.jsx                 # React entry point
 └── index.css                # Tailwind CSS v4 imports, theme tokens, and custom keyframes
 ```
 
@@ -140,7 +140,7 @@ npm install
 # Start development server
 npm run dev
 
-# Run TypeScript typecheck / lint
+# Run JavaScript syntax check / lint
 npm run lint
 
 # Build production bundle
@@ -162,7 +162,7 @@ Located in the top toolbar of the application:
 
 ## 7. Backend Integration Architecture
 
-All state mutations in `src/hooks/useLevelProgress.ts` interface with clean TypeScript definitions (`UserLevelState`, `LevelTier`, `EarningActivity`, `ActivityRecord`). To replace dummy data with live backend endpoints:
+All state mutations in `src/hooks/useLevelProgress.js` manage plain JavaScript state objects for user level, tiers, earning activities, and activity records. To replace dummy data with live backend endpoints:
 
 1. Replace `initialLevelState` with `fetch('/api/user/level')`.
 2. Connect `addXP` to `POST /api/user/xp/credit`.

@@ -9,7 +9,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "clean": "rm -rf dist server.js",
-    "lint": "tsc --noEmit",
+    "lint": "node --input-type=module -e \"import fs from 'fs'; import path from 'path'; import * as esbuild from 'esbuild'; const walk=(d)=>fs.readdirSync(d,{withFileTypes:true}).flatMap(e=>e.isDirectory()?walk(path.join(d,e.name)):path.join(d,e.name)); const files=walk('src').filter(f=>/\\.(js|jsx)$/.test(f)).concat(['vite.config.js']); for(const f of files){esbuild.transformSync(fs.readFileSync(f,'utf8'),{loader:f.endsWith('.jsx')?'jsx':'js',sourcefile:f});}\"",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist"
   },
@@ -28,16 +28,9 @@
     "vite": "^8.3.0"
   },
   "devDependencies": {
-    "@types/canvas-confetti": "^1.9.0",
-    "@types/express": "^4.17.21",
-    "@types/node": "^22.14.0",
-    "@types/react": "^19.3.0",
-    "@types/react-dom": "^19.3.0",
     "autoprefixer": "^10.4.21",
     "esbuild": "^0.28.2",
     "gh-pages": "^6.3.0",
-    "tailwindcss": "^4.3.3",
-    "tsx": "^4.21.0",
-    "typescript": "^7.0.2"
+    "tailwindcss": "^4.3.3"
   }
 }

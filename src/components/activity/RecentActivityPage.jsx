@@ -143,26 +143,26 @@ export const RecentActivityPage = ({
         </h3>
 
         <div className="row g-2">
-          <div className="col-6">
-            <div className="rounded-3 bg-[#161827] border border-white/5 p-2.5 d-flex align-items-center gap-2">
-              <XPOrb size={28} />
-              <div>
+          <div className="col-12 col-sm-6">
+            <div className="rounded-3 bg-[#161827] border border-white/5 p-3 d-flex align-items-center gap-3 min-w-0">
+              <XPOrb size={30} />
+              <div className="min-w-0">
                 <span className="fs-6 fw-bold text-white d-block font-display tabular-nums">
                   {todayXP} XP
                 </span>
-                <span className="text-[10px] text-slate-400">Total Earned</span>
+                <span className="text-[11px] text-slate-400">Total Earned</span>
               </div>
             </div>
           </div>
 
-          <div className="col-6">
-            <div className="rounded-3 bg-[#161827] border border-white/5 p-2.5 d-flex align-items-center gap-2">
-              <VECoin size={26} />
-              <div>
+          <div className="col-12 col-sm-6">
+            <div className="rounded-3 bg-[#161827] border border-white/5 p-3 d-flex align-items-center gap-3 min-w-0">
+              <VECoin size={28} />
+              <div className="min-w-0">
                 <span className="fs-6 fw-bold text-white d-block font-display tabular-nums">
                   {todayVEs} VEs
                 </span>
-                <span className="text-[10px] text-slate-400">Total Earned</span>
+                <span className="text-[11px] text-slate-400">Total Earned</span>
               </div>
             </div>
           </div>

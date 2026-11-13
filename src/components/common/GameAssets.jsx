@@ -203,101 +203,254 @@ export const TreasureChest = ({ size = 72, className = '' }) => {
   return (
     <div
       className={`relative inline-flex items-center justify-center shrink-0 ${className}`}
-      style={{ width: size, height: size * 0.75 }}
+      style={{ width: size, height: Math.round(size * 0.82) }}
     >
       <svg
-        viewBox="0 0 160 120"
+        viewBox="0 0 180 148"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        className="w-full h-full filter drop-shadow-[0_4px_12px_rgba(244,197,66,0.4)]"
+        className="w-full h-full filter drop-shadow-[0_8px_16px_rgba(12,7,26,0.55)]"
+        aria-hidden="true"
       >
         <defs>
-          <linearGradient id={`${gradientId}-gold`} x1="18" y1="10" x2="142" y2="112" gradientUnits="userSpaceOnUse">
-            <stop offset="0%" stopColor="#FFF3B5" />
-            <stop offset="24%" stopColor="#F9D45E" />
-            <stop offset="56%" stopColor="#E7A92D" />
-            <stop offset="82%" stopColor="#A96818" />
-            <stop offset="100%" stopColor="#FFE28A" />
-          </linearGradient>
-          <linearGradient id={`${gradientId}-lid`} x1="39" y1="20" x2="120" y2="72" gradientUnits="userSpaceOnUse">
-            <stop offset="0%" stopColor="#49306F" />
-            <stop offset="48%" stopColor="#241938" />
-            <stop offset="100%" stopColor="#100F20" />
-          </linearGradient>
-          <linearGradient id={`${gradientId}-body`} x1="40" y1="62" x2="105" y2="117" gradientUnits="userSpaceOnUse">
-            <stop offset="0%" stopColor="#30213E" />
-            <stop offset="50%" stopColor="#171625" />
-            <stop offset="100%" stopColor="#0D101B" />
-          </linearGradient>
-          <linearGradient id={`${gradientId}-coin`} x1="61" y1="28" x2="100" y2="69" gradientUnits="userSpaceOnUse">
-            <stop offset="0%" stopColor="#FFF6C7" />
-            <stop offset="38%" stopColor="#FFD95C" />
-            <stop offset="78%" stopColor="#E7A92D" />
-            <stop offset="100%" stopColor="#A96517" />
-          </linearGradient>
-          <linearGradient id={`${gradientId}-gem`} x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stopColor="#F5D6FF" />
-            <stop offset="32%" stopColor="#C56BFF" />
-            <stop offset="100%" stopColor="#641BC2" />
-          </linearGradient>
-          <radialGradient id={`${gradientId}-glow`} cx="50%" cy="47%" r="50%">
-            <stop offset="0%" stopColor="#FFE98A" stopOpacity="0.8" />
-            <stop offset="48%" stopColor="#F5C744" stopOpacity="0.26" />
-            <stop offset="100%" stopColor="#F5C744" stopOpacity="0" />
+          <radialGradient id={`${gradientId}-aura`} cx="50%" cy="46%" r="48%">
+            <stop offset="0%" stopColor="#FFF0A6" stopOpacity="0.88" />
+            <stop offset="40%" stopColor="#F4C542" stopOpacity="0.34" />
+            <stop offset="72%" stopColor="#9333EA" stopOpacity="0.16" />
+            <stop offset="100%" stopColor="#9333EA" stopOpacity="0" />
           </radialGradient>
+          <radialGradient id={`${gradientId}-shadow`} cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="#05030C" stopOpacity="0.72" />
+            <stop offset="100%" stopColor="#05030C" stopOpacity="0" />
+          </radialGradient>
+          <linearGradient id={`${gradientId}-gold`} x1="24" y1="16" x2="156" y2="132" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stopColor="#FFF5BE" />
+            <stop offset="28%" stopColor="#F8D254" />
+            <stop offset="58%" stopColor="#D99B26" />
+            <stop offset="86%" stopColor="#965D10" />
+            <stop offset="100%" stopColor="#E6B23A" />
+          </linearGradient>
+          <linearGradient id={`${gradientId}-gold-bright`} x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stopColor="#FFF9D6" />
+            <stop offset="48%" stopColor="#F4C542" />
+            <stop offset="100%" stopColor="#B87716" />
+          </linearGradient>
+          <linearGradient id={`${gradientId}-wood-front`} x1="34" y1="68" x2="122" y2="128" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stopColor="#3B235E" />
+            <stop offset="52%" stopColor="#221539" />
+            <stop offset="100%" stopColor="#130C22" />
+          </linearGradient>
+          <linearGradient id={`${gradientId}-wood-side`} x1="120" y1="68" x2="154" y2="122" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stopColor="#261740" />
+            <stop offset="100%" stopColor="#0E091A" />
+          </linearGradient>
+          <linearGradient id={`${gradientId}-lid-top`} x1="40" y1="14" x2="136" y2="66" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stopColor="#563585" />
+            <stop offset="55%" stopColor="#2C1B49" />
+            <stop offset="100%" stopColor="#170E29" />
+          </linearGradient>
+          <linearGradient id={`${gradientId}-lid-side`} x1="120" y1="20" x2="154" y2="68" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stopColor="#321E52" />
+            <stop offset="100%" stopColor="#130B23" />
+          </linearGradient>
+          <linearGradient id={`${gradientId}-amethyst`} x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stopColor="#FAE8FF" />
+            <stop offset="38%" stopColor="#C084FC" />
+            <stop offset="100%" stopColor="#6B21A8" />
+          </linearGradient>
+          <linearGradient id={`${gradientId}-emerald`} x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stopColor="#D1FAE5" />
+            <stop offset="45%" stopColor="#34D399" />
+            <stop offset="100%" stopColor="#065F46" />
+          </linearGradient>
         </defs>
 
-        <ellipse cx="81" cy="61" rx="65" ry="48" fill={`url(#${gradientId}-glow)`} />
+        {/* Ground shadow & inner treasure aura */}
+        <ellipse cx="92" cy="134" rx="64" ry="11" fill={`url(#${gradientId}-shadow)`} />
+        <ellipse cx="90" cy="64" rx="74" ry="54" fill={`url(#${gradientId}-aura)`} />
 
-        <g transform="rotate(-27 28 43)">
-          <ellipse cx="28" cy="43" rx="13" ry="7" fill={`url(#${gradientId}-gold)`} stroke="#FFF0A3" strokeWidth="1.5" />
-          <ellipse cx="28" cy="43" rx="9" ry="4.5" stroke="#D18B20" strokeWidth="1" />
-          <path d="M28 39 L30 42 L34 43 L30 44 L28 47 L26 44 L22 43 L26 42 Z" fill="#FFF2B2" />
+        {/* Back Open Vaulted Lid (3/4 perspective) */}
+        <g>
+          {/* Main curved lid shell */}
+          <path
+            d="M27 65 C22 44, 30 22, 48 18 L119 15 C135 16, 146 31, 149 54 L145 64 L31 70 Z"
+            fill={`url(#${gradientId}-lid-top)`}
+            stroke={`url(#${gradientId}-gold)`}
+            strokeWidth="3.2"
+            strokeLinejoin="round"
+          />
+          {/* Lid right curved side panel */}
+          <path
+            d="M119 15 C135 16, 146 31, 149 54 L145 64 L123 65 C127 45, 123 26, 119 15 Z"
+            fill={`url(#${gradientId}-lid-side)`}
+            stroke={`url(#${gradientId}-gold)`}
+            strokeWidth="2.2"
+            strokeLinejoin="round"
+          />
+          {/* Subtle wood plank grooves on lid */}
+          <path d="M31 36 Q78 30 124 31" stroke="#6D48A3" strokeOpacity="0.45" strokeWidth="1.2" />
+          <path d="M29 50 Q78 44 125 45" stroke="#6D48A3" strokeOpacity="0.35" strokeWidth="1.2" />
+          {/* Lid gold straps */}
+          <path
+            d="M52 18 C43 24, 39 42, 42 68 L51 67 C48 42, 52 24, 60 17 Z"
+            fill={`url(#${gradientId}-gold)`}
+            stroke="#FFF3B8"
+            strokeWidth="0.8"
+          />
+          <path
+            d="M99 16 C92 22, 90 40, 92 66 L101 66 C99 40, 102 22, 108 16 Z"
+            fill={`url(#${gradientId}-gold)`}
+            stroke="#FFF3B8"
+            strokeWidth="0.8"
+          />
+          {/* Lid lower brass lip */}
+          <path
+            d="M26 65 Q78 58 148 56 L146 65 Q78 68 29 73 Z"
+            fill={`url(#${gradientId}-gold)`}
+            stroke="#FFF2B2"
+            strokeWidth="1"
+          />
         </g>
-        <g transform="rotate(-22 137 55)">
-          <ellipse cx="137" cy="55" rx="12" ry="6.5" fill={`url(#${gradientId}-gold)`} stroke="#FFF0A3" strokeWidth="1.4" />
-          <ellipse cx="137" cy="55" rx="8" ry="4" stroke="#D18B20" strokeWidth="1" />
+
+        {/* Dark Velvet Interior Cavity */}
+        <path
+          d="M31 69 Q82 59 144 62 L132 82 Q82 88 34 80 Z"
+          fill="#140B24"
+          stroke="#6A3FA0"
+          strokeOpacity="0.65"
+          strokeWidth="1.2"
+        />
+
+        {/* Overflowing Treasure Pile */}
+        <g>
+          {/* Back gold coin mound */}
+          <ellipse cx="64" cy="67" rx="13" ry="6.5" fill={`url(#${gradientId}-gold-bright)`} stroke="#FFF6C4" strokeWidth="1" />
+          <ellipse cx="90" cy="64" rx="15" ry="7" fill={`url(#${gradientId}-gold-bright)`} stroke="#FFF6C4" strokeWidth="1" />
+          <ellipse cx="114" cy="67" rx="13" ry="6.5" fill={`url(#${gradientId}-gold-bright)`} stroke="#FFF6C4" strokeWidth="1" />
+
+          {/* Left faceted amethyst cluster */}
+          <polygon points="44,68 52,48 63,56 59,72" fill={`url(#${gradientId}-amethyst)`} stroke="#F5D0FE" strokeWidth="1" />
+          <polygon points="52,48 56,62 63,56" fill="#FAF5FF" opacity="0.55" />
+          <polygon points="59,70 67,50 77,60 71,73" fill={`url(#${gradientId}-amethyst)`} stroke="#F5D0FE" strokeWidth="1" />
+          <polygon points="67,50 71,63 77,60" fill="#FFFFFF" opacity="0.5" />
+
+          {/* Right faceted emerald crystal */}
+          <polygon points="109,71 118,49 130,57 125,73" fill={`url(#${gradientId}-emerald)`} stroke="#A7F3D0" strokeWidth="1.1" />
+          <polygon points="118,49 122,63 130,57" fill="#ECFDF5" opacity="0.6" />
+
+          {/* Hero upright VE Gold Coin */}
+          <g transform="translate(88, 56)">
+            <circle cx="0" cy="0" r="15.5" fill={`url(#${gradientId}-gold-bright)`} stroke="#FFF7CE" strokeWidth="1.6" />
+            <circle cx="0" cy="0" r="12" fill="none" stroke="#9E6510" strokeWidth="1" strokeDasharray="1.8 1.5" />
+            <text
+              x="0"
+              y="5.5"
+              textAnchor="middle"
+              fill="#6E4406"
+              fontSize="14.5"
+              fontWeight="900"
+              fontFamily="Outfit, Plus Jakarta Sans, sans-serif"
+            >
+              V
+            </text>
+          </g>
+
+          {/* Front tilted coins */}
+          <g transform="rotate(-18 52 72)">
+            <ellipse cx="52" cy="72" rx="10.5" ry="5.5" fill={`url(#${gradientId}-gold-bright)`} stroke="#FFF6C4" strokeWidth="1.1" />
+            <ellipse cx="52" cy="72" rx="7" ry="3.4" stroke="#B67716" strokeWidth="0.9" />
+          </g>
+          <g transform="rotate(16 112 72)">
+            <ellipse cx="112" cy="72" rx="10.5" ry="5.5" fill={`url(#${gradientId}-gold-bright)`} stroke="#FFF6C4" strokeWidth="1.1" />
+            <ellipse cx="112" cy="72" rx="7" ry="3.4" stroke="#B67716" strokeWidth="0.9" />
+          </g>
+          <g transform="rotate(-8 73 74)">
+            <ellipse cx="73" cy="74" rx="10" ry="5" fill={`url(#${gradientId}-gold-bright)`} stroke="#FFF6C4" strokeWidth="1.1" />
+          </g>
+
+          {/* Small front violet jewel */}
+          <polygon points="94,70 101,64 107,70 101,76" fill={`url(#${gradientId}-amethyst)`} stroke="#F5D0FE" strokeWidth="1" />
         </g>
 
-        <path d="M31 69 L20 34 Q17 25 27 21 L112 11 Q122 10 127 19 L145 51 L135 70 Z" fill={`url(#${gradientId}-gold)`} stroke="#FFE28A" strokeWidth="1.5" />
-        <path d="M36 64 L27 36 Q25 31 32 29 L109 20 Q116 19 119 26 L134 52 L128 65 Z" fill="#171323" />
-        <path d="M39 59 L32 38 Q30 34 36 33 L107 24 Q113 23 115 29 L127 51 L122 61 Z" fill={`url(#${gradientId}-lid)`} stroke="#B77A26" strokeWidth="1.5" />
-        <path d="M40 57 L35 39 Q33 36 38 35 L105 27 Q110 26 112 31 L122 50 L118 57 Z" stroke="#A66BDB" strokeOpacity="0.7" strokeWidth="1" />
+        {/* Chest Base Box (Front + 3/4 Right Side) */}
+        <g>
+          {/* Main front recessed body */}
+          <path
+            d="M27 72 L120 80 L115 129 L33 118 Z"
+            fill={`url(#${gradientId}-wood-front)`}
+            stroke={`url(#${gradientId}-gold)`}
+            strokeWidth="3.2"
+            strokeLinejoin="round"
+          />
+          {/* Right 3/4 side wall */}
+          <path
+            d="M120 80 L152 67 L145 113 L115 129 Z"
+            fill={`url(#${gradientId}-wood-side)`}
+            stroke={`url(#${gradientId}-gold)`}
+            strokeWidth="3.2"
+            strokeLinejoin="round"
+          />
 
-        <path d="M48 53 L56 42 L64 52 L72 37 L80 49 L89 34 L97 47 L106 32 L116 51 Z" fill={`url(#${gradientId}-gem)`} stroke="#E4B7FF" strokeWidth="1" />
-        <path d="M56 42 L64 52 L72 37 L80 49 L89 34 L97 47 L106 32" stroke="#FFE8A2" strokeOpacity="0.75" strokeWidth="1.3" />
-        <path d="M69 51 L78 48 L83 53 L75 58 Z" fill={`url(#${gradientId}-gem)`} />
-        <path d="M97 52 L105 46 L111 53 L105 59 Z" fill={`url(#${gradientId}-gem)`} />
-        <path d="M48 36 L54 33 L57 38 L52 42 Z" fill={`url(#${gradientId}-gem)`} />
+          {/* Horizontal recessed wood panel lines */}
+          <path d="M31 94 L117 103" stroke="#68439E" strokeOpacity="0.4" strokeWidth="1.2" />
+          <path d="M33 107 L116 116" stroke="#68439E" strokeOpacity="0.35" strokeWidth="1.2" />
+          <path d="M119 99 L148 86" stroke="#4D327A" strokeOpacity="0.45" strokeWidth="1.2" />
 
-        <circle cx="81" cy="44" r="27" fill={`url(#${gradientId}-glow)`} />
-        <circle cx="81" cy="43" r="19" fill={`url(#${gradientId}-coin)`} stroke="#FFF0A3" strokeWidth="2" />
-        <circle cx="81" cy="43" r="15.5" stroke="#D89525" strokeWidth="1.2" />
-        <path d="M81 30 L86 39 L97 43 L86 47 L81 57 L76 47 L65 43 L76 39 Z" fill="#FFF5C9" stroke="#F0B83B" strokeWidth="1" />
-        <path d="M81 30 L81 43 L97 43 L86 47 Z" fill="#F7D45B" opacity="0.75" />
+          {/* Vertical gold corner & front straps */}
+          <path d="M47 75 L55 76 L57 121 L50 120 Z" fill={`url(#${gradientId}-gold)`} stroke="#FFF3B8" strokeWidth="0.6" />
+          <path d="M97 79 L105 80 L102 127 L95 126 Z" fill={`url(#${gradientId}-gold)`} stroke="#FFF3B8" strokeWidth="0.6" />
+          <path d="M134 74 L141 71 L136 118 L129 121 Z" fill={`url(#${gradientId}-gold)`} stroke="#FFF3B8" strokeWidth="0.6" />
 
-        <path d="M17 61 L30 55 L128 55 L144 62 L134 104 L80 118 L25 103 Z" fill={`url(#${gradientId}-body)`} stroke={`url(#${gradientId}-gold)`} strokeWidth="3" strokeLinejoin="round" />
-        <path d="M17 61 L80 73 L80 118 L25 103 Z" fill="#211A2B" stroke="#B97820" strokeWidth="1.2" />
-        <path d="M80 73 L144 62 L134 104 L80 118 Z" fill="#11131F" stroke="#B97820" strokeWidth="1.2" />
-        <path d="M17 61 Q80 78 144 62 L141 72 Q80 88 20 72 Z" fill={`url(#${gradientId}-gold)`} stroke="#FFF0A3" strokeWidth="1" />
-        <path d="M23 76 L30 78 L37 105 L29 102 Z" fill={`url(#${gradientId}-gold)`} />
-        <path d="M127 76 L135 74 L129 102 L121 105 Z" fill={`url(#${gradientId}-gold)`} />
-        <path d="M55 82 L65 84 L65 113 L56 111 Z" fill={`url(#${gradientId}-gold)`} />
-        <path d="M48 83 L80 88 L80 112 L49 105 Z" fill="#141421" stroke="#9D6AC9" strokeWidth="1.2" />
-        <path d="M80 88 L111 82 L106 106 L80 112 Z" fill="#171322" stroke="#9D6AC9" strokeWidth="1.2" />
+          {/* Top gilded chest rim */}
+          <path
+            d="M24 68 L121 76 L154 63 L152 72 L120 85 L26 77 Z"
+            fill={`url(#${gradientId}-gold)`}
+            stroke="#FFF4BD"
+            strokeWidth="1.1"
+            strokeLinejoin="round"
+          />
 
-        <path d="M80 82 L92 86 L92 99 Q80 111 68 99 L68 86 Z" fill="#251832" stroke={`url(#${gradientId}-gold)`} strokeWidth="2" />
-        <path d="M80 86 L86 92 L80 102 L74 92 Z" fill={`url(#${gradientId}-gem)`} stroke="#F0C2FF" strokeWidth="1" />
-        <path d="M80 87 L80 98 L74 92 Z" fill="#F5D6FF" opacity="0.9" />
-        <path d="M41 69 L46 71 L52 106 L47 105 Z" fill="#F9D45E" opacity="0.55" />
-        <path d="M116 69 L121 68 L114 103 L109 105 Z" fill="#F9D45E" opacity="0.55" />
+          {/* Bottom gilded base trim */}
+          <path
+            d="M31 114 L115 125 L146 109 L145 116 L115 132 L32 121 Z"
+            fill={`url(#${gradientId}-gold)`}
+            stroke="#FFE68C"
+            strokeWidth="0.9"
+            strokeLinejoin="round"
+          />
 
-        <path d="M52 13 L59 5 L66 13 L59 21 Z" fill={`url(#${gradientId}-gem)`} stroke="#FFE28A" strokeWidth="1.5" />
-        <path d="M59 6 L59 18 L53 13 Z" fill="#F5D6FF" />
-        <path d="M38 27 L40 32 L45 34 L40 36 L38 41 L36 36 L31 34 L36 32 Z" fill="#FFF4C2" />
-        <path d="M131 34 L133 39 L138 41 L133 43 L131 48 L129 43 L124 41 L129 39 Z" fill="#FFF4C2" />
-        <circle cx="26" cy="77" r="1.8" fill="#FFE994" />
-        <circle cx="139" cy="79" r="1.8" fill="#FFE994" />
+          {/* Metallic rivets on straps */}
+          <circle cx="52" cy="88" r="1.6" fill="#FFF8D6" />
+          <circle cx="53" cy="110" r="1.6" fill="#FFF8D6" />
+          <circle cx="100" cy="92" r="1.6" fill="#FFF8D6" />
+          <circle cx="99" cy="114" r="1.6" fill="#FFF8D6" />
+          <circle cx="136" cy="88" r="1.5" fill="#FFF8D6" />
+          <circle cx="133" cy="107" r="1.5" fill="#FFF8D6" />
+
+          {/* Ornate Center Lock Escutcheon */}
+          <g transform="translate(76, 95)">
+            <path
+              d="M0 -14 L13 -9 L11 7 Q0 18 -11 7 L-13 -9 Z"
+              fill={`url(#${gradientId}-gold)`}
+              stroke="#FFF6C4"
+              strokeWidth="1.4"
+            />
+            <path
+              d="M0 -10 L9 -6.5 L7.5 5 Q0 13 -7.5 5 L-9 -6.5 Z"
+              fill="#1E1334"
+              stroke="#A36914"
+              strokeWidth="1"
+            />
+            {/* Glowing inset diamond gem in lock */}
+            <polygon points="0,-6 5.5,0 0,7 -5.5,0" fill={`url(#${gradientId}-amethyst)`} stroke="#FCE7F3" strokeWidth="0.9" />
+            <polygon points="0,-5 0,6 -4.5,0" fill="#FAF5FF" opacity="0.7" />
+          </g>
+        </g>
+
+        {/* Crisp Star Sparkles */}
+        <path d="M36 22 L38 27 L43 29 L38 31 L36 36 L34 31 L29 29 L34 27 Z" fill="#FFF6C4" />
+        <path d="M144 30 L145.8 34.2 L150 36 L145.8 37.8 L144 42 L142.2 37.8 L138 36 L142.2 34.2 Z" fill="#F4C542" />
+        <path d="M128 11 L129.3 14.2 L132.5 15.5 L129.3 16.8 L128 20 L126.7 16.8 L123.5 15.5 L126.7 14.2 Z" fill="#E9D5FF" />
       </svg>
     </div>
   );

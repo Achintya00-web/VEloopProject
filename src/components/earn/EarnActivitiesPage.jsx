@@ -65,7 +65,7 @@ export const EarnActivitiesPage = ({
     { id: 'all', label: 'All Activities', icon: Sparkles },
     {
       id: 'daily',
-      label: `Daily Quests (${activities.filter((activity) => ['watch', 'tasks', 'streak'].includes(activity.iconName) && activity.status !== 'completed').length} available)`,
+      label: `Daily Quests (${activities.filter((activity) => ['watch', 'tasks', 'streak'].includes(activity.iconName) && activity.status !== 'completed').length})`,
       icon: CheckSquare,
     },
     { id: 'arcade', label: 'Arcade & Gaming', icon: Gamepad2 },
@@ -200,7 +200,7 @@ export const EarnActivitiesPage = ({
 
       <div className="earn-encouragement">
         <div className="earn-encouragement__icon"><Trophy size={18} /></div>
-        <div>
+        <div className="min-w-0">
           <strong>Keep going! You’re doing great.</strong>
           <span>Complete missions to unlock your next level rewards.</span>
         </div>

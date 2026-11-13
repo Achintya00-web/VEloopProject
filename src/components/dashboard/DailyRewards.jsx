@@ -13,7 +13,7 @@ const rewards = [
   { day: 7, amount: '+50 XP', state: 'locked', icon: 'crown' },
 ];
 
-export const DailyRewards = ({ streakDays, onClaim }) => {
+export const DailyRewards = ({ streakDays, onClaim, onStreakDetails }) => {
   const [claimed, setClaimed] = useState(false);
 
   const claimReward = () => {
@@ -47,7 +47,7 @@ export const DailyRewards = ({ streakDays, onClaim }) => {
                 </div>
                 <strong>{reward.amount}</strong>
                 {canClaim ? (
-                  <button onClick={claimReward}>Claim Now</button>
+                  <button type="button" onClick={claimReward}>Claim Now</button>
                 ) : (
                   <small>{isClaimed ? 'Collected' : 'Locked'}</small>
                 )}
@@ -61,7 +61,20 @@ export const DailyRewards = ({ streakDays, onClaim }) => {
           <b>{streakDays} Days</b>
           <span>Keep your streak alive!</span>
           <div className="streak-bonus__coins"><VECoin size={18} /><VECoin size={22} /><VECoin size={18} /></div>
-          <small>View Details <span>→</span></small>
+          {onStreakDetails ? (
+            <button
+              type="button"
+              className="streak-bonus__cta"
+              onClick={() => {
+                playSound.click();
+                onStreakDetails();
+              }}
+            >
+              View Details <span>→</span>
+            </button>
+          ) : (
+            <small>View Details <span>→</span></small>
+          )}
         </aside>
       </div>
     </section>

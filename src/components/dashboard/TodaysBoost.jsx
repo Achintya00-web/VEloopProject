@@ -22,7 +22,16 @@ export const TodaysBoost = ({
           <Zap className="w-5 h-5 text-[#F4C542] fill-[#F4C542]" />
           <h2 className="fw-bolder text-white text-uppercase tracking-wider font-display mb-0">Quick Access</h2>
         </div>
-        <span className="todays-boost-section__more">View All <b>→</b></span>
+        <button
+          type="button"
+          onClick={() => {
+            playSound.click();
+            if (onCardClick) onCardClick('tasks');
+          }}
+          className="todays-boost-section__more"
+        >
+          View All <b>→</b>
+        </button>
       </div>
 
       <div className="todays-boost-grid">

@@ -311,8 +311,8 @@ export const XPCatcherGame = ({ onBack, onFinishGame, onInfoClick }) => {
         className="position-relative flex-1 w-100 min-h-95 sm:min-h-110 rounded-4 bg-linear-to-b from-[#151726] via-[#10121D] to-[#0A0B12] border border-white/10 overflow-hidden touch-none cursor-ew-resize shadow-2xl"
       >
         {gameState === 'start' && (
-          <div className="position-absolute top-0 inset-s-0 w-100 h-100 z-30 bg-[#161827]/90 backdrop-blur-md d-flex flex-column align-items-center justify-content-center p-4 text-center">
-            <div className="w-16 h-16 rounded-4 bg-linear-to-tr from-[#F4C542]/20 to-purple-500/20 border border-[#F4C542]/40 d-flex align-items-center justify-center mb-3">
+          <div className="position-absolute top-0 inset-s-0 w-100 h-100 z-30 bg-[#161827]/90 backdrop-blur-md d-flex flex-column align-items-center justify-content-center p-3 p-sm-4 text-center overflow-y-auto game-page__start-overlay">
+            <div className="w-16 h-16 rounded-4 bg-linear-to-tr from-[#F4C542]/20 to-purple-500/20 border border-[#F4C542]/40 d-flex align-items-center justify-center mb-3 shrink-0">
               <Trophy className="w-8 h-8 text-[#F4C542]" />
             </div>
 

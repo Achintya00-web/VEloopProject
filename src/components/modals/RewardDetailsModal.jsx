@@ -45,7 +45,7 @@ export const RewardDetailsModal = ({ isOpen, onClose, currentLevel }) => {
 
         <div className="d-flex flex-column align-items-center text-center mb-3 reward-vault-modal__header">
           <div className="mb-2 reward-vault-modal__art">
-            <TreasureChest size={64} />
+            <TreasureChest size={78} />
           </div>
           <span className="reward-vault__rank"><Sparkles size={10} /> RANK UNLOCKED</span>
           <h3 className="fs-5 fw-bold text-white font-display mb-0">

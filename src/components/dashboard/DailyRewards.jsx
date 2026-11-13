@@ -26,11 +26,16 @@ export const DailyRewards = ({ streakDays, onClaim }) => {
   return (
     <section className="daily-rewards reward-section">
       <div className="reward-section__heading">
-        <div className="reward-section__title"><Gift size={20} /><div><h2>Daily Rewards</h2><p>Log in daily and collect amazing rewards!</p></div></div>
+        <div className="reward-section__title"><Gift size={24} /><div><h2>Daily Rewards</h2><p>Log in daily and collect amazing rewards!</p></div></div>
         <span className="daily-rewards__reset">Resets in 12h 45m</span>
       </div>
       <div className="daily-rewards__layout">
-        <div className="daily-rewards__days">
+        <div
+          className="daily-rewards__days"
+          role="region"
+          aria-label="Daily rewards. Scroll horizontally to explore all seven days."
+          tabIndex={0}
+        >
           {rewards.map((reward) => {
             const isClaimed = reward.state === 'collected' || (reward.state === 'claim' && claimed);
             const canClaim = reward.state === 'claim' && !claimed;
@@ -38,7 +43,7 @@ export const DailyRewards = ({ streakDays, onClaim }) => {
               <article key={reward.day} className={`daily-reward ${canClaim ? 'is-claimable' : ''} ${isClaimed ? 'is-collected' : ''}`}>
                 <span className="daily-reward__day">Day {reward.day}</span>
                 <div className="daily-reward__icon">
-                  {isClaimed ? <Check size={18} /> : reward.icon === 'crown' ? <Crown size={20} /> : reward.state === 'claim' ? <Gift size={23} /> : <Gift size={19} />}
+                  {isClaimed ? <Check size={22} /> : reward.icon === 'crown' ? <Crown size={25} /> : reward.state === 'claim' ? <Gift size={27} /> : <Gift size={23} />}
                 </div>
                 <strong>{reward.amount}</strong>
                 {canClaim ? (
@@ -51,7 +56,7 @@ export const DailyRewards = ({ streakDays, onClaim }) => {
           })}
         </div>
         <aside className="streak-bonus">
-          <div className="streak-bonus__icon"><Flame size={25} fill="currentColor" /></div>
+          <div className="streak-bonus__icon"><Flame size={29} fill="currentColor" /></div>
           <strong>Streak Bonus</strong>
           <b>{streakDays} Days</b>
           <span>Keep your streak alive!</span>

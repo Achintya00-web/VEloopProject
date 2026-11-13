@@ -190,6 +190,8 @@ export default function App() {
                   <LevelRoadmap
                     levels={roadmap}
                     currentLevel={userState.currentLevel}
+                    currentXP={userState.currentXP}
+                    requiredXP={userState.requiredXP}
                     compact
                   />
 

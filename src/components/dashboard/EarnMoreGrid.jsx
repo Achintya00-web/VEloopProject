@@ -37,7 +37,7 @@ export const EarnMoreGrid = ({ onSelectActivity, onViewAllEarn }) => {
     <section className="mt-4 earn-more-section dashboard-quests" id="quests">
       <div className="d-flex justify-content-between align-items-center mb-2">
         <div className="dashboard-quests__heading">
-          <CheckSquare size={20} />
+          <CheckSquare size={24} />
           <span>
           <h2 className="earn-more-section__title fw-bolder text-white text-uppercase tracking-wider font-display mb-0">
             Quests &amp; Challenges
@@ -57,7 +57,7 @@ export const EarnMoreGrid = ({ onSelectActivity, onViewAllEarn }) => {
           title="View all activities"
           aria-label="View all activities"
         >
-          View Full Quests <ArrowRight size={12} />
+          View Full Quests <ArrowRight size={15} />
         </button>
       </div>
 
@@ -74,7 +74,7 @@ export const EarnMoreGrid = ({ onSelectActivity, onViewAllEarn }) => {
               }}
               className={`card dashboard-quest dashboard-quest--${item.tone}`}
             >
-              <span className="dashboard-quest__icon"><Icon size={16} fill={item.icon === 'play' ? 'currentColor' : 'none'} /></span>
+              <span className="dashboard-quest__icon"><Icon size={22} fill={item.icon === 'play' ? 'currentColor' : 'none'} /></span>
               <span className="dashboard-quest__body">
                 <strong>{item.title}</strong>
                 <small>{item.description}</small>
@@ -95,7 +95,7 @@ export const EarnMoreGrid = ({ onSelectActivity, onViewAllEarn }) => {
           onSelectActivity('act-catcher');
         }}
       >
-        <span><Rocket size={26} /></span>
+        <span><Rocket size={32} /></span>
         <strong>Complete Quests<br />Earn More XP!</strong>
         <small>Boost your progress</small>
       </button>

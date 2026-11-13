@@ -18,7 +18,7 @@ export const ChallengeComplete = ({
   const progressPercent = Math.min(100, Math.max(0, (currentXP / requiredXP) * 100));
 
   return (
-    <div className="w-100 mx-auto min-h-[600px] d-flex flex-column justify-content-between p-2 p-sm-3 animate-in fade-in challenge-complete">
+    <div className="w-100 mx-auto min-h-150 d-flex flex-column justify-content-between p-2 p-sm-3 animate-in fade-in challenge-complete">
       <div className="challenge-complete__backdrop" aria-hidden="true">
         <div className="challenge-complete__orbit challenge-complete__orbit--one" />
         <div className="challenge-complete__orbit challenge-complete__orbit--two" />

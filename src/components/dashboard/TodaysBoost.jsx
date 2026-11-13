@@ -19,7 +19,7 @@ export const TodaysBoost = ({
     <section className="todays-boost-section">
       <div className="d-flex justify-content-between align-items-center gap-2 mb-2">
         <div className="d-flex align-items-center gap-1">
-          <Zap className="w-4 h-4 text-[#F4C542] fill-[#F4C542]" />
+          <Zap className="w-5 h-5 text-[#F4C542] fill-[#F4C542]" />
           <h2 className="fw-bolder text-white text-uppercase tracking-wider font-display mb-0">Quick Access</h2>
         </div>
         <span className="todays-boost-section__more">View All <b>→</b></span>
@@ -38,7 +38,7 @@ export const TodaysBoost = ({
                 }}
                 className={`card todays-boost-card todays-boost-card--${card.id} rounded-4 p-2 d-flex flex-column align-items-center justify-content-center text-center shadow-sm`}
               >
-                <span className={`todays-boost-card__icon todays-boost-card__icon--${card.tone}`}><Icon size={18} fill={card.id === 'game' ? 'currentColor' : 'none'} /></span>
+                <span className={`todays-boost-card__icon todays-boost-card__icon--${card.tone}`}><Icon size={23} fill={card.id === 'game' ? 'currentColor' : 'none'} /></span>
 
                 <span className="todays-boost-card__label fw-medium text-slate-400 mb-0.5">
                   {card.label}

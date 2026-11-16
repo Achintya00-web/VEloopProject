@@ -12,7 +12,7 @@ export const LevelRewardChest = ({
 
   return (
     <section className="mt-4 level-vault-preview">
-      <div className="card rounded-4 bg-gradient-to-r from-[#1E1B2E] via-[#1A1D2F] to-[#171928] border border-white/10 p-3 p-sm-4 shadow-lg overflow-hidden position-relative level-vault-preview__card">
+      <div className="card rounded-4 border p-3 p-sm-4 shadow-lg overflow-hidden position-relative level-vault-preview__card">
         <div className="d-flex justify-content-between align-items-center gap-3">
           <div className="flex-1 z-10 level-vault-preview__copy">
             <span className="level-vault-preview__status"><ShieldCheck size={11} /> ACTIVE TIER · LEVEL {formattedLevel}</span>

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Award, Gift, Home, ListChecks, Settings, Trophy } from 'lucide-react';
 import { TreasureChest } from './GameAssets.jsx';
+import { VeloopLogo } from './VeloopLogo.jsx';
 import { playSound } from '../../utils/audio.js';
 
 const items = [
@@ -21,7 +22,7 @@ export const DesktopSidebar = ({ currentView, onNavigate, onOpenSettings }) => {
   return (
   <aside className="desktop-sidebar">
     <button className="desktop-sidebar__brand" onClick={() => onNavigate('dashboard')} aria-label="VELOOP Rewards home">
-      <span className="desktop-sidebar__brand-mark">V</span>
+      <VeloopLogo size={32} className="desktop-sidebar__logo" />
       <span>VELOOP <b>REWARDS</b></span>
     </button>
 

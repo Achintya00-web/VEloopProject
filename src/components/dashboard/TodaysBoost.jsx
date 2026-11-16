@@ -18,7 +18,7 @@ export const TodaysBoost = ({
   return (
     <section className="todays-boost-section">
       <div className="d-flex justify-content-between align-items-center gap-2 mb-2">
-        <div className="d-flex align-items-center gap-1">
+        <div className="d-flex align-items-center gap-2">
           <Zap className="w-5 h-5 text-[#F4C542] fill-[#F4C542]" />
           <h2 className="fw-bolder text-white text-uppercase tracking-wider font-display mb-0">Quick Access</h2>
         </div>

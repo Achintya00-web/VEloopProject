@@ -28,8 +28,8 @@ import { RewardDetailsModal } from './components/modals/RewardDetailsModal.jsx';
 import { LoadingSkeleton } from './components/states/LoadingSkeleton.jsx';
 import { EmptyState } from './components/states/EmptyState.jsx';
 import { ErrorState } from './components/states/ErrorState.jsx';
-import { Trophy } from 'lucide-react';
-import { setSoundMuted } from './utils/audio.js';
+import { ArrowLeft, Trophy } from 'lucide-react';
+import { playSound, setSoundMuted } from './utils/audio.js';
 
 export default function App() {
   const {
@@ -43,6 +43,7 @@ export default function App() {
     setUiState,
     isLevelUpModalOpen,
     setIsLevelUpModalOpen,
+    levelUpReward,
     isRewardModalOpen,
     setIsRewardModalOpen,
     infoModalContent,
@@ -93,7 +94,7 @@ export default function App() {
   };
 
   return (
-    <div className={`app-shell min-vh-100 bg-[#161827] text-white d-flex flex-column font-sans selection:bg-[#F4C542]/30 selection:text-white ${isMobilePreview ? 'app-shell--mobile-preview' : ''}`}>
+    <div className={`app-shell min-vh-100 bg-[#0d081a] text-white d-flex flex-column font-sans selection:bg-[#F4C542]/30 selection:text-white ${isMobilePreview ? 'app-shell--mobile-preview' : ''}`}>
       <CursorAtmosphere />
       <DesktopSidebar currentView={currentView} onNavigate={navigateTo} onOpenSettings={handleOpenSettings} />
       {/* Top Application Header */}
@@ -125,7 +126,7 @@ export default function App() {
         <div
           className={`w-100 transition-all duration-300 ${
             isMobilePreview
-              ? 'max-w-[410px] my-3 rounded-[40px] border-4 border-slate-700 bg-[#161827] shadow-2xl p-3 ring-8 ring-black/40 overflow-hidden'
+              ? 'max-w-[410px] my-3 rounded-[40px] border-4 border-purple-500/35 bg-[#0e081c] shadow-2xl p-3 ring-8 ring-black/50 overflow-hidden'
               : 'max-w-6xl'
           }`}
         >
@@ -228,6 +229,9 @@ export default function App() {
                       xpEarned={gameResult.xpEarned}
                       vesEarned={gameResult.vesEarned}
                       isNewBest={gameResult.isNewBest}
+                      itemsCaught={gameResult.itemsCaught}
+                      maxMultiplier={gameResult.maxMultiplier}
+                      accuracy={gameResult.accuracy}
                       currentLevel={userState.currentLevel}
                       currentXP={userState.currentXP}
                       requiredXP={userState.requiredXP}
@@ -287,13 +291,20 @@ export default function App() {
                       <h2 className="fs-5 fw-bold text-white font-display mb-0">Rewards Vault</h2>
                     </div>
                     <button
-                      onClick={() => navigateTo('dashboard')}
-                      className="text-xs text-[#F4C542] fw-semibold bg-transparent border-0"
+                      type="button"
+                      onClick={() => {
+                        playSound.click();
+                        navigateTo('dashboard');
+                      }}
+                      className="rewards-page__back-btn"
                     >
-                      Back to Dashboard
+                      <span className="rewards-page__back-icon" aria-hidden="true">
+                        <ArrowLeft size={14} strokeWidth={2.4} />
+                      </span>
+                      <span>Back to Dashboard</span>
                     </button>
                   </div>
-                  <div className="row g-4 align-items-start">
+                  <div className="row g-3 g-lg-4 align-items-start">
                     <div className="col-12 col-lg-5">
                       <LevelRewardChest
                         level={userState.currentLevel}
@@ -330,6 +341,8 @@ export default function App() {
       <LevelUpModal
         isOpen={isLevelUpModalOpen}
         level={userState.currentLevel}
+        vesBonus={levelUpReward?.ves}
+        gemsBonus={levelUpReward?.gems}
         onClaim={claimLevelUp}
         onClose={() => setIsLevelUpModalOpen(false)}
       />

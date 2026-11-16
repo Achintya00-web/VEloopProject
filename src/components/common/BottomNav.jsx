@@ -12,7 +12,7 @@ export const BottomNav = ({ currentView, onNavigate }) => {
   ];
 
   return (
-    <nav className="fixed-bottom z-40 bg-[#161827]/95 backdrop-blur-xl border-t border-white/10 d-md-none">
+    <nav className="fixed-bottom z-40 app-bottom-nav backdrop-blur-xl d-md-none">
       <div className="row g-0 h-16 align-items-center text-center">
         {navItems.map((item) => {
           const isActive = currentView === item.view;
@@ -24,9 +24,10 @@ export const BottomNav = ({ currentView, onNavigate }) => {
                 playSound.click();
                 onNavigate(item.view);
               }}
-              className={`col d-flex flex-column align-items-center justify-content-center h-full bg-transparent border-0 transition-all ${
-                isActive ? 'text-[#F4C542]' : 'text-slate-400'
+              className={`col d-flex flex-column align-items-center justify-content-center min-h-[48px] h-full bg-transparent border-0 transition-all app-bottom-nav__btn ${
+                isActive ? 'is-active' : ''
               }`}
+              aria-current={isActive ? 'page' : undefined}
             >
               <div className="position-relative">
                 <SolidRewardIcon name={item.icon} size={20} />
@@ -34,7 +35,7 @@ export const BottomNav = ({ currentView, onNavigate }) => {
                   <span className="position-absolute -bottom-1 start-50 translate-middle-x w-1 h-1 rounded-circle bg-[#F4C542]" />
                 )}
               </div>
-              <span className={`text-[10px] mt-1 ${isActive ? 'fw-bold' : 'fw-medium'}`}>
+              <span className={`text-[11px] leading-tight mt-1 ${isActive ? 'fw-bold' : 'fw-medium'}`}>
                 {item.label}
               </span>
             </button>

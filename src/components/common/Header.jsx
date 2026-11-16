@@ -22,14 +22,16 @@ import {
   Zap,
 } from 'lucide-react';
 import { SolidRewardIcon } from './SolidRewardIcon.jsx';
+import { VeloopLogo } from './VeloopLogo.jsx';
+import { levelRoadmap } from '../../data/levelData.js';
 import { playSound } from '../../utils/audio.js';
 
-const navigationItems = [
+const getNavigationItems = (level) => [
   { view: 'dashboard', label: 'Dashboard', description: 'Overview & Roadmap', icon: 'home' },
   { view: 'earn', label: 'Earn & Quests', description: 'Daily Tasks & Yield', icon: 'tasks' },
   { view: 'game', label: 'XP Catcher Arcade', description: 'Play 20s Run', icon: 'game' },
   { view: 'activity', label: 'Recent Activity', description: 'Event Log', icon: 'activity' },
-  { view: 'rewards', label: 'Reward Vault', description: 'Tier 05 Unlocks', icon: 'gift' },
+  { view: 'rewards', label: 'Reward Vault', description: `Tier ${String(level).padStart(2, '0')} Unlocks`, icon: 'gift' },
 ];
 
 export const Header = ({
@@ -58,6 +60,8 @@ export const Header = ({
   const [searchTerm, setSearchTerm] = useState('');
   const searchInputRef = useRef(null);
   const progressPercent = Math.min(100, Math.max(0, (currentXP / requiredXP) * 100));
+  const currentTierTitle = levelRoadmap.find((t) => t.level === currentLevel)?.title || `Tier ${currentLevel} Elite`;
+  const navigationItems = getNavigationItems(currentLevel);
 
   useEffect(() => {
     if (!showNavigationMenu) return undefined;
@@ -115,7 +119,7 @@ export const Header = ({
               <Menu size={19} />
             </button>
             <button className="app-brand" onClick={() => navigate('dashboard')} aria-label="VELOOP Rewards home">
-              <span className="app-brand__mark">V</span>
+              <VeloopLogo size={30} className="app-brand__mark-svg" />
               <span className="app-brand__name">VELOOP <span>REWARDS</span></span>
             </button>
           </div>
@@ -254,10 +258,10 @@ export const Header = ({
       >
         <div className="app-drawer__top">
           <div className="app-drawer__brand">
-            <span className="app-brand__mark">V</span>
+            <VeloopLogo size={32} className="app-brand__mark-svg" />
             <div>
               <strong>VELOOP REWARDS</strong>
-              <span>PROTOCOL V4.2</span>
+              <span>Season 04 · Member Hub</span>
             </div>
           </div>
           <button
@@ -303,8 +307,8 @@ export const Header = ({
           <div className="app-drawer__user">
             <span className="app-drawer__avatar"><UserRound size={18} /></span>
             <div className="app-drawer__user-details">
-              <strong>Alex Vance <b>LVL {String(currentLevel).padStart(2, '0')}</b></strong>
-              <span><i /> Platinum Vanguard</span>
+              <strong>Achintya <b>LVL {String(currentLevel).padStart(2, '0')}</b></strong>
+              <span><i /> {currentTierTitle}</span>
             </div>
             <button
               className="app-drawer__help"

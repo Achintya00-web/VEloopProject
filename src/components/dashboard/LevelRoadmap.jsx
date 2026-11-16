@@ -36,7 +36,11 @@ export const LevelRoadmap = ({
       const roadmap = roadmapRef.current;
       if (!roadmap) return;
 
-      const firstVisibleLevel = Math.max(1, currentLevel - 3);
+      const isMobile = window.matchMedia('(max-width: 767.98px)').matches;
+      const visibleCount = isMobile ? 2 : 3;
+      const maxFirstLevel = Math.max(1, levels.length - visibleCount + 1);
+      const targetFirst = isMobile ? currentLevel : currentLevel - 1;
+      const firstVisibleLevel = Math.max(1, Math.min(maxFirstLevel, targetFirst));
       const firstCard = roadmap.querySelector(`[data-level="${firstVisibleLevel}"]`);
       if (firstCard) {
         const padding = Number.parseFloat(window.getComputedStyle(roadmap).paddingLeft) || 0;
@@ -136,6 +140,10 @@ export const LevelRoadmap = ({
           style={compact ? {
             '--journey-line-width': `calc(${((levels.length - 1) / 3) * 100}% - ${((levels.length - 1) * 16) / 3}px)`,
             '--journey-line-width-mobile': `calc(${((levels.length - 1) / 2) * 100}% - ${(levels.length - 1) * 22}px)`,
+            '--journey-fill': `${Math.min(
+              1,
+              Math.max(0, (currentLevel - 1 + progressPercent / 100) / Math.max(1, levels.length - 1))
+            )}`,
           } : undefined}
           role={compact ? 'region' : undefined}
           aria-label={compact ? 'Level journey. Scroll horizontally to explore levels.' : undefined}
@@ -166,7 +174,15 @@ export const LevelRoadmap = ({
                 {compact ? (
                   <>
                     <span className="roadmap-card__badge-wrap">
-                      <BadgeIcon level={tier.level} size="lg" glow={isCurrent} />
+                      {isCurrent && (
+                        <span className="roadmap-card__orbital" aria-hidden="true">
+                          <span className="roadmap-card__orbital-ring" />
+                          <span className="roadmap-card__orbital-pulse" />
+                          <span className="roadmap-card__orbital-spark roadmap-card__orbital-spark--a" />
+                          <span className="roadmap-card__orbital-spark roadmap-card__orbital-spark--b" />
+                        </span>
+                      )}
+                      <BadgeIcon level={tier.level} size="lg" glow={isCurrent} premium={isCurrent} />
                       <span className={`roadmap-card__completion roadmap-card__completion--${status}`}>
                         {isCompleted ? <CheckCircle2 size={15} /> : isCurrent ? <MapPin size={14} /> : isLocked ? <Lock size={12} /> : null}
                       </span>
@@ -189,7 +205,15 @@ export const LevelRoadmap = ({
                       <span className="roadmap-card__xp">{tier.requiredXP.toLocaleString()} XP</span>
                     </span>
                     <span className="roadmap-card__badge">
-                      <BadgeIcon level={tier.level} size="lg" glow={isCurrent} />
+                      {isCurrent && (
+                        <span className="roadmap-card__orbital" aria-hidden="true">
+                          <span className="roadmap-card__orbital-ring" />
+                          <span className="roadmap-card__orbital-pulse" />
+                          <span className="roadmap-card__orbital-spark roadmap-card__orbital-spark--a" />
+                          <span className="roadmap-card__orbital-spark roadmap-card__orbital-spark--b" />
+                        </span>
+                      )}
+                      <BadgeIcon level={tier.level} size="lg" glow={isCurrent} premium={isCurrent} />
                     </span>
                     <span className="roadmap-card__title">
                       <small>LEVEL {String(tier.level).padStart(2, '0')}</small>
@@ -245,10 +269,10 @@ export const LevelRoadmap = ({
       )}
 
       {selectedLevel && (
-        <div className="position-fixed top-0 inset-s-0 w-100 h-100 z-50 d-flex align-items-center justify-content-center p-3 bg-black/75 backdrop-blur-sm animate-in fade-in">
-          <div className="w-100 max-w-sm rounded-4 bg-[#191C2B] border border-white/10 p-4 shadow-2xl">
-            <div className="d-flex justify-content-between align-items-center pb-2 border-bottom border-white/5 mb-3">
-              <span className="text-xs fw-bold text-slate-400 text-uppercase">Tier Details</span>
+        <div className="position-fixed top-0 start-0 w-100 h-100 z-50 d-flex align-items-center justify-content-center p-3 backdrop-blur-sm animate-in fade-in cosmic-modal-overlay">
+          <div className="w-100 max-w-sm cosmic-modal-card">
+            <div className="d-flex justify-content-between align-items-center pb-2 border-bottom border-purple-400/20 mb-3">
+              <span className="text-xs fw-bold text-purple-200 text-uppercase tracking-wider">Tier Details</span>
               <button
                 type="button"
                 onClick={() => setSelectedLevel(null)}
@@ -262,16 +286,16 @@ export const LevelRoadmap = ({
             <div className="d-flex flex-column align-items-center text-center my-3">
               <BadgeIcon level={selectedLevel.level} size="lg" glow={selectedLevel.level === currentLevel} />
               <h3 className="fs-5 fw-bold text-white mt-2 font-display mb-0">{selectedLevel.title}</h3>
-              <p className="text-xs text-slate-400 mt-1 mb-3">Requires {selectedLevel.requiredXP.toLocaleString()} XP</p>
+              <p className="text-xs text-purple-200/75 mt-1 mb-3">Requires {selectedLevel.requiredXP.toLocaleString()} XP</p>
             </div>
 
-            <div className="p-3 rounded-3 bg-[#161827] border border-white/5 space-y-2 text-xs mb-3">
+            <div className="cosmic-modal-inset space-y-2 text-xs mb-3">
               <div className="d-flex justify-content-between">
-                <span className="text-slate-400">Unlock Reward:</span>
+                <span className="text-purple-200/75">Unlock Reward:</span>
                 <span className="fw-bold text-[#F4C542]">{selectedLevel.rewardText}</span>
               </div>
               <div className="d-flex justify-content-between">
-                <span className="text-slate-400">Tier Status:</span>
+                <span className="text-purple-200/75">Tier Status:</span>
                 <span className="fw-semibold text-capitalize text-white">{selectedLevel.status}</span>
               </div>
             </div>

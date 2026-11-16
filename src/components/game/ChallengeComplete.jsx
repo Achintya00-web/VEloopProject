@@ -1,6 +1,7 @@
-import React from 'react';
-import { ArrowLeft, Share2, Sparkles, RotateCcw, Home } from 'lucide-react';
-import { LaurelTrophy } from '../common/GameAssets.jsx';
+import React, { useState } from 'react';
+import { ArrowLeft, Share2, Sparkles, RotateCcw, Home, Trophy, Check } from 'lucide-react';
+import { LaurelTrophy, VECoin, XPOrb } from '../common/GameAssets.jsx';
+import { BadgeIcon } from '../common/BadgeIcon.jsx';
 import { playSound } from '../../utils/audio.js';
 
 export const ChallengeComplete = ({
@@ -8,168 +9,237 @@ export const ChallengeComplete = ({
   xpEarned,
   vesEarned,
   isNewBest,
+  itemsCaught,
+  maxMultiplier,
+  accuracy,
   currentLevel,
   currentXP,
   requiredXP,
   onPlayAgain,
   onBackToDashboard,
 }) => {
+  const [shareCopied, setShareCopied] = useState(false);
+
   const nextLevel = currentLevel + 1;
+  const formattedCurrent = currentLevel < 10 ? `0${currentLevel}` : `${currentLevel}`;
+  const formattedNext = nextLevel < 10 ? `0${nextLevel}` : `${nextLevel}`;
+  const remainingXP = Math.max(0, requiredXP - currentXP);
   const progressPercent = Math.min(100, Math.max(0, (currentXP / requiredXP) * 100));
 
+  const performanceLabel =
+    isNewBest
+      ? 'New Personal Best · Legendary Run'
+      : score >= 60
+      ? 'Strong Precision · Rewards Credited'
+      : 'Session Complete · Rewards Credited';
+
+  const handleShare = () => {
+    playSound.click();
+    const shareText = `I scored ${score} PTS in VELOOP XP Catcher (+${xpEarned} XP, +${vesEarned} VEs)!`;
+    if (navigator.share) {
+      navigator
+        .share({
+          title: 'VELOOP XP Catcher',
+          text: shareText,
+        })
+        .catch(() => {});
+    } else if (navigator.clipboard?.writeText) {
+      navigator.clipboard
+        .writeText(shareText)
+        .then(() => {
+          setShareCopied(true);
+          window.setTimeout(() => setShareCopied(false), 1800);
+        })
+        .catch(() => {});
+    }
+  };
+
   return (
-    <div className="w-100 mx-auto min-h-150 d-flex flex-column justify-content-between p-2 p-sm-3 animate-in fade-in challenge-complete">
+    <div className="w-100 mx-auto d-flex flex-column justify-content-between user-select-none animate-in fade-in challenge-complete">
+      {/* Cosmic nebula & subtle starlight layer matched to Dashboard */}
       <div className="challenge-complete__backdrop" aria-hidden="true">
         <div className="challenge-complete__orbit challenge-complete__orbit--one" />
         <div className="challenge-complete__orbit challenge-complete__orbit--two" />
-        {Array.from({ length: 32 }, (_, index) => (
+        <span className="vl-lb-star vl-lb-star--1" />
+        <span className="vl-lb-star vl-lb-star--2" />
+        <span className="vl-lb-star vl-lb-star--3" />
+        <span className="vl-lb-star vl-lb-star--4" />
+        {Array.from({ length: 18 }, (_, index) => (
           <span
             key={index}
             className={`challenge-complete__confetti challenge-complete__confetti--${index % 4}`}
             style={{
-              left: `${(index * 37 + 8) % 100}%`,
-              top: `${(index * 53 + 4) % 100}%`,
-              '--confetti-delay': `${(index % 12) * -0.37}s`,
-              '--confetti-duration': `${4.8 + (index % 5) * 0.65}s`,
+              left: `${(index * 41 + 9) % 94 + 3}%`,
+              top: `${(index * 59 + 7) % 88 + 6}%`,
+              '--confetti-delay': `${(index % 9) * -0.45}s`,
+              '--confetti-duration': `${5.2 + (index % 4) * 0.7}s`,
             }}
           />
         ))}
-        <Sparkles className="challenge-complete__ambient-spark challenge-complete__ambient-spark--one" />
-        <Sparkles className="challenge-complete__ambient-spark challenge-complete__ambient-spark--two" />
-        <Sparkles className="challenge-complete__ambient-spark challenge-complete__ambient-spark--three" />
       </div>
 
-      <div className="d-flex justify-content-between align-items-center pb-2 challenge-complete__topbar">
+      {/* Top Navigation Bar */}
+      <div className="challenge-complete__topbar">
         <button
+          type="button"
           onClick={() => {
             playSound.click();
             onBackToDashboard();
           }}
-          className="w-10 h-10 rounded-3 bg-[#191C2B] border border-white/10 d-flex align-items-center justify-center text-slate-300 hover:text-white"
-          aria-label="Back"
+          className="challenge-complete__icon-btn"
+          aria-label="Back to dashboard"
         >
           <ArrowLeft className="w-5 h-5" />
         </button>
 
-        <span className="text-xs fw-bold text-slate-400 text-uppercase tracking-widest">
-          Game Results
-        </span>
+        <div className="challenge-complete__topbar-title">
+          <Sparkles size={13} className="text-[#FFD15A]" />
+          <span>XP Catcher · Results</span>
+        </div>
 
         <button
-          onClick={() => {
-            playSound.click();
-            if (navigator.share) {
-              navigator.share({
-                title: 'VELOOP Rewards',
-                text: `I just scored ${score} in VELOOP XP Catcher!`,
-              }).catch(() => {});
-            }
-          }}
-          className="w-10 h-10 rounded-3 bg-[#191C2B] border border-white/10 d-flex align-items-center justify-center text-slate-300 hover:text-white"
+          type="button"
+          onClick={handleShare}
+          className="challenge-complete__icon-btn"
           aria-label="Share score"
+          title={shareCopied ? 'Copied summary' : 'Share score'}
         >
-          <Share2 className="w-4 h-4" />
+          {shareCopied ? <Check className="w-4 h-4 text-emerald-300" /> : <Share2 className="w-4 h-4" />}
         </button>
       </div>
 
-      <div className="d-flex flex-column align-items-center text-center my-auto challenge-complete__main">
-        <span className="challenge-complete__eyebrow"><Sparkles size={12} /> ARCADE VICTORY · REWARDS SECURED</span>
-
-        <div className="position-relative mb-2 challenge-complete__trophy">
+      {/* Center Cosmic Victory Stage */}
+      <div className="challenge-complete__main">
+        {/* Trophy Pedestal */}
+        <div className="challenge-complete__trophy">
           <div className="challenge-complete__trophy-halo" />
-          <div className="challenge-complete__trophy-medal">
-            <LaurelTrophy size={148} />
+          <div className="challenge-complete__trophy-crest">
+            <LaurelTrophy size={178} />
           </div>
-          <Sparkles className="challenge-complete__trophy-spark challenge-complete__trophy-spark--one" />
-          <Sparkles className="challenge-complete__trophy-spark challenge-complete__trophy-spark--two" />
-          <Sparkles className="challenge-complete__trophy-spark challenge-complete__trophy-spark--three" />
         </div>
 
-        <h2 className="fs-4 fw-bolder text-white text-uppercase tracking-wider font-display mb-0">
-          Challenge Complete!
-        </h2>
-        <p className="text-sm fw-semibold text-slate-400 mt-1 mb-2">
-          Outstanding!
+        <h2 className="challenge-complete__title">Challenge Complete!</h2>
+        <p className="challenge-complete__subtitle">
+          {isNewBest && <Trophy size={13} className="text-[#FFD15A]" />}
+          <span>{performanceLabel}</span>
         </p>
 
-        {/* Final Score */}
-        <div className="my-3 d-flex flex-column align-items-center challenge-complete__score">
-          <span className="text-[10px] fw-bold text-slate-400 text-uppercase tracking-widest mb-1">
-            Final Score
-          </span>
-          <div className="d-flex align-items-center gap-2">
-            <span className="display-4 fw-bolder text-white font-display tabular-nums tracking-tight">
-              {score}
-            </span>
-            {isNewBest && (
-              <span className="badge bg-warning text-dark text-[10px] fw-bold text-uppercase">
-                New Best!
-              </span>
-            )}
+        {/* Hero Score Plinth */}
+        <div className="challenge-complete__score">
+          <span className="challenge-complete__score-label">Final Score</span>
+          <div className="challenge-complete__score-value-row">
+            <span className="challenge-complete__score-value tabular-nums">{score}</span>
+            <span className="challenge-complete__score-unit">PTS</span>
+            {isNewBest && <span className="challenge-complete__best-tag">New Best</span>}
           </div>
+
+          {(typeof itemsCaught === 'number' || typeof maxMultiplier === 'number') && (
+            <div className="challenge-complete__telemetry">
+              {typeof itemsCaught === 'number' && (
+                <span>
+                  <b>{itemsCaught}</b> Caught
+                </span>
+              )}
+              {typeof maxMultiplier === 'number' && (
+                <span>
+                  <b>{maxMultiplier}X</b> Peak Streak
+                </span>
+              )}
+              {typeof accuracy === 'number' && (
+                <span>
+                  <b>{accuracy}%</b> Accuracy
+                </span>
+              )}
+            </div>
+          )}
         </div>
 
-        {/* Reward Metric Cards Row using Bootstrap row & col-6 */}
-        <div className="row g-2 w-100 max-w-xs mb-4 challenge-complete__rewards">
-          <div className="col-6">
-            <div className="card rounded-4 bg-[#191C2B] border border-purple-500/20 p-3 text-center">
-              <span className="fs-5 fw-bolder text-purple-300 font-display tabular-nums d-block">
-                +{xpEarned} XP
-              </span>
-              <span className="text-[10px] fw-semibold text-slate-400 text-uppercase">
-                Experience
-              </span>
+        {/* Rewards Earned Grid */}
+        <div className="challenge-complete__rewards">
+          <div className="challenge-complete__reward-card challenge-complete__reward-card--xp">
+            <div className="challenge-complete__reward-icon challenge-complete__reward-icon--xp">
+              <XPOrb size={28} />
+            </div>
+            <div className="challenge-complete__reward-copy">
+              <strong className="tabular-nums">+{xpEarned} XP</strong>
+              <span>Experience Earned</span>
             </div>
           </div>
 
-          <div className="col-6">
-            <div className="card rounded-4 bg-[#191C2B] border border-[#F4C542]/20 p-3 text-center">
-              <span className="fs-5 fw-bolder text-[#F4C542] font-display tabular-nums d-block">
-                +{vesEarned} VEs
-              </span>
-              <span className="text-[10px] fw-semibold text-slate-400 text-uppercase">
-                Your Reward
-              </span>
+          <div className="challenge-complete__reward-card challenge-complete__reward-card--ve">
+            <div className="challenge-complete__reward-icon challenge-complete__reward-icon--ve">
+              <VECoin size={26} />
+            </div>
+            <div className="challenge-complete__reward-copy">
+              <strong className="tabular-nums">+{vesEarned} VEs</strong>
+              <span>Vault Reward</span>
             </div>
           </div>
         </div>
 
-        {/* Mini Level Progress Bar */}
-        <div className="w-100 max-w-xs space-y-1 mb-4">
-          <div className="d-flex justify-content-between text-xs fw-semibold text-slate-300">
-            <span>Level {currentLevel < 10 ? `0${currentLevel}` : currentLevel}</span>
-            <span className="text-slate-400 text-[11px] tabular-nums">
-              {currentXP.toLocaleString()} / {requiredXP.toLocaleString()} XP
-            </span>
-            <span>Level {nextLevel < 10 ? `0${nextLevel}` : nextLevel}</span>
+        {/* Level Journey Progress Card (Synced with Dashboard CurrentLevelCard) */}
+        <div className="challenge-complete__progress-panel">
+          <div className="challenge-complete__progress-header">
+            <div className="challenge-complete__level-node">
+              <BadgeIcon level={currentLevel} size="sm" glow={true} showLevelText={false} />
+              <div className="challenge-complete__level-text">
+                <span>Current</span>
+                <strong>Level {formattedCurrent}</strong>
+              </div>
+            </div>
+
+            <div className="challenge-complete__xp-summary">
+              <span className="tabular-nums">
+                {currentXP.toLocaleString()} / {requiredXP.toLocaleString()} XP
+              </span>
+              <small>{remainingXP.toLocaleString()} XP to Level {formattedNext}</small>
+            </div>
+
+            <div className="challenge-complete__level-node challenge-complete__level-node--next">
+              <div className="challenge-complete__level-text text-end">
+                <span>Next Tier</span>
+                <strong>Level {formattedNext}</strong>
+              </div>
+              <BadgeIcon level={nextLevel} size="sm" showLevelText={false} />
+            </div>
           </div>
-          <div className="progress rounded-pill bg-[#0E1019] border border-white/5 p-0.5" style={{ height: '10px' }}>
+
+          <div
+            className="challenge-complete__xp-track"
+            role="progressbar"
+            aria-valuenow={Math.round(progressPercent)}
+            aria-valuemin={0}
+            aria-valuemax={100}
+          >
             <div
-              className="progress-bar rounded-pill gold-gradient-bg"
+              className="challenge-complete__xp-bar"
               style={{ width: `${progressPercent}%` }}
             />
           </div>
         </div>
       </div>
 
-      <div className="space-y-2 w-100 max-w-xs mx-auto">
+      {/* Bottom Action Footer */}
+      <div className="challenge-complete__actions">
         <button
+          type="button"
           onClick={() => {
             playSound.click();
             onPlayAgain();
           }}
-          className="btn btn-warning w-100 py-3 rounded-4 fw-bolder text-xs d-flex align-items-center justify-center gap-2 gold-gradient-bg text-dark border-0 shadow-lg"
+          className="challenge-complete__btn challenge-complete__btn--primary"
         >
           <RotateCcw className="w-4 h-4" />
           <span>Play Again</span>
         </button>
 
         <button
+          type="button"
           onClick={() => {
             playSound.click();
             onBackToDashboard();
           }}
-          className="btn btn-dark w-100 py-2.5 rounded-4 text-slate-300 hover:text-white fw-bold text-xs d-flex align-items-center justify-center gap-2 bg-[#191C2B] border border-white/10"
+          className="challenge-complete__btn challenge-complete__btn--secondary"
         >
           <Home className="w-4 h-4" />
           <span>Back to Dashboard</span>

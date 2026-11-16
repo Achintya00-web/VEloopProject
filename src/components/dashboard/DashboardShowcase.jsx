@@ -14,7 +14,12 @@ import avatarRankTwo from '../../assets/images/avatar_rank_two_1794540536931.jpg
 import avatarRankThree from '../../assets/images/avatar_rank_three_1794540537222.jpg';
 import avatarUserAchintya from '../../assets/images/avatar_user_achintya_1794540537100.jpg';
 import avatarPlayerLily from '../../assets/images/avatar_player_lily_1794540537337.jpg';
+import avatarPlayerAlisha from '../../assets/images/avatar_player_alisha_1794807064042.jpg';
 import avatarPlayerSami from '../../assets/images/avatar_player_sami_1794540536413.jpg';
+import avatarPlayerKabir from '../../assets/images/avatar_player_kabir_1794807131474.jpg';
+import avatarPlayerMeera from '../../assets/images/avatar_player_meera_1794807065973.jpg';
+import avatarPlayerDev from '../../assets/images/avatar_player_dev_1794807065389.jpg';
+import avatarPlayerZoya from '../../assets/images/avatar_player_zoya_1794807130848.jpg';
 
 const PERIOD_TABS = [
   { id: 'weekly', label: 'Weekly', resetLabel: 'Resets in 2d 14h' },
@@ -53,14 +58,14 @@ const STANDINGS_BY_PERIOD = {
     ],
     rows: [
       { rank: 4, name: 'Lily', xp: 1800, avatar: avatarPlayerLily, initials: 'LY' },
-      { rank: 5, name: 'Alisha', xp: 1730, avatar: avatarRankTwo, initials: 'AL' },
+      { rank: 5, name: 'Alisha', xp: 1730, avatar: avatarPlayerAlisha, initials: 'AL' },
       { rank: 6, name: 'Sami', xp: 1400, avatar: avatarPlayerSami, initials: 'SM' },
     ],
     extraRows: [
-      { rank: 7, name: 'Kabir', xp: 1290, initials: 'KB' },
-      { rank: 8, name: 'Meera', xp: 1150, initials: 'MR' },
-      { rank: 9, name: 'Dev', xp: 980, initials: 'DV' },
-      { rank: 10, name: 'Zoya', xp: 840, initials: 'ZY' },
+      { rank: 7, name: 'Kabir', xp: 1290, avatar: avatarPlayerKabir, initials: 'KB' },
+      { rank: 8, name: 'Meera', xp: 1150, avatar: avatarPlayerMeera, initials: 'MR' },
+      { rank: 9, name: 'Dev', xp: 980, avatar: avatarPlayerDev, initials: 'DV' },
+      { rank: 10, name: 'Zoya', xp: 840, avatar: avatarPlayerZoya, initials: 'ZY' },
     ],
     baseUserRank: 23,
     subtitlePrefix: 'this week',
@@ -95,14 +100,14 @@ const STANDINGS_BY_PERIOD = {
     ],
     rows: [
       { rank: 4, name: 'Lily', xp: 9420, avatar: avatarPlayerLily, initials: 'LY' },
-      { rank: 5, name: 'Alisha', xp: 8890, avatar: avatarRankTwo, initials: 'AL' },
+      { rank: 5, name: 'Alisha', xp: 8890, avatar: avatarPlayerAlisha, initials: 'AL' },
       { rank: 6, name: 'Sami', xp: 7940, avatar: avatarPlayerSami, initials: 'SM' },
     ],
     extraRows: [
-      { rank: 7, name: 'Kabir', xp: 7410, initials: 'KB' },
-      { rank: 8, name: 'Meera', xp: 6980, initials: 'MR' },
-      { rank: 9, name: 'Dev', xp: 6620, initials: 'DV' },
-      { rank: 10, name: 'Zoya', xp: 6510, initials: 'ZY' },
+      { rank: 7, name: 'Kabir', xp: 7410, avatar: avatarPlayerKabir, initials: 'KB' },
+      { rank: 8, name: 'Meera', xp: 6980, avatar: avatarPlayerMeera, initials: 'MR' },
+      { rank: 9, name: 'Dev', xp: 6620, avatar: avatarPlayerDev, initials: 'DV' },
+      { rank: 10, name: 'Zoya', xp: 6510, avatar: avatarPlayerZoya, initials: 'ZY' },
     ],
     baseUserRank: 14,
     subtitlePrefix: 'this month',
@@ -137,14 +142,14 @@ const STANDINGS_BY_PERIOD = {
     ],
     rows: [
       { rank: 4, name: 'Lily', xp: 74600, avatar: avatarPlayerLily, initials: 'LY' },
-      { rank: 5, name: 'Alisha', xp: 68900, avatar: avatarRankTwo, initials: 'AL' },
+      { rank: 5, name: 'Alisha', xp: 68900, avatar: avatarPlayerAlisha, initials: 'AL' },
       { rank: 6, name: 'Sami', xp: 52300, avatar: avatarPlayerSami, initials: 'SM' },
     ],
     extraRows: [
-      { rank: 7, name: 'Kabir', xp: 47850, initials: 'KB' },
-      { rank: 8, name: 'Meera', xp: 43100, initials: 'MR' },
-      { rank: 9, name: 'Dev', xp: 39400, initials: 'DV' },
-      { rank: 10, name: 'Zoya', xp: 34200, initials: 'ZY' },
+      { rank: 7, name: 'Kabir', xp: 47850, avatar: avatarPlayerKabir, initials: 'KB' },
+      { rank: 8, name: 'Meera', xp: 43100, avatar: avatarPlayerMeera, initials: 'MR' },
+      { rank: 9, name: 'Dev', xp: 39400, avatar: avatarPlayerDev, initials: 'DV' },
+      { rank: 10, name: 'Zoya', xp: 34200, avatar: avatarPlayerZoya, initials: 'ZY' },
     ],
     baseUserRank: 9,
     subtitlePrefix: 'all time',

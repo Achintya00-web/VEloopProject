@@ -210,7 +210,7 @@ export const EarnActivitiesPage = ({
             playSound.click();
             onOpenGame();
           }}
-          className="btn btn-warning btn-sm rounded-3 fw-bold text-[11px] gold-gradient-bg text-dark border-0"
+          className="cosmic-cta-gold whitespace-nowrap shrink-0"
         >
           Play Game
         </button>

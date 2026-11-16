@@ -17,12 +17,14 @@ export const CurrentLevelCard = ({
   return (
     <div className="card current-level-card rounded-4 border border-white/10 p-4 p-sm-4 shadow-lg card-glow-gold overflow-hidden bg-gradient-to-b from-[#1C1F32] to-[#161928] text-white">
       {/* Header Level Row matching Page 33 */}
-      <div className="d-flex justify-content-between align-items-center mb-4">
-        <div className="d-flex align-items-center gap-3">
-          <BadgeIcon level={currentLevel} size="md" glow={true} />
+      <div className="d-flex justify-content-between align-items-center gap-2 mb-4">
+        <div className="d-flex align-items-center gap-3 gap-sm-4 min-w-0 flex-1">
+          <div className="current-level-badge-stage">
+            <BadgeIcon level={currentLevel} size="lg" glow={true} premium={true} />
+          </div>
 
-          <div>
-            <div className="d-flex align-items-baseline gap-1">
+          <div className="min-w-0">
+            <div className="d-flex align-items-baseline gap-1 flex-wrap">
               <span className="fs-2 fw-bolder text-white font-display tabular-nums">
                 {currentXP.toLocaleString()}
               </span>

@@ -5,18 +5,18 @@ import { VECoin, GemIcon } from '../common/GameAssets.jsx';
 import { LEVEL_PERKS } from '../../data/levelData.js';
 import { playSound } from '../../utils/audio.js';
 
-export const LevelUpModal = ({ isOpen, level, onClaim, onClose }) => {
+export const LevelUpModal = ({ isOpen, level, vesBonus = 500, gemsBonus = 25, onClaim, onClose }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="position-fixed top-0 start-0 w-100 h-100 z-50 d-flex align-items-center justify-content-center p-3 bg-black/85 backdrop-blur-md animate-in fade-in">
-      <div className="position-relative w-100 max-w-sm rounded-4 bg-gradient-to-b from-[#1C1F33] via-[#161827] to-[#0E1019] border border-[#F4C542]/40 p-4 text-center shadow-2xl overflow-hidden">
+    <div className="cosmic-modal-overlay position-fixed top-0 start-0 w-100 h-100 z-50 d-flex align-items-center justify-content-center backdrop-blur-md animate-in fade-in">
+      <div className="cosmic-modal-card max-w-sm text-center">
         <button
           onClick={() => {
             playSound.click();
             onClose();
           }}
-          className="position-absolute top-3 end-3 p-1 rounded-circle text-slate-400 hover:text-white bg-white/5 border-0"
+          className="position-absolute top-3 end-3 task-start-card__close"
           aria-label="Close"
         >
           <X className="w-4 h-4" />
@@ -30,8 +30,8 @@ export const LevelUpModal = ({ isOpen, level, onClaim, onClose }) => {
             </h2>
             <Sparkles className="w-4 h-4 text-[#F4C542] animate-bounce" />
           </div>
-          <p className="text-xs fw-semibold text-slate-400 mb-0">
-            You've reached
+          <p className="text-xs fw-semibold text-purple-200/75 mb-0">
+            You&apos;ve reached
           </p>
         </div>
 
@@ -42,9 +42,9 @@ export const LevelUpModal = ({ isOpen, level, onClaim, onClose }) => {
         {/* Two Reward Cards Row using Bootstrap col-6 */}
         <div className="row g-2 my-3">
           <div className="col-6">
-            <div className="card rounded-3 bg-[#191C2B] border border-[#F4C542]/30 p-2.5 d-flex flex-column align-items-center">
+            <div className="cosmic-modal-inset h-100 border-[#F4C542]/40 d-flex flex-column align-items-center justify-content-center">
               <span className="fs-6 fw-bold text-[#F4C542] font-display tabular-nums mb-1">
-                +500 VEs
+                +{vesBonus.toLocaleString()} VEs
               </span>
               <div className="d-flex -space-x-2">
                 <VECoin size={22} />
@@ -55,9 +55,9 @@ export const LevelUpModal = ({ isOpen, level, onClaim, onClose }) => {
           </div>
 
           <div className="col-6">
-            <div className="card rounded-3 bg-[#191C2B] border border-purple-500/30 p-2.5 d-flex flex-column align-items-center">
-              <span className="fs-6 fw-bold text-purple-300 font-display tabular-nums mb-1">
-                +25 Gems
+            <div className="cosmic-modal-inset h-100 border-purple-400/35 d-flex flex-column align-items-center justify-content-center">
+              <span className="fs-6 fw-bold text-purple-200 font-display tabular-nums mb-1">
+                +{gemsBonus.toLocaleString()} Gems
               </span>
               <div className="d-flex -space-x-1">
                 <GemIcon size={20} />
@@ -67,9 +67,9 @@ export const LevelUpModal = ({ isOpen, level, onClaim, onClose }) => {
           </div>
         </div>
 
-        <div className="space-y-1 text-start mb-4 px-1">
+        <div className="space-y-1.5 text-start mb-4 px-1">
           {LEVEL_PERKS.map((perk, i) => (
-            <div key={i} className="d-flex align-items-center gap-2 text-xs text-slate-300">
+            <div key={i} className="d-flex align-items-center gap-2 text-xs text-purple-100/85">
               {i === 0 && <Zap className="w-3.5 h-3.5 text-[#F4C542] shrink-0" />}
               {i === 1 && <Target className="w-3.5 h-3.5 text-purple-400 shrink-0" />}
               {i === 2 && <Gift className="w-3.5 h-3.5 text-emerald-400 shrink-0" />}
@@ -80,7 +80,7 @@ export const LevelUpModal = ({ isOpen, level, onClaim, onClose }) => {
 
         <button
           onClick={onClaim}
-          className="btn btn-warning w-100 py-3 rounded-4 fw-bolder text-xs text-uppercase tracking-wider gold-gradient-bg text-dark border-0 shadow-lg"
+          className="cosmic-cta-gold w-100 min-h-[44px]"
         >
           <span>Claim Rewards</span>
         </button>

@@ -43,7 +43,7 @@ export const RecentActivityPage = ({
               playSound.click();
               onBack();
             }}
-            className="w-10 h-10 rounded-3 bg-[#191C2B] border border-white/10 d-flex align-items-center justify-center text-slate-300 hover:text-white"
+            className="cosmic-icon-btn"
             aria-label="Back"
           >
             <ArrowLeft className="w-5 h-5" />
@@ -60,18 +60,14 @@ export const RecentActivityPage = ({
               playSound.click();
               setShowFilterMenu(!showFilterMenu);
             }}
-            className={`w-10 h-10 rounded-3 border d-flex align-items-center justify-center ${
-              filterType !== 'All'
-                ? 'bg-[#F4C542]/20 border-[#F4C542] text-[#F4C542]'
-                : 'bg-[#191C2B] border-white/10 text-slate-300 hover:text-white'
-            }`}
+            className={`cosmic-icon-btn ${filterType !== 'All' ? 'is-active' : ''}`}
             aria-label="Filter"
           >
             <Filter className="w-4 h-4" />
           </button>
 
           {showFilterMenu && (
-            <div className="position-absolute end-0 mt-2 w-36 rounded-3 bg-[#191C2B] border border-white/10 shadow-2xl p-1 z-40 animate-in fade-in">
+            <div className="position-absolute end-0 mt-2 w-36 cosmic-popover p-1.5 z-40 animate-in fade-in">
               {['All', 'XP', 'VEs'].map((filter) => (
                 <button
                   key={filter}
@@ -80,8 +76,8 @@ export const RecentActivityPage = ({
                     setFilterType(filter);
                     setShowFilterMenu(false);
                   }}
-                  className={`w-100 text-start px-3 py-1.5 rounded-2 text-xs fw-semibold border-0 ${
-                    filterType === filter ? 'bg-[#F4C542] text-dark' : 'text-slate-300 bg-transparent'
+                  className={`w-100 text-start px-3 py-1.5 text-xs fw-semibold border-0 cosmic-filter-btn ${
+                    filterType === filter ? 'is-active' : ''
                   }`}
                 >
                   {filter}
@@ -94,8 +90,8 @@ export const RecentActivityPage = ({
 
       <div className="space-y-2 px-2">
         {filteredHistory.length === 0 ? (
-          <div className="p-4 text-center rounded-4 bg-[#191C2B] border border-white/5">
-            <p className="text-xs text-slate-400 mb-0">No records found for this filter.</p>
+          <div className="p-4 text-center rounded-4 cosmic-state-card">
+            <p className="text-xs text-purple-200/80 mb-0">No records found for this filter.</p>
           </div>
         ) : (
           filteredHistory.map((item) => {
@@ -105,7 +101,7 @@ export const RecentActivityPage = ({
             return (
               <div
                 key={item.id}
-                className="card rounded-4 bg-[#191C2B] border border-white/5 p-3 d-flex flex-row justify-content-between align-items-center gap-3 shadow-sm"
+                className="card rounded-4 border border-purple-400/20 p-3 d-flex flex-row justify-content-between align-items-center gap-3 shadow-sm"
               >
                 <div className="d-flex align-items-center gap-3 min-w-0">
                   <RewardIconTile name={icon} tone={isXP ? 'purple' : 'gold'} />
@@ -118,16 +114,16 @@ export const RecentActivityPage = ({
                     >
                       +{item.amount} {item.rewardType === 'VE' ? 'VEs' : 'XP'}
                     </span>
-                    <span className="text-xs fw-semibold text-slate-300 text-truncate d-block">
+                    <span className="text-xs fw-semibold text-purple-100 text-truncate d-block">
                       {item.title}
                     </span>
-                    <span className="text-[10px] text-slate-500 d-block">
+                    <span className="text-[11px] text-purple-200/70 d-block">
                       {item.timestamp}
                     </span>
                   </div>
                 </div>
 
-                <div className="text-slate-600">
+                <div className="text-purple-300/60 shrink-0">
                   <ChevronRight className="w-4 h-4" />
                 </div>
               </div>
@@ -137,32 +133,32 @@ export const RecentActivityPage = ({
       </div>
 
       {/* Today's Summary Card */}
-      <div className="mt-4 mx-2 p-3 rounded-4 bg-gradient-to-r from-[#1A1D2F] via-[#20243C] to-[#1A1D2F] border border-white/10 shadow-lg">
+      <div className="mt-4 mx-2 p-3 rounded-4 border border-purple-400/25 shadow-lg">
         <h3 className="text-xs fw-bolder text-white text-uppercase tracking-wider font-display mb-2">
-          Today's Summary
+          Today&apos;s Summary
         </h3>
 
         <div className="row g-2">
           <div className="col-12 col-sm-6">
-            <div className="rounded-3 bg-[#161827] border border-white/5 p-3 d-flex align-items-center gap-3 min-w-0">
+            <div className="cosmic-modal-inset p-3 d-flex align-items-center gap-3 min-w-0 h-100">
               <XPOrb size={30} />
               <div className="min-w-0">
                 <span className="fs-6 fw-bold text-white d-block font-display tabular-nums">
                   {todayXP} XP
                 </span>
-                <span className="text-[11px] text-slate-400">Total Earned</span>
+                <span className="text-xs text-purple-200/75">Total Earned</span>
               </div>
             </div>
           </div>
 
           <div className="col-12 col-sm-6">
-            <div className="rounded-3 bg-[#161827] border border-white/5 p-3 d-flex align-items-center gap-3 min-w-0">
+            <div className="cosmic-modal-inset p-3 d-flex align-items-center gap-3 min-w-0 h-100">
               <VECoin size={28} />
               <div className="min-w-0">
                 <span className="fs-6 fw-bold text-white d-block font-display tabular-nums">
                   {todayVEs} VEs
                 </span>
-                <span className="text-[11px] text-slate-400">Total Earned</span>
+                <span className="text-xs text-purple-200/75">Total Earned</span>
               </div>
             </div>
           </div>

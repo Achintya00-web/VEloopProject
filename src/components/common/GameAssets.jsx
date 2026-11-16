@@ -137,61 +137,277 @@ export const GemIcon = ({ size = 32, className = '' }) => {
   );
 };
 
-export const LaurelTrophy = ({ size = 110, className = '' }) => {
+export const LaurelTrophy = ({ size = 156, className = '' }) => {
   const gradientId = `laurel-trophy-${useId().replace(/:/g, '')}`;
 
   return (
     <div
       className={`relative inline-flex items-center justify-center shrink-0 ${className}`}
-      style={{ width: size, height: size }}
+      style={{ width: size, height: Math.round(size * 0.92) }}
     >
       <svg
-        viewBox="0 0 120 120"
+        viewBox="0 0 180 166"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        className="w-full h-full filter drop-shadow-[0_0_20px_rgba(244,197,66,0.65)]"
+        className="w-full h-full filter drop-shadow-[0_10px_24px_rgba(244,197,66,0.48)]"
       >
         <defs>
-          <linearGradient id={`${gradientId}-gold`} x1="10" y1="10" x2="110" y2="110" gradientUnits="userSpaceOnUse">
-            <stop offset="0%" stopColor="#FFF7D6" />
-            <stop offset="40%" stopColor="#F5C744" />
-            <stop offset="80%" stopColor="#C99424" />
-            <stop offset="100%" stopColor="#8A5F12" />
+          <linearGradient id={`${gradientId}-gold`} x1="20" y1="10" x2="160" y2="156" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stopColor="#FFF9DB" />
+            <stop offset="28%" stopColor="#FFE073" />
+            <stop offset="58%" stopColor="#F2B92E" />
+            <stop offset="84%" stopColor="#B87A14" />
+            <stop offset="100%" stopColor="#FFE58F" />
           </linearGradient>
-          <radialGradient id={`${gradientId}-glow`} cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="#F5C744" stopOpacity="0.3" />
-            <stop offset="100%" stopColor="#F5C744" stopOpacity="0" />
+          <linearGradient id={`${gradientId}-gold-deep`} x1="40" y1="24" x2="140" y2="145" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stopColor="#F6CF58" />
+            <stop offset="50%" stopColor="#C3831B" />
+            <stop offset="100%" stopColor="#724408" />
+          </linearGradient>
+          <linearGradient id={`${gradientId}-wing`} x1="12" y1="36" x2="86" y2="108" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stopColor="#FFF5C0" />
+            <stop offset="35%" stopColor="#F4C542" />
+            <stop offset="72%" stopColor="#B97B18" />
+            <stop offset="100%" stopColor="#6D410A" />
+          </linearGradient>
+          <linearGradient id={`${gradientId}-wing-plume`} x1="18" y1="54" x2="72" y2="108" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stopColor="#C084FC" />
+            <stop offset="55%" stopColor="#7E22CE" />
+            <stop offset="100%" stopColor="#3B0764" />
+          </linearGradient>
+          <linearGradient id={`${gradientId}-shield`} x1="90" y1="28" x2="90" y2="132" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stopColor="#341B63" />
+            <stop offset="48%" stopColor="#1B0E36" />
+            <stop offset="100%" stopColor="#0C071B" />
+          </linearGradient>
+          <linearGradient id={`${gradientId}-gem`} x1="74" y1="42" x2="106" y2="90" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stopColor="#F5D0FE" />
+            <stop offset="38%" stopColor="#C084FC" />
+            <stop offset="75%" stopColor="#7E22CE" />
+            <stop offset="100%" stopColor="#4C1D95" />
+          </linearGradient>
+          <radialGradient id={`${gradientId}-aura`} cx="50%" cy="48%" r="50%">
+            <stop offset="0%" stopColor="#FFD86B" stopOpacity="0.42" />
+            <stop offset="52%" stopColor="#A855F7" stopOpacity="0.22" />
+            <stop offset="100%" stopColor="#A855F7" stopOpacity="0" />
           </radialGradient>
         </defs>
 
-        <circle cx="60" cy="60" r="50" fill={`url(#${gradientId}-glow)`} />
+        {/* Ambient radial energy burst */}
+        <circle cx="90" cy="82" r="74" fill={`url(#${gradientId}-aura)`} />
 
-        <g fill={`url(#${gradientId}-gold)`}>
-          <path d="M 28 85 C 24 75, 22 55, 32 38 C 34 35, 35 38, 33 42 C 26 55, 27 72, 32 82 Z" />
-          <path d="M 22 72 C 16 68, 14 60, 19 54 C 23 49, 27 57, 23 66 Z" />
-          <path d="M 25 56 C 20 50, 19 42, 25 37 C 30 33, 33 41, 28 50 Z" />
-          <path d="M 32 42 C 28 35, 30 26, 37 23 C 42 20, 43 30, 36 38 Z" />
-          <path d="M 44 30 C 42 22, 47 15, 54 15 C 58 15, 57 24, 49 28 Z" />
-        </g>
-
-        <g fill={`url(#${gradientId}-gold)`} transform="translate(120, 0) scale(-1, 1)">
-          <path d="M 28 85 C 24 75, 22 55, 32 38 C 34 35, 35 38, 33 42 C 26 55, 27 72, 32 82 Z" />
-          <path d="M 22 72 C 16 68, 14 60, 19 54 C 23 49, 27 57, 23 66 Z" />
-          <path d="M 25 56 C 20 50, 19 42, 25 37 C 30 33, 33 41, 28 50 Z" />
-          <path d="M 32 42 C 28 35, 30 26, 37 23 C 42 20, 43 30, 36 38 Z" />
-          <path d="M 44 30 C 42 22, 47 15, 54 15 C 58 15, 57 24, 49 28 Z" />
-        </g>
-
-        <polygon points="60,32 78,44 78,74 60,88 42,74 42,44" fill="#141724" stroke={`url(#${gradientId}-gold)`} strokeWidth="3" />
-        <polygon points="60,36 74,46 74,71 60,82 46,71 46,46" fill="#1C2032" />
-
-        <polygon
-          points="60,46 64,56 75,56 66,63 69,73 60,67 51,73 54,63 45,56 56,56"
-          fill={`url(#${gradientId}-gold)`}
-          style={{ filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.5))' }}
+        {/* Engraved heraldic outer ring */}
+        <circle
+          cx="90"
+          cy="82"
+          r="56"
+          stroke={`url(#${gradientId}-gold)`}
+          strokeOpacity="0.34"
+          strokeWidth="1.4"
+          strokeDasharray="4 4"
+        />
+        <circle
+          cx="90"
+          cy="82"
+          r="49"
+          stroke="#C084FC"
+          strokeOpacity="0.32"
+          strokeWidth="1"
         />
 
-        <path d="M 40 92 L 60 86 L 80 92 L 74 98 L 60 95 L 46 98 Z" fill={`url(#${gradientId}-gold)`} />
+        {/* Grand Swept Victory Wings - Left */}
+        <g>
+          <path
+            d="M52 62 C36 44, 16 32, 6 24 C10 42, 20 56, 36 68 L14 57 C19 70, 29 79, 44 84 L23 82 C29 93, 41 99, 55 100 L64 82 Z"
+            fill={`url(#${gradientId}-wing)`}
+            stroke="#FFF4BF"
+            strokeWidth="1.4"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M49 69 C36 55, 22 45, 13 38 C17 50, 26 60, 39 69 L21 63 C25 72, 34 78, 46 82 Z"
+            fill={`url(#${gradientId}-wing-plume)`}
+            opacity="0.9"
+          />
+          <path
+            d="M14 33 L44 63 M20 62 L46 76 M28 84 L50 92"
+            stroke="#FFF7D4"
+            strokeOpacity="0.72"
+            strokeWidth="1.2"
+            strokeLinecap="round"
+          />
+        </g>
+
+        {/* Grand Swept Victory Wings - Right */}
+        <g transform="translate(180, 0) scale(-1, 1)">
+          <path
+            d="M52 62 C36 44, 16 32, 6 24 C10 42, 20 56, 36 68 L14 57 C19 70, 29 79, 44 84 L23 82 C29 93, 41 99, 55 100 L64 82 Z"
+            fill={`url(#${gradientId}-wing)`}
+            stroke="#FFF4BF"
+            strokeWidth="1.4"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M49 69 C36 55, 22 45, 13 38 C17 50, 26 60, 39 69 L21 63 C25 72, 34 78, 46 82 Z"
+            fill={`url(#${gradientId}-wing-plume)`}
+            opacity="0.9"
+          />
+          <path
+            d="M14 33 L44 63 M20 62 L46 76 M28 84 L50 92"
+            stroke="#FFF7D4"
+            strokeOpacity="0.72"
+            strokeWidth="1.2"
+            strokeLinecap="round"
+          />
+        </g>
+
+        {/* Sculpted Golden Laurels hugging shield base */}
+        <g fill={`url(#${gradientId}-gold)`}>
+          <path d="M51 124 C42 114, 38 99, 43 85 C47 93, 50 107, 56 121 Z" />
+          <path d="M40 112 C33 107, 32 98, 38 93 C43 97, 44 105, 40 112 Z" />
+          <path d="M46 122 C39 119, 37 111, 42 106 C47 109, 49 116, 46 122 Z" />
+          <path d="M57 129 C50 129, 46 122, 50 117 C55 118, 59 124, 57 129 Z" />
+        </g>
+        <g fill={`url(#${gradientId}-gold)`} transform="translate(180, 0) scale(-1, 1)">
+          <path d="M51 124 C42 114, 38 99, 43 85 C47 93, 50 107, 56 121 Z" />
+          <path d="M40 112 C33 107, 32 98, 38 93 C43 97, 44 105, 40 112 Z" />
+          <path d="M46 122 C39 119, 37 111, 42 106 C47 109, 49 116, 46 122 Z" />
+          <path d="M57 129 C50 129, 46 122, 50 117 C55 118, 59 124, 57 129 Z" />
+        </g>
+
+        {/* Imperial Crown Crest & Apex Crystal */}
+        <path
+          d="M66 36 L71 17 L82 26 L90 12 L98 26 L109 17 L114 36 Z"
+          fill={`url(#${gradientId}-gold)`}
+          stroke="#FFF6C8"
+          strokeWidth="1.4"
+          strokeLinejoin="round"
+        />
+        <polygon
+          points="90,4 96,12 90,20 84,12"
+          fill={`url(#${gradientId}-gem)`}
+          stroke="#FFF5CC"
+          strokeWidth="1.2"
+        />
+        <circle cx="71" cy="17" r="2.6" fill="#FFF7D6" />
+        <circle cx="109" cy="17" r="2.6" fill="#FFF7D6" />
+
+        {/* Beveled Outer Championship Shield */}
+        <polygon
+          points="90,30 129,48 126,102 90,136 54,102 51,48"
+          fill={`url(#${gradientId}-gold)`}
+          stroke="#FFF8DB"
+          strokeWidth="1.3"
+          strokeLinejoin="round"
+        />
+        <polygon
+          points="90,35 123,51 120,99 90,129 60,99 57,51"
+          fill={`url(#${gradientId}-gold-deep)`}
+        />
+        {/* Recessed Cosmic Shield Plate */}
+        <polygon
+          points="90,39 118,54 115,96 90,123 65,96 62,54"
+          fill={`url(#${gradientId}-shield)`}
+          stroke={`url(#${gradientId}-gold)`}
+          strokeWidth="1.8"
+          strokeLinejoin="round"
+        />
+        {/* Diagonal Glass Sheen */}
+        <polygon
+          points="90,39 118,54 88,88 62,64 62,54"
+          fill="#FFFFFF"
+          opacity="0.08"
+        />
+        {/* Inner Filigree Frame */}
+        <polygon
+          points="90,45 112,57 110,93 90,116 70,93 68,57"
+          fill="none"
+          stroke="#C084FC"
+          strokeOpacity="0.45"
+          strokeWidth="1.1"
+        />
+
+        {/* Hero Golden Championship Chalice inside Shield */}
+        <g>
+          {/* Chalice Left & Right Handles */}
+          <path
+            d="M73 61 C65 61, 64 74, 74 77"
+            fill="none"
+            stroke={`url(#${gradientId}-gold)`}
+            strokeWidth="3"
+            strokeLinecap="round"
+          />
+          <path
+            d="M107 61 C115 61, 116 74, 106 77"
+            fill="none"
+            stroke={`url(#${gradientId}-gold)`}
+            strokeWidth="3"
+            strokeLinecap="round"
+          />
+          {/* Chalice Cup Body */}
+          <path
+            d="M73 56 L107 56 L104 75 C102 84, 96 89, 90 90 C84 89, 78 84, 76 75 Z"
+            fill={`url(#${gradientId}-gold)`}
+            stroke="#FFF8D8"
+            strokeWidth="1.2"
+            strokeLinejoin="round"
+          />
+          {/* Cup Inner Highlight */}
+          <path
+            d="M77 60 L86 60 L84 82 C80 79, 78 73, 77 60 Z"
+            fill="#FFFDF0"
+            opacity="0.45"
+          />
+          {/* Chalice Stem & Plinth */}
+          <rect x="86.5" y="89" width="7" height="11" rx="2" fill={`url(#${gradientId}-gold-deep)`} />
+          <path
+            d="M77 100 L103 100 L106 107 L74 107 Z"
+            fill={`url(#${gradientId}-gold)`}
+            stroke="#FFF4C2"
+            strokeWidth="1"
+            strokeLinejoin="round"
+          />
+          {/* Faceted Amethyst Core Gem on Chalice */}
+          <polygon
+            points="90,61 97,70 90,79 83,70"
+            fill={`url(#${gradientId}-gem)`}
+            stroke="#FCE7F3"
+            strokeWidth="1.1"
+          />
+          <polygon points="90,62 94,70 90,77" fill="#FAF5FF" opacity="0.38" />
+        </g>
+
+        {/* Sculpted Victory Ribbon Scroll at Base */}
+        <g>
+          <path
+            d="M48 128 L66 123 L66 139 L44 142 L51 135 Z"
+            fill={`url(#${gradientId}-gold-deep)`}
+            stroke="#FFE58F"
+            strokeWidth="1"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M132 128 L114 123 L114 139 L136 142 L129 135 Z"
+            fill={`url(#${gradientId}-gold-deep)`}
+            stroke="#FFE58F"
+            strokeWidth="1"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M61 124 Q90 134 119 124 L117 141 Q90 150 63 141 Z"
+            fill={`url(#${gradientId}-gold)`}
+            stroke="#FFF7D6"
+            strokeWidth="1.3"
+            strokeLinejoin="round"
+          />
+          <polygon points="90,129 93.5,134.5 90,140 86.5,134.5" fill="#4C1D95" stroke="#FFF4C2" strokeWidth="0.9" />
+        </g>
+
+        {/* Crisp 4-Point Victory Sparkles */}
+        <path d="M36 22 L38 28 L44 30 L38 32 L36 38 L34 32 L28 30 L34 28 Z" fill="#FFF6C4" />
+        <path d="M145 24 L147 29.5 L152.5 31.5 L147 33.5 L145 39 L143 33.5 L137.5 31.5 L143 29.5 Z" fill="#FFD15A" />
+        <path d="M150 108 L151.4 111.6 L155 113 L151.4 114.4 L150 118 L148.6 114.4 L145 113 L148.6 111.6 Z" fill="#E9D5FF" />
+        <path d="M29 108 L30.4 111.6 L34 113 L30.4 114.4 L29 118 L27.6 114.4 L24 113 L27.6 111.6 Z" fill="#FFF6C4" />
       </svg>
     </div>
   );

@@ -1,10 +1,12 @@
 import React from 'react';
 import { Gamepad2 } from 'lucide-react';
+import { VeloopLogo } from './VeloopLogo.jsx';
 
 export const AppFooter = ({ onNavigate }) => (
   <footer className="app-footer">
-    <button className="app-footer__brand" onClick={() => onNavigate('dashboard')}>
-      <span>V</span><strong>VELOOP<br /><b>REWARDS</b></strong>
+    <button className="app-footer__brand" onClick={() => onNavigate('dashboard')} aria-label="VELOOP Rewards home">
+      <VeloopLogo size={34} className="app-footer__logo" />
+      <strong>VELOOP<br /><b>REWARDS</b></strong>
     </button>
     <span className="app-footer__motto">Play · Earn · Grow</span>
     <nav aria-label="Footer navigation">
